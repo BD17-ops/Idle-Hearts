@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<!-- Idle Hearts — Build V05.3 -->
+<!-- Idle Hearts — Build V07.2 -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Idle Hearts — Build V05.3</title>
+<title>Idle Hearts — Build V07.2</title>
 <style>
   :root{
     --bg:#14101c; --panel:#1e1830; --panel-2:#261e3d;
@@ -31,12 +31,18 @@
   .btn{background:var(--panel-2);border:1px solid var(--edge);color:var(--text);padding:8px 14px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;transition:.15s;display:flex;align-items:center;gap:6px;}
   .btn:hover{border-color:var(--accent);background:#2e2447;transform:translateY(-1px)}
   .btn.active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset;color:#fff}
-  .clock{display:flex;flex-direction:column;align-items:flex-end;gap:2px;padding-left:14px;margin-left:auto;border-left:1px solid var(--edge);white-space:nowrap;}
-  .clk-row{display:flex;align-items:baseline;gap:12px}
-  .clock .day{font-weight:700;font-size:13px}
-  .clock .date{font-size:12px;color:var(--text)}
-  .clock .time{color:var(--accent-2);font-variant-numeric:tabular-nums;font-size:14px;font-weight:600}
   .clk-money{font-size:14px;font-weight:800;color:var(--gold);font-variant-numeric:tabular-nums}
+  /* Notification Area (top-right of Menu Bar) */
+  .notif{display:flex;flex-direction:column;gap:4px;margin-left:auto;padding-left:14px;border-left:1px solid var(--edge);white-space:nowrap;}
+  .clk-row{display:flex;align-items:baseline;gap:12px;justify-content:flex-end}
+  .notif .day{font-weight:700;font-size:13px}
+  .notif .date{font-size:12px;color:var(--text)}
+  .notif .time{color:var(--accent-2);font-variant-numeric:tabular-nums;font-size:14px;font-weight:600}
+  .notif-bottom{display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .notif-left{display:flex;align-items:center;gap:8px}
+  .notif-btn{background:var(--panel-2);border:1px solid var(--edge);color:var(--text);width:30px;height:26px;border-radius:7px;cursor:pointer;font-size:14px;line-height:1;display:flex;align-items:center;justify-content:center;transition:.15s;}
+  .notif-btn:hover{border-color:var(--gold);background:#2e2447}
+  .notif-loc{font-size:13px;font-weight:700;color:var(--good);white-space:nowrap;}
 
   /* MAIN ZONE */
   .mainzone{background:radial-gradient(circle at 50% 40%,#20193440,transparent 70%),var(--map-bg)}
@@ -126,12 +132,17 @@
   .res .r-top{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin-bottom:4px}
   .res .r-val{font-size:18px;font-weight:700;font-variant-numeric:tabular-nums}
 
-  .aff-row{display:flex;align-items:center;gap:12px;margin-bottom:9px}
+  .aff-row{display:flex;align-items:center;gap:12px;margin-bottom:14px}
   .aff-face{width:34px;height:34px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:18px;border:2px solid var(--edge);background:var(--panel-2);}
-  .aff-name{width:96px;font-size:13px;font-weight:600}
-  .bar{flex:1;height:12px;border-radius:8px;background:#2a2140;overflow:hidden;position:relative}
+  .aff-name{width:74px;font-size:13px;font-weight:600;flex:none}
+  .aff-main{flex:1;display:flex;flex-direction:column;gap:6px;min-width:0}
+  .bar{width:100%;height:12px;border-radius:8px;background:#2a2140;overflow:hidden;position:relative}
   .bar span{position:absolute;left:0;top:0;bottom:0;border-radius:8px;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .45s}
-  .aff-pct{width:52px;text-align:right;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .hearts{display:flex;gap:5px}
+  .hc{font-size:14px;line-height:1;color:#3a2140}
+  .hc.full{color:var(--accent);text-shadow:0 0 5px rgba(255,92,138,.6)}
+  .aff-count{width:40px;text-align:right;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums;flex:none}
+  .spark-star{flex:none;width:24px;display:flex;align-items:center;justify-content:center}
 
   .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px}
   .item{background:var(--panel-2);border:1px solid var(--edge-soft);border-radius:10px;padding:12px 8px;text-align:center;cursor:pointer;transition:.15s;}
@@ -156,13 +167,24 @@
 
   .toast{position:fixed;left:50%;bottom:34px;transform:translateX(-50%) translateY(12px);background:#2a1c3d;border:1px solid var(--accent);color:#fff;font-size:12px;font-weight:600;padding:8px 18px;border-radius:20px;opacity:0;pointer-events:none;transition:.25s;z-index:60;box-shadow:0 8px 24px rgba(0,0,0,.4)}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  /* UI legend overlay (🖥 monitor button) */
+  .legend{position:fixed;inset:0;z-index:80;display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:#000;padding:22px;cursor:pointer;}
+  .legend.show{display:flex}
+  .lg-frame{width:min(920px,92vw);height:min(78vh,600px);display:grid;grid-template-rows:1fr 4fr auto 4fr;gap:10px;}
+  .lg-box{border:2px solid var(--gold);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:13px;position:relative;}
+  .lg-menu{justify-content:flex-start;padding:0 16px;}
+  .lg-notif{position:absolute;right:10px;top:50%;transform:translateY(-50%);border:1px dashed var(--gold);border-radius:8px;padding:4px 10px;font-size:11px;color:var(--gold);}
+  .lg-action{min-height:30px;}
+  .lg-zone{position:relative;display:grid;grid-template-columns:1fr 4fr;gap:10px;}
+  .lg-zone-label{position:absolute;top:6px;left:10px;font-size:10px;color:var(--gold);letter-spacing:.14em;z-index:1;}
+  .lg-hint{color:var(--gold);font-size:12px;letter-spacing:.12em;opacity:.85;}
 </style>
 </head>
 <body>
 <div class="app">
 
   <div class="section menubar">
-    <span class="tag">menu bar · 1/9</span>
     <div class="brand"><span class="heart">♥</span> Idle Hearts</div>
     <div class="navbtns">
       <button class="btn active">🗺️ Map</button>
@@ -172,18 +194,23 @@
       <button class="btn">🛍️ Shop</button>
       <button class="btn" id="btnSettings" data-action>⚙️ Settings</button>
     </div>
-    <div class="clock">
+    <div class="notif">
       <div class="clk-row">
         <span class="day" id="clkDay">Day 1</span>
         <span class="date" id="clkDate">—</span>
         <span class="time" id="clkTime">8:00 AM</span>
       </div>
-      <span class="clk-money" id="clkMoney">💰 $500</span>
+      <div class="notif-bottom">
+        <div class="notif-left">
+          <button class="notif-btn" id="btnLegend" title="Show UI layout">🖥️</button>
+          <span class="notif-loc" id="notifLoc">📍 Home</span>
+        </div>
+        <span class="clk-money" id="clkMoney">💰 $500</span>
+      </div>
     </div>
   </div>
 
   <div class="section mainzone">
-    <span class="tag">main zone · 4/9</span>
     <div class="map-head"><h2>City Map</h2><span class="sub">Click a place, then Visit</span></div>
     <div class="mapwrap" id="mapwrap"></div>
   </div>
@@ -197,13 +224,12 @@
   </div>
 
   <div class="section bottom">
-    <span class="tag">player zone · 4/9</span>
     <div class="playermenu">
       <div class="pm-title">Player Menu</div>
       <div class="pm-list" id="pmList">
         <div class="tab active" data-cat="skills"><span class="ti">💪</span> Skills</div>
         <div class="tab" data-cat="needs"><span class="ti">💗</span> Needs</div>
-        <div class="tab" data-cat="resources"><span class="ti">💰</span> Resources</div>
+        <div class="tab" data-cat="resources"><span class="ti">💕</span> Relationships</div>
         <div class="tab" data-cat="gifts"><span class="ti">🎁</span> Gifts</div>
         <div class="tab" data-cat="wardrobe"><span class="ti">👗</span> Wardrobe</div>
         <div class="tab" data-cat="key"><span class="ti">🔑</span> Key Items</div>
@@ -218,6 +244,27 @@
 <div class="footer"><span class="build" id="buildStamp"></span></div>
 <div class="toast" id="toast"></div>
 
+<!-- hidden gradient def for spark stars -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <radialGradient id="sparkGrad" cx="50%" cy="50%" r="55%">
+    <stop offset="0%" stop-color="#fff6cc"/><stop offset="38%" stop-color="#ffcf5c"/><stop offset="100%" stop-color="#a8791f"/>
+  </radialGradient>
+</defs></svg>
+
+<!-- UI legend overlay -->
+<div class="legend" id="legend">
+  <div class="lg-frame">
+    <div class="lg-box lg-menu">Menu Bar<span class="lg-notif">Notification Area</span></div>
+    <div class="lg-box lg-main">Main Zone</div>
+    <div class="lg-box lg-action">Action Bar</div>
+    <div class="lg-zone"><span class="lg-zone-label">Player Zone</span>
+      <div class="lg-box lg-pm">Player Menu</div>
+      <div class="lg-box lg-pp">Player Panel</div>
+    </div>
+  </div>
+  <div class="lg-hint">click anywhere to close</div>
+</div>
+
 <!-- popup / modal -->
 <div class="modal" id="modal"><div class="modal-card">
   <div class="modal-title" id="modalTitle"></div>
@@ -226,7 +273,7 @@
 </div></div>
 
 <script>
-const BUILD="V05.3";
+const BUILD="V07.2";
 document.getElementById('buildStamp').textContent="Idle Hearts Build "+BUILD;
 
 /* ================= GAME STATE ================= */
@@ -237,8 +284,9 @@ function defaultState(){return{
   vocational:{Business:{lvl:0,xp:0},Hospitality:{lvl:0,xp:0},Cooking:{lvl:0,xp:0},Style:{lvl:0,xp:0}},
   money:500,
   affection:{Aiko:0,Rina:0,Mei:0,Yuki:0},
+  spark:{Aiko:0,Rina:0,Mei:0,Yuki:0},
   inventory:{
-    gifts:[{emj:'🌹',nm:'Rose',qty:4},{emj:'🍫',nm:'Chocolate',qty:7},{emj:'💍',nm:'Ring',qty:1},{emj:'🧸',nm:'Plushie',qty:2},{emj:'📓',nm:'Journal',qty:1},{emj:'🎫',nm:'Movie Ticket',qty:3}],
+    gifts:[{emj:'🌹',nm:'Rose',qty:99},{emj:'🍫',nm:'Chocolate',qty:7},{emj:'💍',nm:'Ring',qty:1},{emj:'🧸',nm:'Plushie',qty:2},{emj:'📓',nm:'Journal',qty:1},{emj:'🎫',nm:'Movie Ticket',qty:3}],
     wardrobe:[{emj:'👕',nm:'Casual',qty:'★'},{emj:'🧥',nm:'Jacket',qty:'★'},{emj:'🤵',nm:'Formal',qty:'🔒'},{emj:'🏖️',nm:'Beach',qty:'🔒'}],
     key:[{emj:'🔑',nm:'Apt Key',qty:1},{emj:'📱',nm:'Phone',qty:1},{emj:'🗺️',nm:'City Pass',qty:1}],
     consumables:[{emj:'☕',nm:'Coffee',qty:5},{emj:'🍰',nm:'Cake',qty:2},{emj:'🥤',nm:'Energy Drink',qty:6}],
@@ -246,6 +294,8 @@ function defaultState(){return{
   day:1,
   location:'Home',
   timeMin:480,
+  lastSeen:0,
+  perks:{},
 };}
 const DEFAULT_DATE=()=>new Date(2026,0,1); // Thursday, Jan 1, 2026 (real calendar)
 const state=defaultState();
@@ -403,6 +453,7 @@ function circularBurst(){
 
 /* ================= APPLY EFFECTS ================= */
 const clamp=v=>Math.max(0,Math.min(100,v));
+const clampAff=v=>Math.max(0,Math.min(1000,v));   // 10 hearts × 100 progress each
 function xpForLevel(L){return Math.round(10+90*Math.log(L)/Math.log(100));}
 function addSkillXp(bucket,key,amt){
   const s=bucket[key]; if(!s)return;
@@ -418,7 +469,11 @@ function applyEffects(loc){
   if(g.personal)for(const k in g.personal)addSkillXp(state.personal,k,g.personal[k]);
   if(g.vocational)for(const k in g.vocational)addSkillXp(state.vocational,k,g.vocational[k]);
   if(g.money)state.money+=g.money;
-  if(g.affection)for(const k in g.affection)state.affection[k]=clamp((state.affection[k]||0)+g.affection[k]);
+  if(g.affection)for(const k in g.affection){
+    let amt=g.affection[k];
+    if(state.spark[k]>0){amt=Math.round(amt*(1.1+(state.spark[k]-1)*0.1)*10)/10;state.spark[k]--;}  // ×2.0→×1.1 over 10 gains
+    state.affection[k]=clampAff((state.affection[k]||0)+amt);
+  }
   state.location=loc.name;
   if(loc.sleep){state.day++;gameDate.setDate(gameDate.getDate()+1);state.timeMin=DAY_START;state.needs.Energy=100;}
   else{state.timeMin+=(loc.hours||0)*60;}
@@ -434,6 +489,7 @@ function updateClock(){
   document.getElementById('clkDate').textContent=`${WD[gameDate.getDay()]}, ${MO[gameDate.getMonth()]} ${gameDate.getDate()}, ${gameDate.getFullYear()}`;
   document.getElementById('clkTime').textContent=fmtTime(state.timeMin);
   document.getElementById('clkMoney').textContent='💰 $'+state.money.toLocaleString();
+  document.getElementById('notifLoc').textContent='📍 '+state.location;
 }
 
 /* ================= PANELS ================= */
@@ -456,27 +512,35 @@ function skillRow(name,sk,ico,color){
 function panelSkills(){
   const left=PERSONAL_ORDER.map(k=>skillRow(k,state.personal[k],SKILL_META[k].ico,SKILL_META[k].color)).join('');
   const right=VOC_ORDER.map(k=>skillRow(k,state.vocational[k],SKILL_META[k].ico,SKILL_META[k].color)).join('');
-  return `<div class="pp-head"><h3>Skills</h3><span class="count">bar = XP to next level · cap Lv 100</span></div>
-    <div class="skill-cols">
+  return `<div class="skill-cols">
       <div class="skill-col"><h4>Personal</h4>${left}</div>
       <div class="skill-col"><h4>Vocational</h4>${right}</div>
     </div>`;
 }
 function panelNeeds(){
   const rows=NEEDS_ORDER.map(k=>{const m=NEED_META[k];return statRow(k,state.needs[k],m.ico,m.color,{note:m.note});}).join('');
-  return `<div class="pp-head"><h3>Needs</h3><span class="count">resources · 0–100</span></div>
-    <p class="section-label">Spend and refill — no XP curve</p>${rows}`;
+  return rows;
 }
 function resTile(l,i,v,c){return `<div class="res"><div class="r-top">${i} ${l}</div><div class="r-val" style="color:${c}">${v}</div></div>`;}
-function panelResources(){
-  const aff=NPC.map(n=>`<div class="aff-row"><div class="aff-face">${n.emj}</div><div class="aff-name">${n.k}</div>
-    <div class="bar"><span style="width:${state.affection[n.k]}%"></span></div><div class="aff-pct">${Math.round(state.affection[n.k])}% ♥</div></div>`).join('');
-  return `<div class="pp-head"><h3>Resources</h3><span class="count">live-tracking</span></div>
-    <div class="resources">${resTile('Money','💰','$'+state.money.toLocaleString(),'var(--gold)')}${resTile('Day','📅','Day '+state.day,'var(--accent-2)')}${resTile('Time','🕒',fmtTime(state.timeMin),'var(--energy)')}${resTile('Location','📍',state.location,'var(--good)')}</div>
-    <p class="section-label">Affection — accrues via visits toward date unlocks</p>${aff}`;
+function sparkStar(girl){
+  const uses=(state.spark&&state.spark[girl])||0;      // 0..10 (spark mechanic lands in Phase 2)
+  const frac=Math.max(0,Math.min(1,uses/10));
+  const P='M12,1 L14.3,9.7 L23,12 L14.3,14.3 L12,23 L9.7,14.3 L1,12 L9.7,9.7 Z';
+  return `<span class="spark-star" title="Spark"><svg viewBox="0 0 24 24" width="20" height="20">
+    <path d="${P}" fill="none" stroke="#4a3f66" stroke-width="1.3"/>
+    <path d="${P}" fill="url(#sparkGrad)" opacity="${frac.toFixed(2)}"/></svg></span>`;
 }
-function panelGrid(t,items){return `<div class="pp-head"><h3>${t}</h3><span class="count">${items.length} items</span></div>
-  <div class="grid">${items.map(i=>`<div class="item"><div class="emj">${i.emj}</div><div class="nm">${i.nm}</div><div class="qty">×${i.qty}</div></div>`).join('')}</div>`;}
+function panelResources(){
+  return NPC.map(n=>{
+    const v=state.affection[n.k]||0, hearts=Math.min(10,Math.floor(v/100)), prog=v>=1000?100:(v%100);
+    const hrow=Array.from({length:10},(_,i)=>`<span class="hc${i<hearts?' full':''}">♥</span>`).join('');
+    return `<div class="aff-row"><div class="aff-face">${n.emj}</div><div class="aff-name">${n.k}</div>
+      <div class="aff-main"><div class="bar"><span style="width:${prog}%"></span></div><div class="hearts">${hrow}</div></div>
+      <div class="aff-count">${hearts}/10</div>${sparkStar(n.k)}</div>`;
+  }).join('');
+}
+function panelGrid(t,items){return `<div class="pp-head"><span class="count">${items.length} items</span></div>
+  <div class="grid">${items.map(i=>`<div class="item" data-nm="${i.nm}"><div class="emj">${i.emj}</div><div class="nm">${i.nm}</div><div class="qty">×${i.qty}</div></div>`).join('')}</div>`;}
 const panels={skills:panelSkills,needs:panelNeeds,resources:panelResources,
   gifts:()=>panelGrid('Gifts',state.inventory.gifts),wardrobe:()=>panelGrid('Wardrobe',state.inventory.wardrobe),key:()=>panelGrid('Key Items',state.inventory.key),consumables:()=>panelGrid('Consumables',state.inventory.consumables)};
 let activeCat='skills';
@@ -485,6 +549,25 @@ function render(cat){activeCat=cat;panelEl.innerHTML=panels[cat]();}
 function refresh(){panelEl.innerHTML=panels[activeCat]();}
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
   document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');render(t.dataset.cat);}));
+/* ===== gift giving (Rose only for now) ===== */
+function openGivePopup(){
+  const rose=state.inventory.gifts.find(g=>g.nm==='Rose');
+  if(!rose||rose.qty<=0){showPopup('No Roses','You have no Roses to give right now.');return;}
+  const buttons=NPC.map(n=>({label:`${n.emj} ${n.k}`,variant:'primary',onClick:()=>giveRose(n.k)}));
+  buttons.push({label:'Cancel',variant:'ghost'});
+  showModal({title:'Give a Rose to…',msg:`You have ${rose.qty} Rose${rose.qty>1?'s':''}. Giving one lights her spark — her next 10 affection gains get ×2.0 tapering to ×1.1.`,buttons});
+}
+function giveRose(girl){
+  const rose=state.inventory.gifts.find(g=>g.nm==='Rose');
+  if(!rose||rose.qty<=0)return;
+  rose.qty--; state.spark[girl]=10;
+  toast(`Gave ${girl} a Rose ✨ spark lit!`);
+  refresh();
+}
+panelEl.addEventListener('click',e=>{
+  const item=e.target.closest('.item');
+  if(item && activeCat==='gifts' && item.dataset.nm==='Rose') openGivePopup();
+});
 document.querySelectorAll('.navbtns .btn').forEach(b=>b.addEventListener('click',()=>{
   if(b.hasAttribute('data-action'))return;
   document.querySelectorAll('.navbtns .btn:not([data-action])').forEach(x=>x.classList.remove('active'));b.classList.add('active');}));
@@ -508,14 +591,14 @@ modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('s
 
 /* ================= SAVE / LOAD ================= */
 const SAVE_KEY='idleHearts.save';
-const SAVE_VERSION=2;
+const SAVE_VERSION=5;
 let lastSaved=null;
 function storageOK(){try{localStorage.setItem('__t','1');localStorage.removeItem('__t');return true;}catch(e){return false;}}
 const CAN_SAVE=storageOK();
 function serialize(){return JSON.stringify({v:SAVE_VERSION,savedAt:Date.now(),state,gameDateISO:gameDate.toISOString(),selectedId,activeCat});}
 function saveGame(){
   if(!CAN_SAVE){showModal({title:'Saving Unavailable',msg:'This preview blocks local storage, so progress can’t be saved here. On your hosted GitHub page saving works normally.'});return;}
-  try{localStorage.setItem(SAVE_KEY,serialize());lastSaved=Date.now();toast('Game saved ✓');}
+  try{state.lastSeen=Date.now();localStorage.setItem(SAVE_KEY,serialize());lastSaved=Date.now();toast('Game saved ✓');}
   catch(e){showModal({title:'Save Failed',msg:String((e&&e.message)||e)});}
 }
 function hasSave(){try{return CAN_SAVE&&!!localStorage.getItem(SAVE_KEY);}catch(e){return false;}}
@@ -539,6 +622,9 @@ function loadGame(){
     state.personal=sanitizeSkills(def.personal,st.personal);
     state.vocational=sanitizeSkills(def.vocational,st.vocational);
     state.affection=Object.assign({},def.affection,st.affection);
+    state.spark=Object.assign({},def.spark,st.spark);
+    state.perks=Object.assign({},def.perks,st.perks);
+    state.lastSeen=(typeof st.lastSeen==='number')?st.lastSeen:0;
     state.inventory=Object.assign({},def.inventory,st.inventory);
     state.money=(typeof st.money==='number')?st.money:def.money;
     state.day=st.day||def.day;
@@ -580,10 +666,60 @@ function confirmReset(){
     buttons:[{label:'Yes, wipe it',variant:'danger',onClick:resetGame},{label:'Cancel',variant:'ghost'}]});
 }
 document.getElementById('btnSettings').addEventListener('click',openSettings);
+const legendEl=document.getElementById('legend');
+document.getElementById('btnLegend').addEventListener('click',()=>legendEl.classList.add('show'));
+legendEl.addEventListener('click',()=>legendEl.classList.remove('show'));
+
+/* ================= IDLE ENGINE (live + offline, timestamp deltas) ================= */
+const GIRL_LOC={Aiko:'School',Rina:'Gym',Mei:'Café',Yuki:'Mall'};   // where each girl idles
+const IDLE={activeAffPerHour:10,idlePct:0.15,locBonusPct:0.05,energyPerHour:6.25,energyIdleCap:50,offlineCapH:8};
+// perks layer — empty for now; future items/perks raise these
+function pOff(){return IDLE.offlineCapH+(state.perks.offlineCapH||0);}                 // offline cap (hours)
+function pEnergyRate(){return IDLE.energyPerHour*(1+(state.perks.energyMult||0));}     // energy / hour
+function pEnergyCap(){return IDLE.energyIdleCap+(state.perks.energyCap||0);}           // idle energy ceiling
+function pAffRate(girl){                                                               // affection / hour
+  const atHer=state.location===GIRL_LOC[girl];                                         // idling at her spot → static +5%
+  const pct=IDLE.idlePct+(atHer?IDLE.locBonusPct:0)+(state.perks.idlePct||0);
+  return IDLE.activeAffPerHour*pct*(1+(state.perks.affMult||0));
+}
+function applyIdle(seconds){
+  if(!(seconds>0))return null;
+  const hrs=seconds/3600, gains={energy:0,aff:{}};
+  const cap=pEnergyCap();
+  if(state.needs.Energy<cap){                                                          // idle energy tops out at 50%
+    const add=Math.min(pEnergyRate()*hrs, cap-state.needs.Energy);
+    if(add>0){state.needs.Energy=Math.min(cap,state.needs.Energy+add);gains.energy=add;}
+  }
+  for(const n of NPC){                                                                 // idle affection (no spark — visits only)
+    const add=pAffRate(n.k)*hrs;
+    if(add>0){const before=state.affection[n.k]||0;state.affection[n.k]=clampAff(before+add);gains.aff[n.k]=state.affection[n.k]-before;}
+  }
+  return gains;
+}
+function liveTick(){
+  const now=Date.now(), dt=(now-state.lastSeen)/1000;
+  if(dt<=0)return;
+  applyIdle(dt); state.lastSeen=now;
+  if(activeCat==='resources'||activeCat==='needs') refresh();
+}
+function fmtDur(sec){const h=Math.floor(sec/3600),m=Math.floor((sec%3600)/60);return (h?h+'h ':'')+m+'m';}
+function showAwaySummary(dt,gains){
+  const parts=[];
+  if(gains.energy>0.5)parts.push(`⚡ +${Math.round(gains.energy)}`);
+  for(const n of NPC){const g=gains.aff[n.k]||0;if(g>0.5)parts.push(`${n.emj} +${g.toFixed(1)}♥`);}
+  showModal({title:'While You Were Away 💤',msg:`You were away ${fmtDur(dt)}. `+(parts.length?'Idle gains — '+parts.join(' · '):'Nothing accrued yet.'),buttons:[{label:'Welcome back',variant:'primary'}]});
+}
 
 /* ================= INIT ================= */
 loadGame();
+const _now=Date.now();
+if(!state.lastSeen)state.lastSeen=_now;                                                // fresh/legacy save → no offline jump
+const _awayDt=Math.max(0,Math.min((_now-state.lastSeen)/1000, pOff()*3600));           // cap offline at 8h
+const _awayGains=applyIdle(_awayDt);
+state.lastSeen=Date.now();
 syncTabs();buildMap();updateClock();updateActionBar();render(activeCat);
+if(_awayDt>1 && _awayGains && (_awayGains.energy>0.5 || NPC.some(n=>(_awayGains.aff[n.k]||0)>0.5))) showAwaySummary(_awayDt,_awayGains);
+setInterval(liveTick,1000);
 </script>
 </body>
 </html>
