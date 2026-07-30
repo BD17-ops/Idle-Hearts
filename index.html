@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<!-- Idle Hearts — Build V03.0 -->
+<!-- Idle Hearts — Build V05.3 -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Idle Hearts — Build V03.0</title>
+<title>Idle Hearts — Build V05.3</title>
 <style>
   :root{
     --bg:#14101c; --panel:#1e1830; --panel-2:#261e3d;
@@ -31,10 +31,12 @@
   .btn{background:var(--panel-2);border:1px solid var(--edge);color:var(--text);padding:8px 14px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;transition:.15s;display:flex;align-items:center;gap:6px;}
   .btn:hover{border-color:var(--accent);background:#2e2447;transform:translateY(-1px)}
   .btn.active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset;color:#fff}
-  .clock{display:flex;align-items:center;gap:12px;padding-left:14px;margin-left:auto;border-left:1px solid var(--edge);white-space:nowrap;}
-  .clock .day{font-weight:700;font-size:14px}
-  .clock .date{font-size:13px;color:var(--text)}
+  .clock{display:flex;flex-direction:column;align-items:flex-end;gap:2px;padding-left:14px;margin-left:auto;border-left:1px solid var(--edge);white-space:nowrap;}
+  .clk-row{display:flex;align-items:baseline;gap:12px}
+  .clock .day{font-weight:700;font-size:13px}
+  .clock .date{font-size:12px;color:var(--text)}
   .clock .time{color:var(--accent-2);font-variant-numeric:tabular-nums;font-size:14px;font-weight:600}
+  .clk-money{font-size:14px;font-weight:800;color:var(--gold);font-variant-numeric:tabular-nums}
 
   /* MAIN ZONE */
   .mainzone{background:radial-gradient(circle at 50% 40%,#20193440,transparent 70%),var(--map-bg)}
@@ -49,15 +51,17 @@
   .node:hover circle{stroke:var(--accent);fill:#2c2247}
   .node.sel circle{stroke:var(--accent);fill:#3a2340;filter:drop-shadow(0 0 8px rgba(255,92,138,.55))}
   .node.locked circle{stroke:var(--edge-soft);opacity:.7}
+  .node.closed circle{opacity:.4}
+  .node.closed text{opacity:.5}
   .node text{fill:var(--text);font-size:15px;font-weight:600;text-anchor:middle;pointer-events:none}
   .node .ico{font-size:22px}
   .node .lock{fill:var(--muted);font-size:11px;font-weight:600}
 
   /* ACTION BAR */
-  .actionbar{grid-row:3;height:32px;margin:0 -8px;position:relative;overflow:hidden;
+  .actionbar{grid-row:3;height:32px;margin:0 -8px;position:relative;overflow:visible;
     background:linear-gradient(180deg,#221a36,#191330);border-top:1px solid var(--edge);border-bottom:1px solid var(--edge);display:flex;align-items:center;}
   .ab-fill{position:absolute;left:0;top:0;bottom:0;width:0;overflow:hidden;z-index:1;
-    background:linear-gradient(90deg,#ff3d78,#ff5c8a 60%,#ff85a8);box-shadow:0 0 18px rgba(255,92,138,.5);transition:width 2.6s linear;}
+    background:linear-gradient(90deg,#ff3d78,#ff5c8a 60%,#ff85a8);box-shadow:0 0 18px rgba(255,92,138,.5);transition:width 0.87s linear;}
   .ab-fill.go{width:100%}
   .ab-fill::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,rgba(255,255,255,.10) 0 14px,rgba(255,255,255,0) 14px 42px);animation:flow 1.1s linear infinite;}
   .ab-fill::after{content:"";position:absolute;right:-2px;top:0;bottom:0;width:10px;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.55));filter:blur(1px);}
@@ -65,6 +69,13 @@
   .heart-layer{position:absolute;left:0;top:0;bottom:0;width:100vw;}
   .fh{position:absolute;font-size:11px;color:#fff;opacity:.9;text-shadow:0 0 6px rgba(255,255,255,.6);animation:bob 1.8s ease-in-out infinite;}
   @keyframes bob{0%,100%{transform:translateY(2px)}50%{transform:translateY(-4px)}}
+  .burst{position:absolute;left:100%;top:50%;z-index:6;pointer-events:none;color:var(--accent);
+    text-shadow:0 0 7px rgba(255,120,160,.95);transform:translate(-50%,-50%);animation:burst .8s ease-out forwards;}
+  @keyframes burst{
+    0%{opacity:0;transform:translate(-50%,-50%) scale(.3)}
+    15%{opacity:1;transform:translate(-50%,-50%) scale(1.1)}
+    100%{opacity:0;transform:translate(calc(-50% + var(--tx)),calc(-50% + var(--ty))) scale(1.15)}
+  }
   .ab-content{position:relative;z-index:3;display:flex;align-items:center;width:100%;padding:0 16px;gap:12px;}
   .ab-loc{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;text-shadow:0 1px 2px rgba(0,0,0,.55);}
   .ab-loc b{color:#fff}
@@ -133,11 +144,18 @@
   .modal-card{width:340px;max-width:86vw;background:var(--panel);border:1px solid var(--accent);border-radius:14px;padding:20px 22px;box-shadow:0 18px 50px rgba(0,0,0,.5);text-align:center;}
   .modal-title{font-size:16px;font-weight:800;color:var(--accent);margin-bottom:8px}
   .modal-msg{font-size:13px;color:var(--text);line-height:1.5;margin-bottom:18px}
-  .modal-ok{background:linear-gradient(90deg,var(--accent),var(--accent-2));border:none;color:#fff;font-weight:700;font-size:13px;padding:9px 26px;border-radius:9px;cursor:pointer;}
-  .modal-ok:hover{filter:brightness(1.1)}
+  .modal-btns{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+  .modal-btn{border:none;color:#fff;font-weight:700;font-size:13px;padding:9px 18px;border-radius:9px;cursor:pointer;transition:.15s}
+  .modal-btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+  .modal-btn.ghost{background:var(--panel-2);border:1px solid var(--edge);color:var(--text)}
+  .modal-btn.danger{background:#3a1420;border:1px solid var(--stress);color:#ffd0d0}
+  .modal-btn:hover{filter:brightness(1.12)}
 
   .footer{height:22px;display:flex;align-items:center;justify-content:center;flex:none;}
   .footer .build{color:#fff;font-size:11px;letter-spacing:.05em;opacity:.85;font-variant-numeric:tabular-nums;}
+
+  .toast{position:fixed;left:50%;bottom:34px;transform:translateX(-50%) translateY(12px);background:#2a1c3d;border:1px solid var(--accent);color:#fff;font-size:12px;font-weight:600;padding:8px 18px;border-radius:20px;opacity:0;pointer-events:none;transition:.25s;z-index:60;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
 </head>
 <body>
@@ -152,13 +170,15 @@
       <button class="btn">🌹 Dates</button>
       <button class="btn">📖 Journal</button>
       <button class="btn">🛍️ Shop</button>
-      <button class="btn">💾 Save</button>
-      <button class="btn">⚙️ Settings</button>
+      <button class="btn" id="btnSettings" data-action>⚙️ Settings</button>
     </div>
     <div class="clock">
-      <span class="day" id="clkDay">Day 1</span>
-      <span class="date" id="clkDate">—</span>
-      <span class="time" id="clkTime">8:00 AM</span>
+      <div class="clk-row">
+        <span class="day" id="clkDay">Day 1</span>
+        <span class="date" id="clkDate">—</span>
+        <span class="time" id="clkTime">8:00 AM</span>
+      </div>
+      <span class="clk-money" id="clkMoney">💰 $500</span>
     </div>
   </div>
 
@@ -196,41 +216,53 @@
 </div>
 
 <div class="footer"><span class="build" id="buildStamp"></span></div>
+<div class="toast" id="toast"></div>
 
-<!-- popup -->
+<!-- popup / modal -->
 <div class="modal" id="modal"><div class="modal-card">
   <div class="modal-title" id="modalTitle"></div>
   <div class="modal-msg" id="modalMsg"></div>
-  <button class="modal-ok" id="modalOk">Got it</button>
+  <div class="modal-btns" id="modalButtons"></div>
 </div></div>
 
 <script>
-const BUILD="V03.0";
+const BUILD="V05.3";
 document.getElementById('buildStamp').textContent="Idle Hearts Build "+BUILD;
 
 /* ================= GAME STATE ================= */
-const state={
-  needs:{Energy:72,Happiness:61,Stress:28},
-  personal:{Fitness:34,Charm:58,Intelligence:21,Style:12},
-  vocational:{Business:0,Hospitality:0,Cooking:0},
+function defaultState(){return{
+  name:'Andy',
+  needs:{Energy:100,Happiness:100,Stress:0},
+  personal:{Fitness:{lvl:0,xp:0},Charm:{lvl:0,xp:0},Intelligence:{lvl:0,xp:0}},
+  vocational:{Business:{lvl:0,xp:0},Hospitality:{lvl:0,xp:0},Cooking:{lvl:0,xp:0},Style:{lvl:0,xp:0}},
   money:500,
-  affection:{Aiko:62,Rina:38,Mei:15,Yuki:0},
+  affection:{Aiko:0,Rina:0,Mei:0,Yuki:0},
+  inventory:{
+    gifts:[{emj:'🌹',nm:'Rose',qty:4},{emj:'🍫',nm:'Chocolate',qty:7},{emj:'💍',nm:'Ring',qty:1},{emj:'🧸',nm:'Plushie',qty:2},{emj:'📓',nm:'Journal',qty:1},{emj:'🎫',nm:'Movie Ticket',qty:3}],
+    wardrobe:[{emj:'👕',nm:'Casual',qty:'★'},{emj:'🧥',nm:'Jacket',qty:'★'},{emj:'🤵',nm:'Formal',qty:'🔒'},{emj:'🏖️',nm:'Beach',qty:'🔒'}],
+    key:[{emj:'🔑',nm:'Apt Key',qty:1},{emj:'📱',nm:'Phone',qty:1},{emj:'🗺️',nm:'City Pass',qty:1}],
+    consumables:[{emj:'☕',nm:'Coffee',qty:5},{emj:'🍰',nm:'Cake',qty:2},{emj:'🥤',nm:'Energy Drink',qty:6}],
+  },
   day:1,
   location:'Home',
-};
-let gameDate=new Date(2026,0,1);           // Thursday, Jan 1, 2026 (real calendar)
-const TIME="8:00 AM";                       // frozen for now
+  timeMin:480,
+};}
+const DEFAULT_DATE=()=>new Date(2026,0,1); // Thursday, Jan 1, 2026 (real calendar)
+const state=defaultState();
+let gameDate=DEFAULT_DATE();
+const DAY_START=8*60, DAY_END=24*60;        // 8:00 AM to midnight (minutes)
 
-/* ================= LOCATIONS (data-driven) ================= */
+/* ================= LOCATIONS (data-driven) =================
+   hours = time cost; open/close = minutes-of-day window; always/sleep for Home */
 const LOCATIONS=[
-  {id:'Home',icon:'🏠',name:'Home',x:500,y:225,r:46,cost:{},gain:{needs:{Energy:30,Stress:-15,Happiness:5}},advanceDay:true},
-  {id:'School',icon:'🎓',name:'School',x:200,y:105,r:42,cost:{energy:15},gain:{needs:{Stress:10},personal:{Intelligence:8},affection:{Aiko:5}}},
-  {id:'Office',icon:'💼',name:'Office',x:800,y:105,r:42,cost:{energy:20},gain:{needs:{Stress:15},vocational:{Business:6},money:120}},
-  {id:'Gym',icon:'🏋️',name:'Gym',x:200,y:360,r:42,cost:{energy:20,money:10},gain:{needs:{Stress:-5,Happiness:5},personal:{Fitness:8},affection:{Rina:5}}},
-  {id:'Park',icon:'🌳',name:'Park',x:800,y:360,r:42,cost:{energy:5},gain:{needs:{Stress:-20,Happiness:10},personal:{Charm:2}}},
-  {id:'Cafe',icon:'☕',name:'Café',x:330,y:225,r:40,cost:{energy:15},gain:{needs:{Stress:5},vocational:{Hospitality:6},money:70,affection:{Mei:5}}},
-  {id:'Mall',icon:'🛍️',name:'Mall',x:670,y:225,r:40,cost:{money:150},gain:{needs:{Happiness:12,Stress:-8},personal:{Style:6,Charm:2},affection:{Yuki:5}},unlockDay:5},
-  {id:'Kitchen',icon:'🍳',name:'Kitchen',x:500,y:392,r:40,cost:{energy:18},gain:{needs:{Stress:8},vocational:{Cooking:7},money:90}},
+  {id:'Home',icon:'🏠',name:'Home',x:500,y:225,r:46,always:true,sleep:true,cost:{},gain:{needs:{Stress:-15,Happiness:5}}},
+  {id:'School',icon:'🎓',name:'School',x:200,y:105,r:42,hours:6,open:480,close:780,cost:{energy:15},gain:{needs:{Stress:10},personal:{Intelligence:8},affection:{Aiko:5}}},
+  {id:'Office',icon:'💼',name:'Office',x:800,y:105,r:42,hours:8,open:480,close:840,cost:{energy:20},gain:{needs:{Stress:15},vocational:{Business:6},money:120}},
+  {id:'Gym',icon:'🏋️',name:'Gym',x:200,y:360,r:42,hours:1,open:360,close:1320,cost:{energy:20,money:10},gain:{needs:{Stress:-5,Happiness:5},personal:{Fitness:8},affection:{Rina:5}}},
+  {id:'Park',icon:'🌳',name:'Park',x:800,y:360,r:42,hours:1,open:360,close:1200,cost:{energy:5},gain:{needs:{Stress:-20,Happiness:10},personal:{Charm:2}}},
+  {id:'Cafe',icon:'☕',name:'Café',x:330,y:225,r:40,hours:1,open:360,close:1200,cost:{energy:15},gain:{needs:{Stress:5},vocational:{Hospitality:6},money:70,affection:{Mei:5}}},
+  {id:'Mall',icon:'🛍️',name:'Mall',x:670,y:225,r:40,hours:2,open:600,close:1260,cost:{energy:8,money:150},gain:{needs:{Happiness:12,Stress:-8},vocational:{Style:6},personal:{Charm:2},affection:{Yuki:5}},unlockDay:5},
+  {id:'Kitchen',icon:'🍳',name:'Kitchen',x:500,y:392,r:40,hours:4,open:600,close:1200,cost:{energy:18},gain:{needs:{Stress:8},vocational:{Cooking:7},money:90}},
 ];
 const LINKS=[['Home','School'],['Home','Office'],['Home','Gym'],['Home','Park'],['Home','Cafe'],['Home','Mall'],['Home','Kitchen'],['School','Cafe'],['Office','Mall'],['Gym','Kitchen'],['Park','Kitchen']];
 const byId=id=>LOCATIONS.find(l=>l.id===id);
@@ -243,22 +275,23 @@ const SKILL_META={
   Business:{ico:'💼',color:'var(--gold)'},Hospitality:{ico:'☕',color:'#c9a06a'},Cooking:{ico:'🍳',color:'var(--warn)'},
 };
 const NEED_META={
-  Energy:{ico:'⚡',color:'var(--energy)',baseline:null,note:'Depletes with activity; restored by resting at Home.'},
-  Happiness:{ico:'😊',color:'var(--accent)',baseline:50,note:'Drifts toward 50. High = economy bonus.'},
-  Stress:{ico:'🔥',color:'var(--stress)',baseline:25,note:'Drifts toward 25. High = economy penalty.'},
+  Energy:{ico:'⚡',color:'var(--energy)',baseline:null,note:'Drains with every action; a full night’s sleep at Home refills it to 100.'},
+  Happiness:{ico:'😊',color:'var(--accent)',baseline:null,note:'Raised by fun/rest, lowered by stress. (Idle drift comes later.)'},
+  Stress:{ico:'🔥',color:'var(--stress)',baseline:null,note:'Piled on by work/school, relieved by the Park and rest. (Idle drift comes later.)'},
 };
 const NPC=[{k:'Aiko',emj:'🌸'},{k:'Rina',emj:'⚡'},{k:'Mei',emj:'🌙'},{k:'Yuki',emj:'❄️'}];
-const PERSONAL_ORDER=['Fitness','Charm','Intelligence','Style'];
-const VOC_ORDER=['Business','Hospitality','Cooking'];
+const PERSONAL_ORDER=['Fitness','Charm','Intelligence'];
+const VOC_ORDER=['Business','Hospitality','Cooking','Style'];
 const NEEDS_ORDER=['Energy','Happiness','Stress'];
 
 /* ================= MAP ================= */
 function isLocked(loc){return loc.unlockDay && state.day < loc.unlockDay;}
+function isOpenNow(loc){return loc.always || (state.timeMin>=loc.open && state.timeMin<loc.close);}
 function buildMap(){
   const links=LINKS.map(([a,b])=>{const A=byId(a),B=byId(b);
     return `<line class="link" x1="${A.x}" y1="${A.y}" x2="${B.x}" y2="${B.y}"/>`;}).join('');
   const nodes=LOCATIONS.map(loc=>{
-    const cls='node'+(loc.id===selectedId?' sel':'')+(isLocked(loc)?' locked':'');
+    const cls='node'+(loc.id===selectedId?' sel':'')+(isLocked(loc)?' locked':((!loc.always&&!isOpenNow(loc))?' closed':''));
     const inner=isLocked(loc)
       ? `<text class="ico" x="${loc.x}" y="${loc.y-2}">${loc.icon}</text><text class="lock" x="${loc.x}" y="${loc.y+20}">🔒 Day ${loc.unlockDay}</text>`
       : `<text class="ico" x="${loc.x}" y="${loc.y-4}">${loc.icon}</text><text x="${loc.x}" y="${loc.y+22}">${loc.name}</text>`;
@@ -288,20 +321,33 @@ for(let i=0;i<14;i++){const h=document.createElement('span');h.className='fh';h.
 
 function summaryOf(loc){
   const p=[];
+  if(loc.sleep)p.push('🛌 Sleep → next day');
+  else if(loc.hours)p.push(`🕒 ${loc.hours}h`);
   if(loc.cost.energy)p.push(`−${loc.cost.energy}⚡`);
   if(loc.cost.money)p.push(`−$${loc.cost.money}`);
   const g=loc.gain||{};
   if(g.needs)for(const k in g.needs){const v=g.needs[k],s=(v>0?'+':'')+v;p.push(k==='Energy'?`${s}⚡`:`${s} ${k}`);}
+  if(loc.sleep)p.push('Energy→100');
   if(g.money)p.push(`+$${g.money}`);
-  if(g.personal)for(const k in g.personal)p.push(`+${g.personal[k]} ${k}`);
-  if(g.vocational)for(const k in g.vocational)p.push(`+${g.vocational[k]} ${k}`);
+  if(g.personal)for(const k in g.personal)p.push(`+${g.personal[k]} ${k} XP`);
+  if(g.vocational)for(const k in g.vocational)p.push(`+${g.vocational[k]} ${k} XP`);
   if(g.affection)for(const k in g.affection)p.push(`+${g.affection[k]} ♥${k}`);
   return p.join(' · ');
 }
 function affordProblem(loc){
   if(isLocked(loc))return{t:'Location Locked',m:`${loc.name} unlocks on Day ${loc.unlockDay}. It's currently Day ${state.day} — keep playing to reach it.`};
+  if(!loc.always){
+    if(!isOpenNow(loc)){
+      const m=state.timeMin<loc.open
+        ? `${loc.name} is closed. It opens at ${fmtTime(loc.open)}.`
+        : `${loc.name} is closed for the day (last entry ${fmtTime(loc.close)}). Come back tomorrow.`;
+      return{t:'Closed',m};
+    }
+    if(state.timeMin+(loc.hours||0)*60>DAY_END)
+      return{t:'Too Late',m:`A ${loc.hours}h visit won't finish before midnight. Head 🏠 Home to sleep.`};
+  }
   if(loc.cost.energy && state.needs.Energy < loc.cost.energy)
-    return{t:'Not Enough Energy',m:`${loc.name} needs ${loc.cost.energy} Energy, but you only have ${Math.round(state.needs.Energy)}. Head 🏠 Home to rest and recover.`};
+    return{t:'Not Enough Energy',m:`${loc.name} needs ${loc.cost.energy} Energy, but you only have ${Math.round(state.needs.Energy)}. Head 🏠 Home to sleep and recover.`};
   if(loc.cost.money && state.money < loc.cost.money)
     return{t:'Not Enough Money',m:`${loc.name} costs $${loc.cost.money}, but you only have $${state.money.toLocaleString()}. Work a job to earn more.`};
   return null;
@@ -327,39 +373,67 @@ function onVisit(){
 abVisit.addEventListener('click',onVisit);
 abFill.addEventListener('transitionend',e=>{
   if(e.propertyName!=='width'||!abFill.classList.contains('go'))return;
+  // fill reached the right edge → apply action, make the fill vanish, pop a circular heart burst
   applyEffects(byId(visitingId));
   abVisit.textContent='Done! ✓';
-  setTimeout(resetVisit,450);
-});
-function resetVisit(){
+  circularBurst();
   abFill.style.transition='none';abFill.classList.remove('go');void abFill.offsetWidth;abFill.style.transition='';
-  actionbar.classList.remove('running');abVisit.disabled=false;abVisit.textContent='Visit ▸';
+  setTimeout(endVisit,500);
+});
+function endVisit(){
+  actionbar.classList.remove('running');
+  abVisit.disabled=false;abVisit.textContent='Visit ▸';
   updateActionBar();
+}
+function circularBurst(){
+  const N=18;
+  for(let i=0;i<N;i++){
+    const h=document.createElement('span');
+    h.className='burst';h.textContent='♥';
+    const ang=(i/N)*Math.PI*2+Math.random()*0.35;         // around a full circle
+    const r=12.5*(0.45+Math.random()*0.55);               // vw — spreads up to ~1/8 of screen width
+    h.style.setProperty('--tx',(Math.cos(ang)*r).toFixed(2)+'vw');
+    h.style.setProperty('--ty',(Math.sin(ang)*r).toFixed(2)+'vw');
+    h.style.fontSize=(9+Math.random()*8).toFixed(1)+'px';
+    h.style.animationDelay=(Math.random()*40).toFixed(0)+'ms';
+    actionbar.appendChild(h);
+    setTimeout(()=>h.remove(),950);
+  }
 }
 
 /* ================= APPLY EFFECTS ================= */
 const clamp=v=>Math.max(0,Math.min(100,v));
+function xpForLevel(L){return Math.round(10+90*Math.log(L)/Math.log(100));}
+function addSkillXp(bucket,key,amt){
+  const s=bucket[key]; if(!s)return;
+  s.xp+=amt;
+  while(s.lvl<100 && s.xp>=xpForLevel(s.lvl+1)){s.xp-=xpForLevel(s.lvl+1);s.lvl++;}
+  if(s.lvl>=100){s.lvl=100;s.xp=0;}
+}
 function applyEffects(loc){
   if(loc.cost.energy)state.needs.Energy=clamp(state.needs.Energy-loc.cost.energy);
   if(loc.cost.money)state.money-=loc.cost.money;
   const g=loc.gain||{};
   if(g.needs)for(const k in g.needs)state.needs[k]=clamp((state.needs[k]||0)+g.needs[k]);
-  if(g.personal)for(const k in g.personal)state.personal[k]=clamp((state.personal[k]||0)+g.personal[k]);
-  if(g.vocational)for(const k in g.vocational)state.vocational[k]=clamp((state.vocational[k]||0)+g.vocational[k]);
+  if(g.personal)for(const k in g.personal)addSkillXp(state.personal,k,g.personal[k]);
+  if(g.vocational)for(const k in g.vocational)addSkillXp(state.vocational,k,g.vocational[k]);
   if(g.money)state.money+=g.money;
   if(g.affection)for(const k in g.affection)state.affection[k]=clamp((state.affection[k]||0)+g.affection[k]);
   state.location=loc.name;
-  if(loc.advanceDay){state.day++;gameDate.setDate(gameDate.getDate()+1);buildMap();}
-  updateClock();refresh();
+  if(loc.sleep){state.day++;gameDate.setDate(gameDate.getDate()+1);state.timeMin=DAY_START;state.needs.Energy=100;}
+  else{state.timeMin+=(loc.hours||0)*60;}
+  buildMap();updateClock();refresh();updateActionBar();
 }
 
 /* ================= CLOCK ================= */
 const WD=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 const MO=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function fmtTime(min){const h=Math.floor(min/60)%24,m=min%60,per=h<12?'AM':'PM',h12=((h+11)%12)+1;return `${h12}:${String(m).padStart(2,'0')} ${per}`;}
 function updateClock(){
   document.getElementById('clkDay').textContent='Day '+state.day;
   document.getElementById('clkDate').textContent=`${WD[gameDate.getDay()]}, ${MO[gameDate.getMonth()]} ${gameDate.getDate()}, ${gameDate.getFullYear()}`;
-  document.getElementById('clkTime').textContent=TIME;
+  document.getElementById('clkTime').textContent=fmtTime(state.timeMin);
+  document.getElementById('clkMoney').textContent='💰 $'+state.money.toLocaleString();
 }
 
 /* ================= PANELS ================= */
@@ -372,36 +446,39 @@ function statRow(name,val,ico,color,opt){
   return `<div class="stat"><div class="s-top"><div class="s-ico">${ico}</div><div class="s-name">${name}</div>${tier}<div class="s-val">${Math.round(val)} / 100</div></div>
     <div class="track"><span style="width:${val}%;background:${color}"></span>${base}</div>${note}</div>`;
 }
+function skillRow(name,sk,ico,color){
+  const maxed=sk.lvl>=100, need=maxed?0:xpForLevel(sk.lvl+1);
+  const pct=maxed?100:Math.min(100,sk.xp/need*100);
+  const xpText=maxed?'MAX':`${sk.xp} / ${need} XP`;
+  return `<div class="stat"><div class="s-top"><div class="s-ico">${ico}</div><div class="s-name">${name}</div><span class="s-tier">Lv ${sk.lvl}</span><div class="s-val">${xpText}</div></div>
+    <div class="track"><span style="width:${pct}%;background:${color}"></span></div></div>`;
+}
 function panelSkills(){
-  const left=PERSONAL_ORDER.map(k=>statRow(k,state.personal[k],SKILL_META[k].ico,SKILL_META[k].color,{tier:true})).join('');
-  const right=VOC_ORDER.map(k=>statRow(k,state.vocational[k],SKILL_META[k].ico,SKILL_META[k].color,{tier:true})).join('');
-  return `<div class="pp-head"><h3>Skills</h3><span class="count">grow over time · 0–100</span></div>
+  const left=PERSONAL_ORDER.map(k=>skillRow(k,state.personal[k],SKILL_META[k].ico,SKILL_META[k].color)).join('');
+  const right=VOC_ORDER.map(k=>skillRow(k,state.vocational[k],SKILL_META[k].ico,SKILL_META[k].color)).join('');
+  return `<div class="pp-head"><h3>Skills</h3><span class="count">bar = XP to next level · cap Lv 100</span></div>
     <div class="skill-cols">
       <div class="skill-col"><h4>Personal</h4>${left}</div>
       <div class="skill-col"><h4>Vocational</h4>${right}</div>
     </div>`;
 }
 function panelNeeds(){
-  const rows=NEEDS_ORDER.map(k=>{const m=NEED_META[k];return statRow(k,state.needs[k],m.ico,m.color,{baseline:m.baseline,note:m.note});}).join('');
-  return `<div class="pp-head"><h3>Needs</h3><span class="count">drift toward baseline · 0–100</span></div>
-    <p class="section-label">Managed, not maximized · white tick = baseline</p>${rows}`;
+  const rows=NEEDS_ORDER.map(k=>{const m=NEED_META[k];return statRow(k,state.needs[k],m.ico,m.color,{note:m.note});}).join('');
+  return `<div class="pp-head"><h3>Needs</h3><span class="count">resources · 0–100</span></div>
+    <p class="section-label">Spend and refill — no XP curve</p>${rows}`;
 }
 function resTile(l,i,v,c){return `<div class="res"><div class="r-top">${i} ${l}</div><div class="r-val" style="color:${c}">${v}</div></div>`;}
 function panelResources(){
   const aff=NPC.map(n=>`<div class="aff-row"><div class="aff-face">${n.emj}</div><div class="aff-name">${n.k}</div>
     <div class="bar"><span style="width:${state.affection[n.k]}%"></span></div><div class="aff-pct">${Math.round(state.affection[n.k])}% ♥</div></div>`).join('');
   return `<div class="pp-head"><h3>Resources</h3><span class="count">live-tracking</span></div>
-    <div class="resources">${resTile('Money','💰','$'+state.money.toLocaleString(),'var(--gold)')}${resTile('Day','📅','Day '+state.day,'var(--accent-2)')}${resTile('Last Visited','📍',state.location,'var(--good)')}</div>
+    <div class="resources">${resTile('Money','💰','$'+state.money.toLocaleString(),'var(--gold)')}${resTile('Day','📅','Day '+state.day,'var(--accent-2)')}${resTile('Time','🕒',fmtTime(state.timeMin),'var(--energy)')}${resTile('Location','📍',state.location,'var(--good)')}</div>
     <p class="section-label">Affection — accrues via visits toward date unlocks</p>${aff}`;
 }
-const gifts=[{emj:'🌹',nm:'Rose',qty:4},{emj:'🍫',nm:'Chocolate',qty:7},{emj:'💍',nm:'Ring',qty:1},{emj:'🧸',nm:'Plushie',qty:2},{emj:'📓',nm:'Journal',qty:1},{emj:'🎫',nm:'Movie Ticket',qty:3}];
-const wardrobe=[{emj:'👕',nm:'Casual',qty:'★'},{emj:'🧥',nm:'Jacket',qty:'★'},{emj:'🤵',nm:'Formal',qty:'🔒'},{emj:'🏖️',nm:'Beach',qty:'🔒'}];
-const keyi=[{emj:'🔑',nm:'Apt Key',qty:1},{emj:'📱',nm:'Phone',qty:1},{emj:'🗺️',nm:'City Pass',qty:1}];
-const consum=[{emj:'☕',nm:'Coffee',qty:5},{emj:'🍰',nm:'Cake',qty:2},{emj:'🥤',nm:'Energy Drink',qty:6}];
 function panelGrid(t,items){return `<div class="pp-head"><h3>${t}</h3><span class="count">${items.length} items</span></div>
   <div class="grid">${items.map(i=>`<div class="item"><div class="emj">${i.emj}</div><div class="nm">${i.nm}</div><div class="qty">×${i.qty}</div></div>`).join('')}</div>`;}
 const panels={skills:panelSkills,needs:panelNeeds,resources:panelResources,
-  gifts:()=>panelGrid('Gifts',gifts),wardrobe:()=>panelGrid('Wardrobe',wardrobe),key:()=>panelGrid('Key Items',keyi),consumables:()=>panelGrid('Consumables',consum)};
+  gifts:()=>panelGrid('Gifts',state.inventory.gifts),wardrobe:()=>panelGrid('Wardrobe',state.inventory.wardrobe),key:()=>panelGrid('Key Items',state.inventory.key),consumables:()=>panelGrid('Consumables',state.inventory.consumables)};
 let activeCat='skills';
 const panelEl=document.getElementById('panel');
 function render(cat){activeCat=cat;panelEl.innerHTML=panels[cat]();}
@@ -409,16 +486,104 @@ function refresh(){panelEl.innerHTML=panels[activeCat]();}
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
   document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');render(t.dataset.cat);}));
 document.querySelectorAll('.navbtns .btn').forEach(b=>b.addEventListener('click',()=>{
-  document.querySelectorAll('.navbtns .btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');}));
+  if(b.hasAttribute('data-action'))return;
+  document.querySelectorAll('.navbtns .btn:not([data-action])').forEach(x=>x.classList.remove('active'));b.classList.add('active');}));
 
-/* ================= POPUP ================= */
+/* ================= MODAL ================= */
 const modal=document.getElementById('modal');
-function showPopup(title,msg){document.getElementById('modalTitle').textContent=title;document.getElementById('modalMsg').textContent=msg;modal.classList.add('show');}
-document.getElementById('modalOk').addEventListener('click',()=>modal.classList.remove('show'));
+const modalButtons=document.getElementById('modalButtons');
+function showModal({title,msg,buttons}){
+  document.getElementById('modalTitle').textContent=title;
+  document.getElementById('modalMsg').textContent=msg;
+  modalButtons.innerHTML='';
+  (buttons&&buttons.length?buttons:[{label:'Got it'}]).forEach(b=>{
+    const el=document.createElement('button');el.className='modal-btn '+(b.variant||'primary');el.textContent=b.label;
+    el.addEventListener('click',()=>{modal.classList.remove('show');if(b.onClick)b.onClick();});
+    modalButtons.appendChild(el);
+  });
+  modal.classList.add('show');
+}
+function showPopup(title,msg){showModal({title,msg});}
 modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('show');});
 
+/* ================= SAVE / LOAD ================= */
+const SAVE_KEY='idleHearts.save';
+const SAVE_VERSION=2;
+let lastSaved=null;
+function storageOK(){try{localStorage.setItem('__t','1');localStorage.removeItem('__t');return true;}catch(e){return false;}}
+const CAN_SAVE=storageOK();
+function serialize(){return JSON.stringify({v:SAVE_VERSION,savedAt:Date.now(),state,gameDateISO:gameDate.toISOString(),selectedId,activeCat});}
+function saveGame(){
+  if(!CAN_SAVE){showModal({title:'Saving Unavailable',msg:'This preview blocks local storage, so progress can’t be saved here. On your hosted GitHub page saving works normally.'});return;}
+  try{localStorage.setItem(SAVE_KEY,serialize());lastSaved=Date.now();toast('Game saved ✓');}
+  catch(e){showModal({title:'Save Failed',msg:String((e&&e.message)||e)});}
+}
+function hasSave(){try{return CAN_SAVE&&!!localStorage.getItem(SAVE_KEY);}catch(e){return false;}}
+function sanitizeSkills(def,saved){
+  const out={};
+  for(const k in def){
+    const v=saved&&saved[k];
+    if(v&&typeof v==='object'&&typeof v.lvl==='number')out[k]={lvl:Math.max(0,Math.min(100,Math.round(v.lvl))),xp:Math.max(0,v.xp||0)};
+    else if(typeof v==='number')out[k]={lvl:Math.max(0,Math.min(100,Math.round(v))),xp:0};
+    else out[k]={lvl:0,xp:0};
+  }
+  return out;
+}
+function loadGame(){
+  if(!hasSave())return false;
+  try{const d=JSON.parse(localStorage.getItem(SAVE_KEY));
+    const st=d&&d.state; if(!st)return false;
+    const def=defaultState();
+    state.name=st.name||def.name;
+    state.needs=Object.assign({},def.needs,st.needs);
+    state.personal=sanitizeSkills(def.personal,st.personal);
+    state.vocational=sanitizeSkills(def.vocational,st.vocational);
+    state.affection=Object.assign({},def.affection,st.affection);
+    state.inventory=Object.assign({},def.inventory,st.inventory);
+    state.money=(typeof st.money==='number')?st.money:def.money;
+    state.day=st.day||def.day;
+    state.location=st.location||def.location;
+    state.timeMin=(typeof st.timeMin==='number')?st.timeMin:def.timeMin;
+    if(d.gameDateISO)gameDate=new Date(d.gameDateISO);
+    if(d.selectedId&&byId(d.selectedId))selectedId=d.selectedId;
+    if(d.activeCat)activeCat=d.activeCat;
+    lastSaved=d.savedAt||null;
+    return true;
+  }catch(e){return false;}
+}
+function resetGame(){
+  Object.assign(state,defaultState());gameDate=DEFAULT_DATE();selectedId='Home';activeCat='skills';
+  try{localStorage.removeItem(SAVE_KEY);}catch(e){}
+  lastSaved=null;
+  syncTabs();buildMap();updateClock();updateActionBar();render('skills');
+  toast('New game started');
+}
+function syncTabs(){document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.cat===activeCat));}
+function fmtAgo(ts){if(!ts)return'never';const s=Math.max(0,Math.round((Date.now()-ts)/1000));
+  if(s<60)return s+'s ago';const m=Math.round(s/60);if(m<60)return m+'m ago';return Math.round(m/60)+'h ago';}
+
+/* toast */
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove('show'),1600);}
+
+/* settings modal */
+function openSettings(){
+  const buttons=[{label:'Save Game',variant:'primary',onClick:saveGame}];
+  if(hasSave())buttons.push({label:'Load Last Save',variant:'ghost',onClick:()=>{if(loadGame()){syncTabs();buildMap();updateClock();updateActionBar();render(activeCat);toast('Save loaded');}}});
+  buttons.push({label:'Reset Game',variant:'danger',onClick:confirmReset});
+  buttons.push({label:'Close',variant:'ghost'});
+  const info=CAN_SAVE?`Player: ${state.name} · manual saves only. Last saved: ${fmtAgo(lastSaved)}. "Load Last Save" restores exactly to that point.`:`Player: ${state.name} · local storage is blocked in this preview — saving works on your hosted page.`;
+  showModal({title:'Save / Load',msg:info,buttons});
+}
+function confirmReset(){
+  showModal({title:'Reset Game?',msg:'This wipes your saved progress and starts a new game from Day 1. This cannot be undone.',
+    buttons:[{label:'Yes, wipe it',variant:'danger',onClick:resetGame},{label:'Cancel',variant:'ghost'}]});
+}
+document.getElementById('btnSettings').addEventListener('click',openSettings);
+
 /* ================= INIT ================= */
-buildMap();updateClock();updateActionBar();render('skills');
+loadGame();
+syncTabs();buildMap();updateClock();updateActionBar();render(activeCat);
 </script>
 </body>
 </html>
