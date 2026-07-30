@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<!-- Idle Hearts — Build V07.2 -->
+<!-- Idle Hearts — Build V08.3 -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Idle Hearts — Build V07.2</title>
+<title>Idle Hearts — Build V08.3</title>
 <style>
   :root{
     --bg:#14101c; --panel:#1e1830; --panel-2:#261e3d;
@@ -19,16 +19,16 @@
   body{font-family:"Segoe UI",system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);
     overflow:hidden;display:flex;flex-direction:column;}
 
-  .app{flex:1;min-height:0;display:grid;grid-template-rows:1fr 4fr auto 4fr;gap:8px;padding:8px;}
+  .app{flex:1;min-height:0;display:grid;grid-template-rows:auto 4fr auto 4fr;gap:8px;padding:8px;}
   .section{background:var(--panel);border:1px solid var(--edge-soft);border-radius:14px;position:relative;overflow:hidden;min-height:0;}
   .tag{position:absolute;top:6px;right:10px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);opacity:.55;pointer-events:none;z-index:4;}
 
   /* MENU BAR */
-  .menubar{display:flex;align-items:center;gap:10px;padding:0 14px;background:linear-gradient(180deg,#241c3a,#1b1530);}
+  .menubar{display:flex;align-items:center;gap:14px;padding:8px 14px;background:linear-gradient(180deg,#241c3a,#1b1530);}
   .brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px;padding-right:12px;margin-right:4px;border-right:1px solid var(--edge);white-space:nowrap;}
   .brand .heart{color:var(--accent)}
-  .navbtns{display:flex;gap:8px;flex-wrap:wrap;flex:1}
-  .btn{background:var(--panel-2);border:1px solid var(--edge);color:var(--text);padding:8px 14px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;transition:.15s;display:flex;align-items:center;gap:6px;}
+  .navbtns{display:grid;grid-template-columns:repeat(3,auto);grid-auto-flow:row;gap:6px;}
+  .btn{background:var(--panel-2);border:1px solid var(--edge);color:var(--text);padding:6px 10px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;transition:.15s;display:flex;align-items:center;gap:5px;white-space:nowrap;}
   .btn:hover{border-color:var(--accent);background:#2e2447;transform:translateY(-1px)}
   .btn.active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset;color:#fff}
   .clk-money{font-size:14px;font-weight:800;color:var(--gold);font-variant-numeric:tabular-nums}
@@ -58,10 +58,14 @@
   .node.sel circle{stroke:var(--accent);fill:#3a2340;filter:drop-shadow(0 0 8px rgba(255,92,138,.55))}
   .node.locked circle{stroke:var(--edge-soft);opacity:.7}
   .node.closed circle{opacity:.4}
-  .node.closed text{opacity:.5}
+  .node.closed text:not(.mappin):not(.csign-txt){opacity:.5}
   .node text{fill:var(--text);font-size:15px;font-weight:600;text-anchor:middle;pointer-events:none}
   .node .ico{font-size:22px}
   .node .lock{fill:var(--muted);font-size:11px;font-weight:600}
+  .node .csign-bg{fill:#f5c518;stroke:#4a3600;stroke-width:2}
+  .node .csign-frame{fill:none;stroke:#4a3600;stroke-width:1.2}
+  .node .csign-txt{fill:#3a2a00;font-weight:800;letter-spacing:.5px;text-anchor:middle;dominant-baseline:central;pointer-events:none}
+  .node .mappin{font-size:16px;text-anchor:middle;dominant-baseline:central;filter:drop-shadow(0 1px 2px rgba(0,0,0,.6));pointer-events:none}
 
   /* ACTION BAR */
   .actionbar{grid-row:3;height:32px;margin:0 -8px;position:relative;overflow:visible;
@@ -168,17 +172,79 @@
   .toast{position:fixed;left:50%;bottom:34px;transform:translateX(-50%) translateY(12px);background:#2a1c3d;border:1px solid var(--accent);color:#fff;font-size:12px;font-weight:600;padding:8px 18px;border-radius:20px;opacity:0;pointer-events:none;transition:.25s;z-index:60;box-shadow:0 8px 24px rgba(0,0,0,.4)}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-  /* UI legend overlay (🖥 monitor button) */
-  .legend{position:fixed;inset:0;z-index:80;display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:#000;padding:22px;cursor:pointer;}
-  .legend.show{display:flex}
-  .lg-frame{width:min(920px,92vw);height:min(78vh,600px);display:grid;grid-template-rows:1fr 4fr auto 4fr;gap:10px;}
+  /* Needs meters (in the Menu Bar) */
+  .needsbar{display:flex;align-items:center;gap:16px;}
+  .need{display:flex;align-items:center;gap:6px}
+  .need-ico{font-size:14px;line-height:1}
+  .need-bar{width:44px;height:8px;border-radius:5px;background:#2a2140;overflow:hidden;position:relative}
+  .need-bar span{position:absolute;left:0;top:0;bottom:0;border-radius:5px;transition:width .4s}
+  .need-val{font-size:12px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums;width:22px;text-align:right}
+
+  /* Compendium (🖥 monitor button) */
+  .compendium{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;background:rgba(8,5,14,.75);backdrop-filter:blur(2px);}
+  .compendium.show{display:flex}
+  .comp-card{width:min(880px,94vw);height:min(80vh,620px);background:var(--panel);border:1px solid var(--gold);border-radius:14px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,.55);}
+  .comp-head{display:flex;align-items:center;gap:14px;padding:12px 16px;border-bottom:1px solid var(--edge);}
+  .comp-back{background:var(--panel-2);border:1px solid var(--edge);color:var(--text);font-weight:700;font-size:13px;padding:7px 14px;border-radius:8px;cursor:pointer}
+  .comp-back:hover{border-color:var(--gold)}
+  .comp-title{font-size:15px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--gold)}
+  .comp-body{flex:1;display:grid;grid-template-columns:180px 1fr;min-height:0}
+  .comp-nav{border-right:1px solid var(--edge);padding:12px 8px;display:flex;flex-direction:column;gap:4px;overflow-y:auto;background:linear-gradient(180deg,#221a37,#1a1430)}
+  .comp-entry{padding:10px 12px;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;color:var(--muted);border:1px solid transparent}
+  .comp-entry:hover{background:#2a2143;color:var(--text)}
+  .comp-entry.active{background:#2f2349;color:#fff;border-color:var(--gold)}
+  .comp-content{padding:18px 22px;overflow-y:auto}
+  .comp-content h3{color:var(--accent-2);font-size:16px;margin-bottom:10px}
+  .comp-content h4{color:var(--gold);font-size:12px;text-transform:uppercase;letter-spacing:.08em;margin:16px 0 6px}
+  .comp-content p{font-size:13px;line-height:1.6;color:var(--text);margin-bottom:10px}
+  .comp-content b{color:#fff}
+  /* UI-layout schematic (rendered inside the Compendium) */
+  .lg-frame{width:100%;height:min(58vh,420px);display:grid;grid-template-rows:1fr 4fr auto 4fr;gap:10px;}
   .lg-box{border:2px solid var(--gold);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;letter-spacing:.1em;text-transform:uppercase;font-size:13px;position:relative;}
   .lg-menu{justify-content:flex-start;padding:0 16px;}
   .lg-notif{position:absolute;right:10px;top:50%;transform:translateY(-50%);border:1px dashed var(--gold);border-radius:8px;padding:4px 10px;font-size:11px;color:var(--gold);}
   .lg-action{min-height:30px;}
   .lg-zone{position:relative;display:grid;grid-template-columns:1fr 4fr;gap:10px;}
   .lg-zone-label{position:absolute;top:6px;left:10px;font-size:10px;color:var(--gold);letter-spacing:.14em;z-index:1;}
-  .lg-hint{color:var(--gold);font-size:12px;letter-spacing:.12em;opacity:.85;}
+
+  /* Main Zone views (Menu Bar buttons swap these) */
+  .mv{position:absolute;inset:0}
+  .mv-body{position:absolute;inset:0;overflow:auto;padding:16px 22px}
+  .mv-title{font-size:18px;font-weight:800;margin-bottom:4px}
+  .mv-note{font-size:12px;color:var(--muted);margin-bottom:16px}
+  .mv-note b{color:var(--gold)}
+  .mv-h{font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent-2);margin:18px 0 8px}
+  .mv-btns{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+  .mv-btn{border:none;color:#fff;font-weight:700;font-size:13px;padding:10px 18px;border-radius:9px;cursor:pointer;transition:.15s}
+  .mv-btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+  .mv-btn.ghost{background:var(--panel-2);border:1px solid var(--edge);color:var(--text)}
+  .mv-btn.danger{background:#3a1420;border:1px solid var(--stress);color:#ffd0d0}
+  .mv-btn:hover{filter:brightness(1.12)}
+  .cv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+  .cv-card{display:flex;gap:12px;align-items:center;background:var(--panel-2);border:1px solid var(--edge-soft);border-radius:12px;padding:12px}
+  .cv-face{width:48px;height:48px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:26px;background:var(--panel);border:2px solid var(--edge)}
+  .cv-name{font-weight:700;font-size:14px}
+  .cv-spark{font-size:11px;color:var(--gold);margin-left:6px}
+  .cv-sub{font-size:11px;color:var(--muted);margin:2px 0 5px}
+  .cv-hearts{font-size:13px;color:var(--accent);letter-spacing:1px}
+  .cv-hearts span{color:var(--muted);font-size:11px;margin-left:4px}
+  .dv-list{display:flex;flex-direction:column;gap:8px}
+  .dv-card{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--panel-2);border:1px solid var(--edge-soft);border-radius:10px;padding:12px 14px}
+  .dv-card.locked{opacity:.6}
+  .dv-t{font-weight:700;font-size:13px}
+  .dv-req{font-size:11px;color:var(--muted);margin-top:2px}
+  .dv-tag{font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;background:var(--panel);border:1px solid var(--edge);white-space:nowrap}
+  .dv-card.ok .dv-tag{color:var(--good);border-color:var(--good)}
+  .jv-list,.jv-log{list-style:none;display:flex;flex-direction:column;gap:6px}
+  .jv-list li,.jv-log li{font-size:13px;color:var(--text);background:var(--panel-2);border:1px solid var(--edge-soft);border-radius:8px;padding:8px 12px}
+  .jv-log li{color:var(--muted)}
+  .sv-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+  .sv-card{background:var(--panel-2);border:1px solid var(--edge-soft);border-radius:12px;padding:14px;text-align:center}
+  .sv-emj{font-size:30px}
+  .sv-nm{font-weight:700;font-size:13px;margin-top:6px}
+  .sv-desc{font-size:11px;color:var(--muted);margin:4px 0 10px}
+  .sv-buy{background:var(--panel);border:1px solid var(--gold);color:var(--gold);font-weight:700;font-size:13px;padding:6px 14px;border-radius:8px;cursor:pointer}
+  .sv-buy:hover{background:#2e2447}
 </style>
 </head>
 <body>
@@ -187,13 +253,14 @@
   <div class="section menubar">
     <div class="brand"><span class="heart">♥</span> Idle Hearts</div>
     <div class="navbtns">
-      <button class="btn active">🗺️ Map</button>
-      <button class="btn">💑 Characters</button>
-      <button class="btn">🌹 Dates</button>
-      <button class="btn">📖 Journal</button>
-      <button class="btn">🛍️ Shop</button>
-      <button class="btn" id="btnSettings" data-action>⚙️ Settings</button>
+      <button class="btn active" data-view="map">🗺️ Map</button>
+      <button class="btn" data-view="characters">💑 Characters</button>
+      <button class="btn" data-view="dates">🌹 Dates</button>
+      <button class="btn" data-view="journal">📖 Journal</button>
+      <button class="btn" data-view="shop">🛍️ Shop</button>
+      <button class="btn" id="btnSettings" data-view="settings">⚙️ Settings</button>
     </div>
+    <div class="needsbar" id="needsBar"></div>
     <div class="notif">
       <div class="clk-row">
         <span class="day" id="clkDay">Day 1</span>
@@ -202,7 +269,7 @@
       </div>
       <div class="notif-bottom">
         <div class="notif-left">
-          <button class="notif-btn" id="btnLegend" title="Show UI layout">🖥️</button>
+          <button class="notif-btn" id="btnLegend" title="Compendium">🖥️</button>
           <span class="notif-loc" id="notifLoc">📍 Home</span>
         </div>
         <span class="clk-money" id="clkMoney">💰 $500</span>
@@ -211,8 +278,15 @@
   </div>
 
   <div class="section mainzone">
-    <div class="map-head"><h2>City Map</h2><span class="sub">Click a place, then Visit</span></div>
-    <div class="mapwrap" id="mapwrap"></div>
+    <div class="mv mv-map" data-view="map">
+      <div class="map-head"><h2>City Map</h2><span class="sub">Click a place, then Visit</span></div>
+      <div class="mapwrap" id="mapwrap"></div>
+    </div>
+    <div class="mv" data-view="characters" hidden><div class="mv-body" id="mvCharacters"></div></div>
+    <div class="mv" data-view="dates" hidden><div class="mv-body" id="mvDates"></div></div>
+    <div class="mv" data-view="journal" hidden><div class="mv-body" id="mvJournal"></div></div>
+    <div class="mv" data-view="shop" hidden><div class="mv-body" id="mvShop"></div></div>
+    <div class="mv" data-view="settings" hidden><div class="mv-body" id="mvSettings"></div></div>
   </div>
 
   <div class="actionbar" id="actionbar">
@@ -228,14 +302,13 @@
       <div class="pm-title">Player Menu</div>
       <div class="pm-list" id="pmList">
         <div class="tab active" data-cat="skills"><span class="ti">💪</span> Skills</div>
-        <div class="tab" data-cat="needs"><span class="ti">💗</span> Needs</div>
         <div class="tab" data-cat="resources"><span class="ti">💕</span> Relationships</div>
         <div class="tab" data-cat="gifts"><span class="ti">🎁</span> Gifts</div>
         <div class="tab" data-cat="wardrobe"><span class="ti">👗</span> Wardrobe</div>
         <div class="tab" data-cat="key"><span class="ti">🔑</span> Key Items</div>
         <div class="tab" data-cat="consumables"><span class="ti">🍰</span> Consumables</div>
       </div>
-      <div class="pm-hint">7 submenus · scroll for 6–7</div>
+      <div class="pm-hint">6 submenus · scroll for more</div>
     </div>
     <div class="playerpanel" id="panel"></div>
   </div>
@@ -251,18 +324,18 @@
   </radialGradient>
 </defs></svg>
 
-<!-- UI legend overlay -->
-<div class="legend" id="legend">
-  <div class="lg-frame">
-    <div class="lg-box lg-menu">Menu Bar<span class="lg-notif">Notification Area</span></div>
-    <div class="lg-box lg-main">Main Zone</div>
-    <div class="lg-box lg-action">Action Bar</div>
-    <div class="lg-zone"><span class="lg-zone-label">Player Zone</span>
-      <div class="lg-box lg-pm">Player Menu</div>
-      <div class="lg-box lg-pp">Player Panel</div>
+<!-- Compendium (🖥) -->
+<div class="compendium" id="compendium">
+  <div class="comp-card">
+    <div class="comp-head">
+      <button class="comp-back" id="compBack">← Back</button>
+      <div class="comp-title">📖 Compendium</div>
+    </div>
+    <div class="comp-body">
+      <div class="comp-nav" id="compNav"></div>
+      <div class="comp-content" id="compContent"></div>
     </div>
   </div>
-  <div class="lg-hint">click anywhere to close</div>
 </div>
 
 <!-- popup / modal -->
@@ -273,12 +346,12 @@
 </div></div>
 
 <script>
-const BUILD="V07.2";
+const BUILD="V08.3";
 document.getElementById('buildStamp').textContent="Idle Hearts Build "+BUILD;
 
 /* ================= GAME STATE ================= */
 function defaultState(){return{
-  name:'Andy',
+  name:'User',
   needs:{Energy:100,Happiness:100,Stress:0},
   personal:{Fitness:{lvl:0,xp:0},Charm:{lvl:0,xp:0},Intelligence:{lvl:0,xp:0}},
   vocational:{Business:{lvl:0,xp:0},Hospitality:{lvl:0,xp:0},Cooking:{lvl:0,xp:0},Style:{lvl:0,xp:0}},
@@ -337,15 +410,30 @@ const NEEDS_ORDER=['Energy','Happiness','Stress'];
 /* ================= MAP ================= */
 function isLocked(loc){return loc.unlockDay && state.day < loc.unlockDay;}
 function isOpenNow(loc){return loc.always || (state.timeMin>=loc.open && state.timeMin<loc.close);}
+function closedSign(loc){
+  const w=loc.r*1.5, h=loc.r*0.86;
+  const x=(loc.x-w/2).toFixed(1), y=(loc.y-h/2).toFixed(1);
+  const fs=(h*0.378).toFixed(1);
+  return `<rect class="csign-bg" x="${x}" y="${y}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" rx="6"/>`
+       + `<rect class="csign-frame" x="${(loc.x-w/2+3).toFixed(1)}" y="${(loc.y-h/2+3).toFixed(1)}" width="${(w-6).toFixed(1)}" height="${(h-6).toFixed(1)}" rx="4"/>`
+       + `<text class="csign-txt" x="${loc.x}" y="${loc.y}" style="font-size:${fs}px">CLOSED</text>`;
+}
 function buildMap(){
   const links=LINKS.map(([a,b])=>{const A=byId(a),B=byId(b);
     return `<line class="link" x1="${A.x}" y1="${A.y}" x2="${B.x}" y2="${B.y}"/>`;}).join('');
   const nodes=LOCATIONS.map(loc=>{
-    const cls='node'+(loc.id===selectedId?' sel':'')+(isLocked(loc)?' locked':((!loc.always&&!isOpenNow(loc))?' closed':''));
-    const inner=isLocked(loc)
+    const dayLocked=isLocked(loc);
+    const timeClosed=!dayLocked && !loc.always && !isOpenNow(loc);
+    const cls='node'+(loc.id===selectedId?' sel':'')+(dayLocked?' locked':(timeClosed?' closed':''));
+    const inner=dayLocked
       ? `<text class="ico" x="${loc.x}" y="${loc.y-2}">${loc.icon}</text><text class="lock" x="${loc.x}" y="${loc.y+20}">🔒 Day ${loc.unlockDay}</text>`
+      : timeClosed
+      ? closedSign(loc)
       : `<text class="ico" x="${loc.x}" y="${loc.y-4}">${loc.icon}</text><text x="${loc.x}" y="${loc.y+22}">${loc.name}</text>`;
-    return `<g class="${cls}" data-id="${loc.id}"><circle cx="${loc.x}" cy="${loc.y}" r="${loc.r}"/>${inner}</g>`;
+    const pin=(loc.name===state.location)
+      ? `<text class="mappin" x="${(loc.x+loc.r*0.82).toFixed(1)}" y="${loc.y-2}">📍</text>`
+      : '';
+    return `<g class="${cls}" data-id="${loc.id}"><circle cx="${loc.x}" cy="${loc.y}" r="${loc.r}"/>${inner}${pin}</g>`;
   }).join('');
   document.getElementById('mapwrap').innerHTML=
     `<svg class="mapsvg" viewBox="0 0 1000 460" preserveAspectRatio="xMidYMid meet"><g>${links}</g>${nodes}</svg>`;
@@ -405,7 +493,7 @@ function affordProblem(loc){
 function updateActionBar(){
   const loc=byId(selectedId);
   const prob=affordProblem(loc);
-  const warn=prob?` <span class="warn">⚠ ${prob.t}</span>`:'';
+  const warn=(prob&&prob.t!=='Closed')?` <span class="warn">⚠ ${prob.t}</span>`:'';
   abLoc.innerHTML=`<b>${loc.icon} ${loc.name}</b> <span class="d">· ${summaryOf(loc)||'rest'}</span>${warn}`;
   abVisit.classList.toggle('blocked',!!prob);
 }
@@ -490,6 +578,13 @@ function updateClock(){
   document.getElementById('clkTime').textContent=fmtTime(state.timeMin);
   document.getElementById('clkMoney').textContent='💰 $'+state.money.toLocaleString();
   document.getElementById('notifLoc').textContent='📍 '+state.location;
+  updateNeedsBar();
+}
+function updateNeedsBar(){
+  document.getElementById('needsBar').innerHTML=NEEDS_ORDER.map(k=>{
+    const m=NEED_META[k], v=Math.round(state.needs[k]);
+    return `<div class="need" title="${k}"><span class="need-ico">${m.ico}</span><div class="need-bar"><span style="width:${v}%;background:${m.color}"></span></div><span class="need-val">${v}</span></div>`;
+  }).join('');
 }
 
 /* ================= PANELS ================= */
@@ -541,7 +636,7 @@ function panelResources(){
 }
 function panelGrid(t,items){return `<div class="pp-head"><span class="count">${items.length} items</span></div>
   <div class="grid">${items.map(i=>`<div class="item" data-nm="${i.nm}"><div class="emj">${i.emj}</div><div class="nm">${i.nm}</div><div class="qty">×${i.qty}</div></div>`).join('')}</div>`;}
-const panels={skills:panelSkills,needs:panelNeeds,resources:panelResources,
+const panels={skills:panelSkills,resources:panelResources,
   gifts:()=>panelGrid('Gifts',state.inventory.gifts),wardrobe:()=>panelGrid('Wardrobe',state.inventory.wardrobe),key:()=>panelGrid('Key Items',state.inventory.key),consumables:()=>panelGrid('Consumables',state.inventory.consumables)};
 let activeCat='skills';
 const panelEl=document.getElementById('panel');
@@ -568,9 +663,6 @@ panelEl.addEventListener('click',e=>{
   const item=e.target.closest('.item');
   if(item && activeCat==='gifts' && item.dataset.nm==='Rose') openGivePopup();
 });
-document.querySelectorAll('.navbtns .btn').forEach(b=>b.addEventListener('click',()=>{
-  if(b.hasAttribute('data-action'))return;
-  document.querySelectorAll('.navbtns .btn:not([data-action])').forEach(x=>x.classList.remove('active'));b.classList.add('active');}));
 
 /* ================= MODAL ================= */
 const modal=document.getElementById('modal');
@@ -642,6 +734,7 @@ function resetGame(){
   try{localStorage.removeItem(SAVE_KEY);}catch(e){}
   lastSaved=null;
   syncTabs();buildMap();updateClock();updateActionBar();render('skills');
+  renderMainView(mainView);
   toast('New game started');
 }
 function syncTabs(){document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.cat===activeCat));}
@@ -665,10 +758,48 @@ function confirmReset(){
   showModal({title:'Reset Game?',msg:'This wipes your saved progress and starts a new game from Day 1. This cannot be undone.',
     buttons:[{label:'Yes, wipe it',variant:'danger',onClick:resetGame},{label:'Cancel',variant:'ghost'}]});
 }
-document.getElementById('btnSettings').addEventListener('click',openSettings);
-const legendEl=document.getElementById('legend');
-document.getElementById('btnLegend').addEventListener('click',()=>legendEl.classList.add('show'));
-legendEl.addEventListener('click',()=>legendEl.classList.remove('show'));
+/* ================= COMPENDIUM ================= */
+function legendSchematicHTML(){
+  return `<div class="lg-frame">
+    <div class="lg-box lg-menu">Menu Bar<span class="lg-notif">Notification Area</span></div>
+    <div class="lg-box lg-main">Main Zone</div>
+    <div class="lg-box lg-action">Action Bar</div>
+    <div class="lg-zone"><span class="lg-zone-label">Player Zone</span>
+      <div class="lg-box lg-pm">Player Menu</div>
+      <div class="lg-box lg-pp">Player Panel</div>
+    </div>
+  </div>`;
+}
+function needsCompendiumHTML(){
+  return `<h3>Needs</h3>
+    <p>Needs are 0–100 resources shown in the Menu Bar. Unlike Skills, they're spent and refilled, not levelled.</p>
+    <h4>⚡ Energy</h4><p>Drains with every action away from Home. A full night's sleep at Home refills it to 100. It also trickles back on its own while idle — but only up to 50%, so you still need to sleep for a full tank.</p>
+    <h4>😊 Happiness</h4><p>Raised by fun and rest, lowered by stress. (Planned: high Happiness will boost your gains.)</p>
+    <h4>🔥 Stress</h4><p>Piled on by work and school, relieved by the Park and rest. (Planned: high Stress will penalize your gains.)</p>`;
+}
+function skillsCompendiumHTML(){
+  return `<h3>Skills</h3>
+    <p>Every skill runs from <b>Level 0 to 100</b>, earned through XP. The bar shows progress to the next level; the number beside it is the level.</p>
+    <h4>The XP curve</h4><p>Levelling gets harder as you climb — the first level costs 10 XP and the last about 100, on a smooth logarithmic curve. Skills never decay.</p>
+    <h4>Personal skills</h4><p>Fitness, Charm, Intelligence — built at places like the Gym, Park, and School.</p>
+    <h4>Vocational skills</h4><p>Business, Hospitality, Cooking, Style — built by working jobs. These double as gates: reaching a skill level can unlock a matching date or scene.</p>`;
+}
+const COMPENDIUM=[
+  {id:'ui',title:'🖥 UI Layout',html:legendSchematicHTML},
+  {id:'needs',title:'⚡ Needs',html:needsCompendiumHTML},
+  {id:'skills',title:'💪 Skills',html:skillsCompendiumHTML},
+];
+let compActive='ui';
+function renderCompendium(){
+  document.getElementById('compNav').innerHTML=COMPENDIUM.map(e=>`<div class="comp-entry${e.id===compActive?' active':''}" data-comp="${e.id}">${e.title}</div>`).join('');
+  const entry=COMPENDIUM.find(e=>e.id===compActive)||COMPENDIUM[0];
+  document.getElementById('compContent').innerHTML=entry.html();
+}
+const compEl=document.getElementById('compendium');
+document.getElementById('btnLegend').addEventListener('click',()=>{compEl.classList.add('show');renderCompendium();});
+document.getElementById('compBack').addEventListener('click',()=>compEl.classList.remove('show'));
+compEl.addEventListener('click',e=>{if(e.target===compEl)compEl.classList.remove('show');});
+document.getElementById('compNav').addEventListener('click',e=>{const b=e.target.closest('.comp-entry');if(b){compActive=b.dataset.comp;renderCompendium();}});
 
 /* ================= IDLE ENGINE (live + offline, timestamp deltas) ================= */
 const GIRL_LOC={Aiko:'School',Rina:'Gym',Mei:'Café',Yuki:'Mall'};   // where each girl idles
@@ -700,7 +831,8 @@ function liveTick(){
   const now=Date.now(), dt=(now-state.lastSeen)/1000;
   if(dt<=0)return;
   applyIdle(dt); state.lastSeen=now;
-  if(activeCat==='resources'||activeCat==='needs') refresh();
+  updateNeedsBar();
+  if(activeCat==='resources') refresh();
 }
 function fmtDur(sec){const h=Math.floor(sec/3600),m=Math.floor((sec%3600)/60);return (h?h+'h ':'')+m+'m';}
 function showAwaySummary(dt,gains){
@@ -710,14 +842,79 @@ function showAwaySummary(dt,gains){
   showModal({title:'While You Were Away 💤',msg:`You were away ${fmtDur(dt)}. `+(parts.length?'Idle gains — '+parts.join(' · '):'Nothing accrued yet.'),buttons:[{label:'Welcome back',variant:'primary'}]});
 }
 
+/* ================= MAIN ZONE VIEWS (Menu Bar buttons swap these) ================= */
+let mainView='map';
+function charactersViewHTML(){
+  const cards=NPC.map(n=>{
+    const v=state.affection[n.k]||0, hearts=Math.min(10,Math.floor(v/100));
+    const sp=(state.spark&&state.spark[n.k]>0);
+    return `<div class="cv-card"><div class="cv-face">${n.emj}</div><div class="cv-info">
+      <div class="cv-name">${n.k}${sp?' <span class="cv-spark">✦ spark</span>':''}</div>
+      <div class="cv-sub">Usually at ${GIRL_LOC[n.k]}</div>
+      <div class="cv-hearts">${'♥'.repeat(hearts)}${'♡'.repeat(10-hearts)} <span>${hearts}/10</span></div>
+    </div></div>`;
+  }).join('');
+  return `<div class="mv-title">Characters</div><p class="mv-note">Your four love interests. Full profiles & bios coming — mock-up.</p><div class="cv-grid">${cards}</div>`;
+}
+function datesViewHTML(){
+  const dates=[
+    {t:'Coffee with Mei',req:'♥1 with Mei',ok:true},
+    {t:'Gym session with Rina',req:'♥1 with Rina',ok:true},
+    {t:'Study date — Aiko',req:'♥2 with Aiko · Intelligence Lv 10',ok:false},
+    {t:'Cook her dinner',req:'♥3 · Cooking Lv 40',ok:false},
+    {t:'Mall trip — Yuki',req:'♥2 with Yuki · Day 5+',ok:false},
+  ];
+  return `<div class="mv-title">Dates</div><p class="mv-note">Unlock dates by raising hearts and skills. Scenes coming — mock-up.</p>
+  <div class="dv-list">${dates.map(d=>`<div class="dv-card ${d.ok?'ok':'locked'}"><div><div class="dv-t">${d.ok?'🌹':'🔒'} ${d.t}</div><div class="dv-req">${d.req}</div></div><span class="dv-tag">${d.ok?'Available':'Locked'}</span></div>`).join('')}</div>`;
+}
+function journalViewHTML(){
+  return `<div class="mv-title">Journal</div><p class="mv-note">Your story so far & current goals — mock-up.</p>
+  <div class="mv-h">Objectives</div>
+  <ul class="jv-list"><li>◻ Reach ♥1 with any girl</li><li>◻ Earn your first $1,000</li><li>◻ Raise a skill to Level 10</li><li>◻ Give a girl a Rose</li></ul>
+  <div class="mv-h">Recent</div>
+  <ul class="jv-log"><li>Day 1 — A new life begins in the city.</li><li>Tip: visit a girl's usual spot to grow closer.</li></ul>`;
+}
+function shopViewHTML(){
+  const items=[{emj:'🌹',nm:'Rose',price:50,desc:"Lights a girl's spark"},{emj:'🍫',nm:'Chocolate',price:80,desc:'A sweet gift'},{emj:'💍',nm:'Ring',price:2000,desc:'A serious gesture'},{emj:'🎫',nm:'Movie Ticket',price:120,desc:'For a date'}];
+  return `<div class="mv-title">Shop</div><p class="mv-note">Spend money on gifts & items. You have <b>$${state.money.toLocaleString()}</b>. Purchasing coming — mock-up.</p>
+  <div class="sv-grid">${items.map(i=>`<div class="sv-card"><div class="sv-emj">${i.emj}</div><div class="sv-nm">${i.nm}</div><div class="sv-desc">${i.desc}</div><button class="sv-buy" data-act="buySoon">$${i.price}</button></div>`).join('')}</div>`;
+}
+function settingsViewHTML(){
+  const info=CAN_SAVE?`Player: ${state.name} · manual saves only. Last saved: ${fmtAgo(lastSaved)}.`:'Local storage is blocked in this preview — saving works on your hosted page.';
+  const loadBtn=hasSave()?'<button class="mv-btn ghost" data-act="load">Load Last Save</button>':'';
+  return `<div class="mv-title">Settings</div><p class="mv-note">${info}</p>
+  <div class="mv-btns"><button class="mv-btn primary" data-act="save">💾 Save Game</button>${loadBtn}<button class="mv-btn danger" data-act="reset">Reset Game</button></div>
+  <div class="mv-h">About</div><p class="mv-note">Idle Hearts — build ${BUILD}. Open the 🖥 Compendium for how things work.</p>`;
+}
+function renderMainView(view){
+  const map={characters:['mvCharacters',charactersViewHTML],dates:['mvDates',datesViewHTML],journal:['mvJournal',journalViewHTML],shop:['mvShop',shopViewHTML],settings:['mvSettings',settingsViewHTML]};
+  if(map[view])document.getElementById(map[view][0]).innerHTML=map[view][1]();
+}
+function setMainView(view){
+  mainView=view;
+  document.querySelectorAll('.navbtns .btn').forEach(x=>x.classList.toggle('active',x.dataset.view===view));
+  document.querySelectorAll('.mainzone .mv').forEach(el=>{el.hidden=el.dataset.view!==view;});
+  renderMainView(view);
+}
+document.querySelectorAll('.navbtns .btn').forEach(b=>b.addEventListener('click',()=>setMainView(b.dataset.view)));
+document.querySelector('.mainzone').addEventListener('click',e=>{
+  const btn=e.target.closest('[data-act]'); if(!btn)return;
+  const act=btn.dataset.act;
+  if(act==='save'){saveGame();renderMainView('settings');}
+  else if(act==='load'){if(loadGame()){syncTabs();buildMap();updateClock();updateActionBar();render(activeCat);toast('Save loaded');renderMainView('settings');}}
+  else if(act==='reset'){confirmReset();}
+  else if(act==='buySoon'){toast('Shop coming soon ✨');}
+});
+
 /* ================= INIT ================= */
 loadGame();
+if(!panels[activeCat])activeCat='skills';   // Needs tab removed → guard old saves
 const _now=Date.now();
 if(!state.lastSeen)state.lastSeen=_now;                                                // fresh/legacy save → no offline jump
 const _awayDt=Math.max(0,Math.min((_now-state.lastSeen)/1000, pOff()*3600));           // cap offline at 8h
 const _awayGains=applyIdle(_awayDt);
 state.lastSeen=Date.now();
-syncTabs();buildMap();updateClock();updateActionBar();render(activeCat);
+syncTabs();buildMap();updateClock();updateActionBar();render(activeCat);setMainView('map');
 if(_awayDt>1 && _awayGains && (_awayGains.energy>0.5 || NPC.some(n=>(_awayGains.aff[n.k]||0)>0.5))) showAwaySummary(_awayDt,_awayGains);
 setInterval(liveTick,1000);
 </script>
