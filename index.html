@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<!-- Idle Hearts — Build V03.0 -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Idle Hearts — Build V03.0</title>
+<style>
+  :root{
+    --bg:#14101c; --panel:#1e1830; --panel-2:#261e3d;
+    --edge:#3a2f56; --edge-soft:#2c2442;
+    --text:#e9e3f5; --muted:#9c92b8;
+    --accent:#ff5c8a; --accent-2:#c86bff;
+    --gold:#ffcf5c; --energy:#5cd6ff; --good:#6be0a0; --warn:#ff8a5c; --stress:#ff6b6b;
+    --map-bg:#171226;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{font-family:"Segoe UI",system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);
+    overflow:hidden;display:flex;flex-direction:column;}
+
+  .app{flex:1;min-height:0;display:grid;grid-template-rows:1fr 4fr auto 4fr;gap:8px;padding:8px;}
+  .section{background:var(--panel);border:1px solid var(--edge-soft);border-radius:14px;position:relative;overflow:hidden;min-height:0;}
+  .tag{position:absolute;top:6px;right:10px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);opacity:.55;pointer-events:none;z-index:4;}
+
+  /* MENU BAR */
+  .menubar{display:flex;align-items:center;gap:10px;padding:0 14px;background:linear-gradient(180deg,#241c3a,#1b1530);}
+  .brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px;padding-right:12px;margin-right:4px;border-right:1px solid var(--edge);white-space:nowrap;}
+  .brand .heart{color:var(--accent)}
+  .navbtns{display:flex;gap:8px;flex-wrap:wrap;flex:1}
+  .btn{background:var(--panel-2);border:1px solid var(--edge);color:var(--text);padding:8px 14px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;transition:.15s;display:flex;align-items:center;gap:6px;}
+  .btn:hover{border-color:var(--accent);background:#2e2447;transform:translateY(-1px)}
+  .btn.active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset;color:#fff}
+  .clock{display:flex;align-items:center;gap:12px;padding-left:14px;margin-left:auto;border-left:1px solid var(--edge);white-space:nowrap;}
+  .clock .day{font-weight:700;font-size:14px}
+  .clock .date{font-size:13px;color:var(--text)}
+  .clock .time{color:var(--accent-2);font-variant-numeric:tabular-nums;font-size:14px;font-weight:600}
+
+  /* MAIN ZONE */
+  .mainzone{background:radial-gradient(circle at 50% 40%,#20193440,transparent 70%),var(--map-bg)}
+  .map-head{position:absolute;top:10px;left:16px;z-index:3;display:flex;align-items:baseline;gap:10px;}
+  .map-head h2{font-size:14px;letter-spacing:.05em}
+  .map-head .sub{font-size:12px;color:var(--muted)}
+  .mapwrap{position:absolute;inset:0}
+  svg.mapsvg{width:100%;height:100%;display:block}
+  .link{stroke:var(--edge);stroke-width:2.5;stroke-dasharray:5 6;opacity:.7}
+  .node{cursor:pointer}
+  .node circle{fill:var(--panel-2);stroke:var(--edge);stroke-width:2.5;transition:.18s;}
+  .node:hover circle{stroke:var(--accent);fill:#2c2247}
+  .node.sel circle{stroke:var(--accent);fill:#3a2340;filter:drop-shadow(0 0 8px rgba(255,92,138,.55))}
+  .node.locked circle{stroke:var(--edge-soft);opacity:.7}
+  .node text{fill:var(--text);font-size:15px;font-weight:600;text-anchor:middle;pointer-events:none}
+  .node .ico{font-size:22px}
+  .node .lock{fill:var(--muted);font-size:11px;font-weight:600}
+
+  /* ACTION BAR */
+  .actionbar{grid-row:3;height:32px;margin:0 -8px;position:relative;overflow:hidden;
+    background:linear-gradient(180deg,#221a36,#191330);border-top:1px solid var(--edge);border-bottom:1px solid var(--edge);display:flex;align-items:center;}
+  .ab-fill{position:absolute;left:0;top:0;bottom:0;width:0;overflow:hidden;z-index:1;
+    background:linear-gradient(90deg,#ff3d78,#ff5c8a 60%,#ff85a8);box-shadow:0 0 18px rgba(255,92,138,.5);transition:width 2.6s linear;}
+  .ab-fill.go{width:100%}
+  .ab-fill::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(115deg,rgba(255,255,255,.10) 0 14px,rgba(255,255,255,0) 14px 42px);animation:flow 1.1s linear infinite;}
+  .ab-fill::after{content:"";position:absolute;right:-2px;top:0;bottom:0;width:10px;background:linear-gradient(90deg,rgba(255,255,255,0),rgba(255,255,255,.55));filter:blur(1px);}
+  @keyframes flow{to{background-position:42px 0}}
+  .heart-layer{position:absolute;left:0;top:0;bottom:0;width:100vw;}
+  .fh{position:absolute;font-size:11px;color:#fff;opacity:.9;text-shadow:0 0 6px rgba(255,255,255,.6);animation:bob 1.8s ease-in-out infinite;}
+  @keyframes bob{0%,100%{transform:translateY(2px)}50%{transform:translateY(-4px)}}
+  .ab-content{position:relative;z-index:3;display:flex;align-items:center;width:100%;padding:0 16px;gap:12px;}
+  .ab-loc{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;text-shadow:0 1px 2px rgba(0,0,0,.55);}
+  .ab-loc b{color:#fff}
+  .ab-loc .d{color:var(--muted);font-weight:500}
+  .ab-loc .warn{color:var(--warn);font-weight:700}
+  .ab-visit{flex:none;background:#241631;border:1px solid var(--accent);color:#fff;font-size:12px;font-weight:700;padding:5px 16px;border-radius:7px;cursor:pointer;transition:.15s;white-space:nowrap;}
+  .ab-visit:hover:not(:disabled){background:#33203f;box-shadow:0 0 0 1px var(--accent) inset}
+  .ab-visit:disabled{opacity:.75;cursor:default}
+  .ab-visit.blocked{border-color:var(--warn);color:#ffd9c8}
+
+  /* PLAYER ZONE */
+  .bottom{display:grid;grid-template-columns:1fr 4fr;gap:0}
+  .playermenu{background:linear-gradient(180deg,#221a37,#1a1430);border-right:1px solid var(--edge);padding:12px 10px;display:flex;flex-direction:column;min-height:0;}
+  .pm-title{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:2px 6px 8px}
+  .pm-list{display:flex;flex-direction:column;gap:6px;overflow-y:auto;max-height:calc(5 * 46px + 4 * 6px);padding-right:4px;}
+  .pm-list::-webkit-scrollbar{width:6px}
+  .pm-list::-webkit-scrollbar-thumb{background:var(--edge);border-radius:3px}
+  .pm-list::-webkit-scrollbar-track{background:transparent}
+  .tab{display:flex;align-items:center;gap:10px;min-height:46px;padding:0 12px;border-radius:9px;cursor:pointer;font-size:13px;font-weight:600;color:var(--muted);border:1px solid transparent;transition:.15s;flex:none;}
+  .tab .ti{font-size:17px;width:20px;text-align:center}
+  .tab:hover{background:#2a2143;color:var(--text)}
+  .tab.active{background:#2f2349;color:#fff;border-color:var(--accent)}
+  .pm-hint{font-size:10px;color:var(--muted);opacity:.65;padding:8px 6px 2px;line-height:1.4}
+
+  .playerpanel{padding:14px 16px;overflow:auto;min-height:0}
+  .pp-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .pp-head h3{font-size:15px}
+  .pp-head .count{font-size:12px;color:var(--muted)}
+  .section-label{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 12px}
+
+  /* two-column skills */
+  .skill-cols{display:grid;grid-template-columns:1fr 1fr;gap:8px 26px}
+  .skill-col h4{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-2);margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--edge-soft);}
+
+  .stat{margin-bottom:13px}
+  .stat .s-top{display:flex;align-items:center;gap:9px;margin-bottom:5px}
+  .stat .s-ico{width:28px;height:28px;border-radius:8px;flex:none;display:flex;align-items:center;justify-content:center;font-size:15px;background:var(--panel-2);border:1px solid var(--edge);}
+  .stat .s-name{font-size:13px;font-weight:700;flex:1}
+  .stat .s-tier{font-size:10px;color:var(--muted)}
+  .stat .s-val{font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;width:56px;text-align:right}
+  .track{height:13px;border-radius:8px;background:#2a2140;overflow:hidden;position:relative}
+  .track span{position:absolute;left:0;top:0;bottom:0;border-radius:8px;transition:width .45s}
+  .track .baseline{position:absolute;top:-2px;bottom:-2px;width:2px;background:rgba(255,255,255,.55);}
+  .s-note{font-size:11px;color:var(--muted);margin-top:4px}
+
+  .resources{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+  .res{background:var(--panel-2);border:1px solid var(--edge-soft);border-radius:10px;padding:10px 14px;min-width:120px;flex:1;}
+  .res .r-top{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin-bottom:4px}
+  .res .r-val{font-size:18px;font-weight:700;font-variant-numeric:tabular-nums}
+
+  .aff-row{display:flex;align-items:center;gap:12px;margin-bottom:9px}
+  .aff-face{width:34px;height:34px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:18px;border:2px solid var(--edge);background:var(--panel-2);}
+  .aff-name{width:96px;font-size:13px;font-weight:600}
+  .bar{flex:1;height:12px;border-radius:8px;background:#2a2140;overflow:hidden;position:relative}
+  .bar span{position:absolute;left:0;top:0;bottom:0;border-radius:8px;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width .45s}
+  .aff-pct{width:52px;text-align:right;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px}
+  .item{background:var(--panel-2);border:1px solid var(--edge-soft);border-radius:10px;padding:12px 8px;text-align:center;cursor:pointer;transition:.15s;}
+  .item:hover{border-color:var(--accent-2);transform:translateY(-2px)}
+  .item .emj{font-size:26px}.item .nm{font-size:12px;margin-top:6px}.item .qty{font-size:11px;color:var(--muted);margin-top:2px}
+
+  /* MODAL popup */
+  .modal{position:fixed;inset:0;z-index:50;display:none;align-items:center;justify-content:center;background:rgba(8,5,14,.6);backdrop-filter:blur(2px);}
+  .modal.show{display:flex}
+  .modal-card{width:340px;max-width:86vw;background:var(--panel);border:1px solid var(--accent);border-radius:14px;padding:20px 22px;box-shadow:0 18px 50px rgba(0,0,0,.5);text-align:center;}
+  .modal-title{font-size:16px;font-weight:800;color:var(--accent);margin-bottom:8px}
+  .modal-msg{font-size:13px;color:var(--text);line-height:1.5;margin-bottom:18px}
+  .modal-ok{background:linear-gradient(90deg,var(--accent),var(--accent-2));border:none;color:#fff;font-weight:700;font-size:13px;padding:9px 26px;border-radius:9px;cursor:pointer;}
+  .modal-ok:hover{filter:brightness(1.1)}
+
+  .footer{height:22px;display:flex;align-items:center;justify-content:center;flex:none;}
+  .footer .build{color:#fff;font-size:11px;letter-spacing:.05em;opacity:.85;font-variant-numeric:tabular-nums;}
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="section menubar">
+    <span class="tag">menu bar · 1/9</span>
+    <div class="brand"><span class="heart">♥</span> Idle Hearts</div>
+    <div class="navbtns">
+      <button class="btn active">🗺️ Map</button>
+      <button class="btn">💑 Characters</button>
+      <button class="btn">🌹 Dates</button>
+      <button class="btn">📖 Journal</button>
+      <button class="btn">🛍️ Shop</button>
+      <button class="btn">💾 Save</button>
+      <button class="btn">⚙️ Settings</button>
+    </div>
+    <div class="clock">
+      <span class="day" id="clkDay">Day 1</span>
+      <span class="date" id="clkDate">—</span>
+      <span class="time" id="clkTime">8:00 AM</span>
+    </div>
+  </div>
+
+  <div class="section mainzone">
+    <span class="tag">main zone · 4/9</span>
+    <div class="map-head"><h2>City Map</h2><span class="sub">Click a place, then Visit</span></div>
+    <div class="mapwrap" id="mapwrap"></div>
+  </div>
+
+  <div class="actionbar" id="actionbar">
+    <div class="ab-fill" id="abFill"><div class="heart-layer" id="heartLayer"></div></div>
+    <div class="ab-content">
+      <div class="ab-loc" id="abLoc"></div>
+      <button class="ab-visit" id="abVisit">Visit ▸</button>
+    </div>
+  </div>
+
+  <div class="section bottom">
+    <span class="tag">player zone · 4/9</span>
+    <div class="playermenu">
+      <div class="pm-title">Player Menu</div>
+      <div class="pm-list" id="pmList">
+        <div class="tab active" data-cat="skills"><span class="ti">💪</span> Skills</div>
+        <div class="tab" data-cat="needs"><span class="ti">💗</span> Needs</div>
+        <div class="tab" data-cat="resources"><span class="ti">💰</span> Resources</div>
+        <div class="tab" data-cat="gifts"><span class="ti">🎁</span> Gifts</div>
+        <div class="tab" data-cat="wardrobe"><span class="ti">👗</span> Wardrobe</div>
+        <div class="tab" data-cat="key"><span class="ti">🔑</span> Key Items</div>
+        <div class="tab" data-cat="consumables"><span class="ti">🍰</span> Consumables</div>
+      </div>
+      <div class="pm-hint">7 submenus · scroll for 6–7</div>
+    </div>
+    <div class="playerpanel" id="panel"></div>
+  </div>
+</div>
+
+<div class="footer"><span class="build" id="buildStamp"></span></div>
+
+<!-- popup -->
+<div class="modal" id="modal"><div class="modal-card">
+  <div class="modal-title" id="modalTitle"></div>
+  <div class="modal-msg" id="modalMsg"></div>
+  <button class="modal-ok" id="modalOk">Got it</button>
+</div></div>
+
+<script>
+const BUILD="V03.0";
+document.getElementById('buildStamp').textContent="Idle Hearts Build "+BUILD;
+
+/* ================= GAME STATE ================= */
+const state={
+  needs:{Energy:72,Happiness:61,Stress:28},
+  personal:{Fitness:34,Charm:58,Intelligence:21,Style:12},
+  vocational:{Business:0,Hospitality:0,Cooking:0},
+  money:500,
+  affection:{Aiko:62,Rina:38,Mei:15,Yuki:0},
+  day:1,
+  location:'Home',
+};
+let gameDate=new Date(2026,0,1);           // Thursday, Jan 1, 2026 (real calendar)
+const TIME="8:00 AM";                       // frozen for now
+
+/* ================= LOCATIONS (data-driven) ================= */
+const LOCATIONS=[
+  {id:'Home',icon:'🏠',name:'Home',x:500,y:225,r:46,cost:{},gain:{needs:{Energy:30,Stress:-15,Happiness:5}},advanceDay:true},
+  {id:'School',icon:'🎓',name:'School',x:200,y:105,r:42,cost:{energy:15},gain:{needs:{Stress:10},personal:{Intelligence:8},affection:{Aiko:5}}},
+  {id:'Office',icon:'💼',name:'Office',x:800,y:105,r:42,cost:{energy:20},gain:{needs:{Stress:15},vocational:{Business:6},money:120}},
+  {id:'Gym',icon:'🏋️',name:'Gym',x:200,y:360,r:42,cost:{energy:20,money:10},gain:{needs:{Stress:-5,Happiness:5},personal:{Fitness:8},affection:{Rina:5}}},
+  {id:'Park',icon:'🌳',name:'Park',x:800,y:360,r:42,cost:{energy:5},gain:{needs:{Stress:-20,Happiness:10},personal:{Charm:2}}},
+  {id:'Cafe',icon:'☕',name:'Café',x:330,y:225,r:40,cost:{energy:15},gain:{needs:{Stress:5},vocational:{Hospitality:6},money:70,affection:{Mei:5}}},
+  {id:'Mall',icon:'🛍️',name:'Mall',x:670,y:225,r:40,cost:{money:150},gain:{needs:{Happiness:12,Stress:-8},personal:{Style:6,Charm:2},affection:{Yuki:5}},unlockDay:5},
+  {id:'Kitchen',icon:'🍳',name:'Kitchen',x:500,y:392,r:40,cost:{energy:18},gain:{needs:{Stress:8},vocational:{Cooking:7},money:90}},
+];
+const LINKS=[['Home','School'],['Home','Office'],['Home','Gym'],['Home','Park'],['Home','Cafe'],['Home','Mall'],['Home','Kitchen'],['School','Cafe'],['Office','Mall'],['Gym','Kitchen'],['Park','Kitchen']];
+const byId=id=>LOCATIONS.find(l=>l.id===id);
+let selectedId='Home', visitingId=null;
+
+/* ================= META ================= */
+const SKILL_META={
+  Fitness:{ico:'🏋️',color:'var(--good)'},Charm:{ico:'🌹',color:'var(--accent)'},
+  Intelligence:{ico:'📚',color:'var(--accent-2)'},Style:{ico:'👗',color:'#ff9ecb'},
+  Business:{ico:'💼',color:'var(--gold)'},Hospitality:{ico:'☕',color:'#c9a06a'},Cooking:{ico:'🍳',color:'var(--warn)'},
+};
+const NEED_META={
+  Energy:{ico:'⚡',color:'var(--energy)',baseline:null,note:'Depletes with activity; restored by resting at Home.'},
+  Happiness:{ico:'😊',color:'var(--accent)',baseline:50,note:'Drifts toward 50. High = economy bonus.'},
+  Stress:{ico:'🔥',color:'var(--stress)',baseline:25,note:'Drifts toward 25. High = economy penalty.'},
+};
+const NPC=[{k:'Aiko',emj:'🌸'},{k:'Rina',emj:'⚡'},{k:'Mei',emj:'🌙'},{k:'Yuki',emj:'❄️'}];
+const PERSONAL_ORDER=['Fitness','Charm','Intelligence','Style'];
+const VOC_ORDER=['Business','Hospitality','Cooking'];
+const NEEDS_ORDER=['Energy','Happiness','Stress'];
+
+/* ================= MAP ================= */
+function isLocked(loc){return loc.unlockDay && state.day < loc.unlockDay;}
+function buildMap(){
+  const links=LINKS.map(([a,b])=>{const A=byId(a),B=byId(b);
+    return `<line class="link" x1="${A.x}" y1="${A.y}" x2="${B.x}" y2="${B.y}"/>`;}).join('');
+  const nodes=LOCATIONS.map(loc=>{
+    const cls='node'+(loc.id===selectedId?' sel':'')+(isLocked(loc)?' locked':'');
+    const inner=isLocked(loc)
+      ? `<text class="ico" x="${loc.x}" y="${loc.y-2}">${loc.icon}</text><text class="lock" x="${loc.x}" y="${loc.y+20}">🔒 Day ${loc.unlockDay}</text>`
+      : `<text class="ico" x="${loc.x}" y="${loc.y-4}">${loc.icon}</text><text x="${loc.x}" y="${loc.y+22}">${loc.name}</text>`;
+    return `<g class="${cls}" data-id="${loc.id}"><circle cx="${loc.x}" cy="${loc.y}" r="${loc.r}"/>${inner}</g>`;
+  }).join('');
+  document.getElementById('mapwrap').innerHTML=
+    `<svg class="mapsvg" viewBox="0 0 1000 460" preserveAspectRatio="xMidYMid meet"><g>${links}</g>${nodes}</svg>`;
+}
+document.getElementById('mapwrap').addEventListener('click',e=>{
+  if(actionbar.classList.contains('running'))return;
+  const g=e.target.closest('.node'); if(!g)return;
+  selectedId=g.dataset.id; buildMap(); updateActionBar();
+});
+
+/* ================= ACTION BAR ================= */
+const actionbar=document.getElementById('actionbar');
+const abFill=document.getElementById('abFill');
+const abVisit=document.getElementById('abVisit');
+const abLoc=document.getElementById('abLoc');
+
+// floating hearts across full width
+const heartLayer=document.getElementById('heartLayer');
+for(let i=0;i<14;i++){const h=document.createElement('span');h.className='fh';h.textContent='♥';
+  h.style.left=((i+0.5)/14*100)+'vw';h.style.top=(6+Math.random()*10)+'px';
+  h.style.fontSize=(9+Math.random()*5)+'px';h.style.animationDuration=(1.4+Math.random()*1.0)+'s';
+  h.style.animationDelay=(-Math.random()*1.8)+'s';heartLayer.appendChild(h);}
+
+function summaryOf(loc){
+  const p=[];
+  if(loc.cost.energy)p.push(`−${loc.cost.energy}⚡`);
+  if(loc.cost.money)p.push(`−$${loc.cost.money}`);
+  const g=loc.gain||{};
+  if(g.needs)for(const k in g.needs){const v=g.needs[k],s=(v>0?'+':'')+v;p.push(k==='Energy'?`${s}⚡`:`${s} ${k}`);}
+  if(g.money)p.push(`+$${g.money}`);
+  if(g.personal)for(const k in g.personal)p.push(`+${g.personal[k]} ${k}`);
+  if(g.vocational)for(const k in g.vocational)p.push(`+${g.vocational[k]} ${k}`);
+  if(g.affection)for(const k in g.affection)p.push(`+${g.affection[k]} ♥${k}`);
+  return p.join(' · ');
+}
+function affordProblem(loc){
+  if(isLocked(loc))return{t:'Location Locked',m:`${loc.name} unlocks on Day ${loc.unlockDay}. It's currently Day ${state.day} — keep playing to reach it.`};
+  if(loc.cost.energy && state.needs.Energy < loc.cost.energy)
+    return{t:'Not Enough Energy',m:`${loc.name} needs ${loc.cost.energy} Energy, but you only have ${Math.round(state.needs.Energy)}. Head 🏠 Home to rest and recover.`};
+  if(loc.cost.money && state.money < loc.cost.money)
+    return{t:'Not Enough Money',m:`${loc.name} costs $${loc.cost.money}, but you only have $${state.money.toLocaleString()}. Work a job to earn more.`};
+  return null;
+}
+function updateActionBar(){
+  const loc=byId(selectedId);
+  const prob=affordProblem(loc);
+  const warn=prob?` <span class="warn">⚠ ${prob.t}</span>`:'';
+  abLoc.innerHTML=`<b>${loc.icon} ${loc.name}</b> <span class="d">· ${summaryOf(loc)||'rest'}</span>${warn}`;
+  abVisit.classList.toggle('blocked',!!prob);
+}
+
+function onVisit(){
+  if(actionbar.classList.contains('running'))return;
+  const loc=byId(selectedId);
+  const prob=affordProblem(loc);
+  if(prob){showPopup(prob.t,prob.m);return;}
+  visitingId=selectedId;
+  actionbar.classList.add('running');
+  abVisit.disabled=true;abVisit.textContent='Visiting…';
+  requestAnimationFrame(()=>abFill.classList.add('go'));
+}
+abVisit.addEventListener('click',onVisit);
+abFill.addEventListener('transitionend',e=>{
+  if(e.propertyName!=='width'||!abFill.classList.contains('go'))return;
+  applyEffects(byId(visitingId));
+  abVisit.textContent='Done! ✓';
+  setTimeout(resetVisit,450);
+});
+function resetVisit(){
+  abFill.style.transition='none';abFill.classList.remove('go');void abFill.offsetWidth;abFill.style.transition='';
+  actionbar.classList.remove('running');abVisit.disabled=false;abVisit.textContent='Visit ▸';
+  updateActionBar();
+}
+
+/* ================= APPLY EFFECTS ================= */
+const clamp=v=>Math.max(0,Math.min(100,v));
+function applyEffects(loc){
+  if(loc.cost.energy)state.needs.Energy=clamp(state.needs.Energy-loc.cost.energy);
+  if(loc.cost.money)state.money-=loc.cost.money;
+  const g=loc.gain||{};
+  if(g.needs)for(const k in g.needs)state.needs[k]=clamp((state.needs[k]||0)+g.needs[k]);
+  if(g.personal)for(const k in g.personal)state.personal[k]=clamp((state.personal[k]||0)+g.personal[k]);
+  if(g.vocational)for(const k in g.vocational)state.vocational[k]=clamp((state.vocational[k]||0)+g.vocational[k]);
+  if(g.money)state.money+=g.money;
+  if(g.affection)for(const k in g.affection)state.affection[k]=clamp((state.affection[k]||0)+g.affection[k]);
+  state.location=loc.name;
+  if(loc.advanceDay){state.day++;gameDate.setDate(gameDate.getDate()+1);buildMap();}
+  updateClock();refresh();
+}
+
+/* ================= CLOCK ================= */
+const WD=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const MO=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function updateClock(){
+  document.getElementById('clkDay').textContent='Day '+state.day;
+  document.getElementById('clkDate').textContent=`${WD[gameDate.getDay()]}, ${MO[gameDate.getMonth()]} ${gameDate.getDate()}, ${gameDate.getFullYear()}`;
+  document.getElementById('clkTime').textContent=TIME;
+}
+
+/* ================= PANELS ================= */
+function tierOf(v){return v<20?'Novice':v<40?'Adept':v<60?'Skilled':v<80?'Expert':'Master';}
+function statRow(name,val,ico,color,opt){
+  opt=opt||{};
+  const tier=opt.tier?`<span class="s-tier">${tierOf(val)}</span>`:'';
+  const base=(opt.baseline!=null)?`<i class="baseline" style="left:${opt.baseline}%"></i>`:'';
+  const note=opt.note?`<div class="s-note">${opt.note}</div>`:'';
+  return `<div class="stat"><div class="s-top"><div class="s-ico">${ico}</div><div class="s-name">${name}</div>${tier}<div class="s-val">${Math.round(val)} / 100</div></div>
+    <div class="track"><span style="width:${val}%;background:${color}"></span>${base}</div>${note}</div>`;
+}
+function panelSkills(){
+  const left=PERSONAL_ORDER.map(k=>statRow(k,state.personal[k],SKILL_META[k].ico,SKILL_META[k].color,{tier:true})).join('');
+  const right=VOC_ORDER.map(k=>statRow(k,state.vocational[k],SKILL_META[k].ico,SKILL_META[k].color,{tier:true})).join('');
+  return `<div class="pp-head"><h3>Skills</h3><span class="count">grow over time · 0–100</span></div>
+    <div class="skill-cols">
+      <div class="skill-col"><h4>Personal</h4>${left}</div>
+      <div class="skill-col"><h4>Vocational</h4>${right}</div>
+    </div>`;
+}
+function panelNeeds(){
+  const rows=NEEDS_ORDER.map(k=>{const m=NEED_META[k];return statRow(k,state.needs[k],m.ico,m.color,{baseline:m.baseline,note:m.note});}).join('');
+  return `<div class="pp-head"><h3>Needs</h3><span class="count">drift toward baseline · 0–100</span></div>
+    <p class="section-label">Managed, not maximized · white tick = baseline</p>${rows}`;
+}
+function resTile(l,i,v,c){return `<div class="res"><div class="r-top">${i} ${l}</div><div class="r-val" style="color:${c}">${v}</div></div>`;}
+function panelResources(){
+  const aff=NPC.map(n=>`<div class="aff-row"><div class="aff-face">${n.emj}</div><div class="aff-name">${n.k}</div>
+    <div class="bar"><span style="width:${state.affection[n.k]}%"></span></div><div class="aff-pct">${Math.round(state.affection[n.k])}% ♥</div></div>`).join('');
+  return `<div class="pp-head"><h3>Resources</h3><span class="count">live-tracking</span></div>
+    <div class="resources">${resTile('Money','💰','$'+state.money.toLocaleString(),'var(--gold)')}${resTile('Day','📅','Day '+state.day,'var(--accent-2)')}${resTile('Last Visited','📍',state.location,'var(--good)')}</div>
+    <p class="section-label">Affection — accrues via visits toward date unlocks</p>${aff}`;
+}
+const gifts=[{emj:'🌹',nm:'Rose',qty:4},{emj:'🍫',nm:'Chocolate',qty:7},{emj:'💍',nm:'Ring',qty:1},{emj:'🧸',nm:'Plushie',qty:2},{emj:'📓',nm:'Journal',qty:1},{emj:'🎫',nm:'Movie Ticket',qty:3}];
+const wardrobe=[{emj:'👕',nm:'Casual',qty:'★'},{emj:'🧥',nm:'Jacket',qty:'★'},{emj:'🤵',nm:'Formal',qty:'🔒'},{emj:'🏖️',nm:'Beach',qty:'🔒'}];
+const keyi=[{emj:'🔑',nm:'Apt Key',qty:1},{emj:'📱',nm:'Phone',qty:1},{emj:'🗺️',nm:'City Pass',qty:1}];
+const consum=[{emj:'☕',nm:'Coffee',qty:5},{emj:'🍰',nm:'Cake',qty:2},{emj:'🥤',nm:'Energy Drink',qty:6}];
+function panelGrid(t,items){return `<div class="pp-head"><h3>${t}</h3><span class="count">${items.length} items</span></div>
+  <div class="grid">${items.map(i=>`<div class="item"><div class="emj">${i.emj}</div><div class="nm">${i.nm}</div><div class="qty">×${i.qty}</div></div>`).join('')}</div>`;}
+const panels={skills:panelSkills,needs:panelNeeds,resources:panelResources,
+  gifts:()=>panelGrid('Gifts',gifts),wardrobe:()=>panelGrid('Wardrobe',wardrobe),key:()=>panelGrid('Key Items',keyi),consumables:()=>panelGrid('Consumables',consum)};
+let activeCat='skills';
+const panelEl=document.getElementById('panel');
+function render(cat){activeCat=cat;panelEl.innerHTML=panels[cat]();}
+function refresh(){panelEl.innerHTML=panels[activeCat]();}
+document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');render(t.dataset.cat);}));
+document.querySelectorAll('.navbtns .btn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.navbtns .btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');}));
+
+/* ================= POPUP ================= */
+const modal=document.getElementById('modal');
+function showPopup(title,msg){document.getElementById('modalTitle').textContent=title;document.getElementById('modalMsg').textContent=msg;modal.classList.add('show');}
+document.getElementById('modalOk').addEventListener('click',()=>modal.classList.remove('show'));
+modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('show');});
+
+/* ================= INIT ================= */
+buildMap();updateClock();updateActionBar();render('skills');
+</script>
+</body>
+</html>
