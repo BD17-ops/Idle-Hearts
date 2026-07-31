@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<!-- Idle Hearts — Build V13.3 -->
+<!-- Idle Hearts — Build V13.4 -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Idle Hearts — Build V13.3</title>
+<title>Idle Hearts — Build V13.4</title>
 <style>
   :root{
     --bg:#14101c; --panel:#1e1830; --panel-2:#261e3d;
@@ -518,7 +518,7 @@
 </div></div>
 
 <script>
-const BUILD="V13.3";
+const BUILD="V13.4";
 document.getElementById('buildStamp').textContent="Idle Hearts Build "+BUILD;
 
 /* ================= GAME STATE ================= */
@@ -1164,294 +1164,2849 @@ const TALK={
 /* Location-specific visit scenes. Beat: {h:"her line"} or {c:[{t:label,a:affΔ,r:reply}]}. sc.hearts gates a scene behind a heart level.
    Alex is fully wired; girls without a SCENES entry for a location fall back to the old per-girl TALK pool. */
 const SCENES={
- 'Alex':{
-  'Greywater University':[
-   {s:[
-    {n:"Alex cuts straight across the quad, not breaking stride."},
-    {h:"Oh — it's you."},
-    {n:"She slows just slightly, chin already tilting up."},
-    {h:"Careful. People are going to start thinking you're somebody, standing that close to me."},
-    {c:[{t:"Maybe I am somebody.",a:12,r:["Bold. I respect bold.",{n:"a flicker of a real smile before she catches it"},"Don't let it go to your head — that's my job."]},{t:"I'll risk the reputation boost.",a:6,r:"Smart. Stick around, it's contagious."}]},
-    {n:"She glances at his precise, pressed appearance."},
-    {h:"You always look like you ironed your socks this morning. Is that a personality choice or a cry for help?"},
-    {c:[{t:"A little of both, probably.",a:12,r:"...Ha. Okay, that's the most self-aware thing anyone's said to me all week."},{t:"At least I own an iron.",a:6,r:"Wow. Bold accusation from someone who hasn't checked what my closet looks like."},{t:"Better than looking like I just rolled out of practice.",a:-6,r:"Excuse you. This is 'effortless,' not 'rolled out of.' There's a difference and I'll die defending it.",rn:"chin up, already walking again — not actually rattled, just recalibrating"}]},
-    {h:"Anyway. Try to keep up — I set a fast pace, and I don't wait around for stragglers."},
-    {c:[{t:"I'll manage.",a:6,r:"We'll see."},{t:"Lead the way, then.",a:12,r:"Now that's the right attitude."}]}
-   ]},
-   {s:[
-    {n:"Alex is sitting at a courtyard table, notes actually spread out, going rigid the second she notices she's been seen."},
-    {h:"Don't make this a whole thing. People studying isn't news."},
-    {c:[{t:"Wasn't going to say anything.",a:12,r:"Good. Keep it that way."},{t:"Didn't peg you for the studying type.",a:-6,r:"Everyone assumes that. It's actually really annoying.",rn:"a sharp, huffy breath — she doesn't leave, just squares her shoulders and keeps writing, a little more clipped"}]},
-    {h:"I do fine without an audience, for the record. I just happen to prefer doing it where the light's good."},
-    {c:[{t:"Fair enough.",a:6,r:"Glad we agree."},{t:"Practical and photogenic. Efficient.",a:12,r:"See, someone finally gets it.",rn:"a beat too pleased with that answer"}]},
-    {h:"I've got maybe ten more minutes before this table's got other plans for it. Don't take it personally if I kick you out."},
-    {c:[{t:"Wouldn't dream of overstaying.",a:6,r:"Smart man."},{t:"I'll leave you to it, then.",a:12,r:"Appreciated. Go be somebody else's problem for a while."}]}
-   ]}
+ "Alex": {
+  "Greywater University": [
+   {
+    "s": [
+     {
+      "n": "Alex cuts straight across the quad, not breaking stride."
+     },
+     {
+      "h": "Oh — it's you."
+     },
+     {
+      "n": "She slows just slightly, chin already tilting up."
+     },
+     {
+      "h": "Careful. People are going to start thinking you're somebody, standing that close to me."
+     },
+     {
+      "c": [
+       {
+        "t": "Maybe I am somebody.",
+        "a": 12,
+        "r": [
+         "Bold. I respect bold.",
+         {
+          "n": "a flicker of a real smile before she catches it"
+         },
+         "Don't let it go to your head — that's my job."
+        ]
+       },
+       {
+        "t": "I'll risk the reputation boost.",
+        "a": 6,
+        "r": "Smart. Stick around, it's contagious."
+       }
+      ]
+     },
+     {
+      "n": "She glances at his precise, pressed appearance."
+     },
+     {
+      "h": "You always look like you ironed your socks this morning. Is that a personality choice or a cry for help?"
+     },
+     {
+      "c": [
+       {
+        "t": "A little of both, probably.",
+        "a": 12,
+        "r": "...Ha. Okay, that's the most self-aware thing anyone's said to me all week."
+       },
+       {
+        "t": "At least I own an iron.",
+        "a": 6,
+        "r": "Wow. Bold accusation from someone who hasn't checked what my closet looks like."
+       },
+       {
+        "t": "Better than looking like I just rolled out of practice.",
+        "a": -6,
+        "r": "Excuse you. This is 'effortless,' not 'rolled out of.' There's a difference and I'll die defending it.",
+        "rn": "chin up, already walking again — not actually rattled, just recalibrating"
+       }
+      ]
+     },
+     {
+      "h": "Anyway. Try to keep up — I set a fast pace, and I don't wait around for stragglers."
+     },
+     {
+      "c": [
+       {
+        "t": "I'll manage.",
+        "a": 6,
+        "r": "We'll see."
+       },
+       {
+        "t": "Lead the way, then.",
+        "a": 12,
+        "r": "Now that's the right attitude."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "s": [
+     {
+      "n": "Alex is sitting at a courtyard table, notes actually spread out, going rigid the second she notices she's been seen."
+     },
+     {
+      "h": "Don't make this a whole thing. People studying isn't news."
+     },
+     {
+      "c": [
+       {
+        "t": "Wasn't going to say anything.",
+        "a": 12,
+        "r": "Good. Keep it that way."
+       },
+       {
+        "t": "Didn't peg you for the studying type.",
+        "a": -6,
+        "r": "Everyone assumes that. It's actually really annoying.",
+        "rn": "a sharp, huffy breath — she doesn't leave, just squares her shoulders and keeps writing, a little more clipped"
+       }
+      ]
+     },
+     {
+      "h": "I do fine without an audience, for the record. I just happen to prefer doing it where the light's good."
+     },
+     {
+      "c": [
+       {
+        "t": "Fair enough.",
+        "a": 6,
+        "r": "Glad we agree."
+       },
+       {
+        "t": "Practical and photogenic. Efficient.",
+        "a": 12,
+        "r": "See, someone finally gets it.",
+        "rn": "a beat too pleased with that answer"
+       }
+      ]
+     },
+     {
+      "h": "I've got maybe ten more minutes before this table's got other plans for it. Don't take it personally if I kick you out."
+     },
+     {
+      "c": [
+       {
+        "t": "Wouldn't dream of overstaying.",
+        "a": 6,
+        "r": "Smart man."
+       },
+       {
+        "t": "I'll leave you to it, then.",
+        "a": 12,
+        "r": "Appreciated. Go be somebody else's problem for a while."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "hearts": 1,
+    "s": [
+     {
+      "n": "Alex waves him over without the usual performance of reluctance."
+     },
+     {
+      "h": "Hey. Sit if you want. I'm not going to pretend I mind the company today, so don't make it weird by pointing that out."
+     },
+     {
+      "c": [
+       {
+        "t": "Wasn't going to say a word.",
+        "a": 6,
+        "r": "Good. Keep it that way and we'll get along fine."
+       },
+       {
+        "t": "Noted, and appreciated.",
+        "a": 12,
+        "r": "...Don't get sentimental about it. But — yeah. Appreciated back."
+       }
+      ]
+     },
+     {
+      "h": "Becki asked about you yesterday. I told her it was nothing. She didn't believe me. She's annoyingly perceptive for someone who still owns a weighted blanket from freshman year."
+     },
+     {
+      "c": [
+       {
+        "t": "Is it nothing?",
+        "a": 12,
+        "r": "...No. Obviously not. But you didn't hear that from me, and if you repeat it to Becki I'll deny everything under oath."
+       },
+       {
+        "t": "Sounds like Becki knows you pretty well.",
+        "a": 6,
+        "r": "Unfortunately. It's the cost of a decade-long friendship, apparently — total loss of privacy."
+       }
+      ]
+     },
+     {
+      "h": "Anyway, I've got somewhere to be. But I meant it — the sitting-with-you part. Don't let it go to your head, though. I have a reputation."
+     }
+    ]
+   },
+   {
+    "hearts": 1,
+    "s": [
+     {
+      "n": "Alex leans against the quad railing, actually waiting for him rather than just passing through."
+     },
+     {
+      "h": "Took you long enough. I've been standing here looking effortlessly composed for way longer than is actually comfortable."
+     },
+     {
+      "c": [
+       {
+        "t": "Worth the wait, I hope.",
+        "a": 12,
+        "r": "...Obviously. Everything about me is worth the wait. But yes. Fine. This specifically was too."
+       },
+       {
+        "t": "Didn't realize I was expected.",
+        "a": 6,
+        "r": "You weren't 'expected.' I just happened to be standing somewhere you'd walk by. Coincidentally. Repeatedly."
+       }
+      ]
+     },
+     {
+      "h": "I don't usually go out of my way for people. It's inefficient and mostly unrewarding. You're apparently an exception, which I'm choosing not to examine too closely."
+     },
+     {
+      "c": [
+       {
+        "t": "I'll take being an exception.",
+        "a": 12,
+        "r": "You should. It's a very exclusive club. Membership of one, currently."
+       },
+       {
+        "t": "Efficient of you to make one, at least.",
+        "a": 6,
+        "r": "See, this is why I keep you around. You get the logic."
+       }
+      ]
+     },
+     {
+      "h": "I've got practice soon. Walk with me partway? I won't slow down for you, but I also won't complain about the company."
+     }
+    ]
+   }
   ],
-  'Tidewater Fitness':[
-   {s:[
-    {n:"Alex is toweling off after practice, hair still damp; she catches sight of him and immediately straightens her posture."},
-    {h:"If you're here to watch, you missed the good part. We ran that routine 'til it was clean."},
-    {c:[{t:"How many times did it take?",a:12,r:["More than I'd admit in public.",{n:"a short laugh"},"Perfect on demand is a skill, not a fluke."]},{t:"Perfect once wasn't enough?",a:6,r:"Perfect once is luck. I don't deal in luck."}]},
-    {h:"People see Saturday — the lights, the crowd, all of it looking effortless. They don't see the Tuesday where I did the same eight counts forty times."},
-    {c:[{t:"Sounds like a lot of unglamorous work.",a:12,r:"It is. Nobody puts that part on the poster."},{t:"Forty times seems excessive.",a:-6,r:"Maybe to you. It's the difference between good and forgettable, and I don't do forgettable.",rn:"said flat and matter-of-fact, not defensive — she just moves on"}]},
-    {h:"I'm disgusting and I've earned a shower. Don't let the door hit you."},
-    {c:[{t:"Go earn it, then.",a:6,r:"Was already planning to."},{t:"See you around, Captain.",a:12,r:["...Captain.",{n:"a small pause"},"I could get used to that."]}]}
-   ]},
-   {s:[
-    {n:"Alex has her arms crossed, watching him linger by the entrance with obvious suspicion."},
-    {h:"That's either devotion or you're lost. Which is it?"},
-    {c:[{t:"Came to check the place out.",a:12,r:"Then don't just stand there radiating math-teacher energy at my equipment. Come in or don't."},{t:"Bit of both, honestly.",a:6,r:"Ha. At least you're honest about it."}]},
-    {h:"Half this squad wanted to quit today. I talked them out of it. That's the part of being captain nobody puts on a poster — carrying people who don't even know they're being carried."},
-    {c:[{t:"That's real leadership.",a:12,r:["...Yeah. It is.",{n:"catches herself sounding sincere"},"Don't go telling them I said the soft version out loud."]},{t:"Sounds like a lot to hold.",a:6,r:"It is. I'd rather hold it than watch it drop, though."}]},
-    {h:"Same time tomorrow, if you're actually curious and not just wasting my afternoon. I'll pretend not to notice either way."},
-    {c:[{t:"I'm curious.",a:6,r:"We'll see if that holds."},{t:"I'll be around.",a:12,r:"Good. Don't embarrass yourself."}]}
-   ]}
+  "Tidewater Fitness": [
+   {
+    "s": [
+     {
+      "n": "Alex is toweling off after practice, hair still damp; she catches sight of him and immediately straightens her posture."
+     },
+     {
+      "h": "If you're here to watch, you missed the good part. We ran that routine 'til it was clean."
+     },
+     {
+      "c": [
+       {
+        "t": "How many times did it take?",
+        "a": 12,
+        "r": [
+         "More than I'd admit in public.",
+         {
+          "n": "a short laugh"
+         },
+         "Perfect on demand is a skill, not a fluke."
+        ]
+       },
+       {
+        "t": "Perfect once wasn't enough?",
+        "a": 6,
+        "r": "Perfect once is luck. I don't deal in luck."
+       }
+      ]
+     },
+     {
+      "h": "People see Saturday — the lights, the crowd, all of it looking effortless. They don't see the Tuesday where I did the same eight counts forty times."
+     },
+     {
+      "c": [
+       {
+        "t": "Sounds like a lot of unglamorous work.",
+        "a": 12,
+        "r": "It is. Nobody puts that part on the poster."
+       },
+       {
+        "t": "Forty times seems excessive.",
+        "a": -6,
+        "r": "Maybe to you. It's the difference between good and forgettable, and I don't do forgettable.",
+        "rn": "said flat and matter-of-fact, not defensive — she just moves on"
+       }
+      ]
+     },
+     {
+      "h": "I'm disgusting and I've earned a shower. Don't let the door hit you."
+     },
+     {
+      "c": [
+       {
+        "t": "Go earn it, then.",
+        "a": 6,
+        "r": "Was already planning to."
+       },
+       {
+        "t": "See you around, Captain.",
+        "a": 12,
+        "r": [
+         "...Captain.",
+         {
+          "n": "a small pause"
+         },
+         "I could get used to that."
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "s": [
+     {
+      "n": "Alex has her arms crossed, watching him linger by the entrance with obvious suspicion."
+     },
+     {
+      "h": "That's either devotion or you're lost. Which is it?"
+     },
+     {
+      "c": [
+       {
+        "t": "Came to check the place out.",
+        "a": 12,
+        "r": "Then don't just stand there radiating math-teacher energy at my equipment. Come in or don't."
+       },
+       {
+        "t": "Bit of both, honestly.",
+        "a": 6,
+        "r": "Ha. At least you're honest about it."
+       }
+      ]
+     },
+     {
+      "h": "Half this squad wanted to quit today. I talked them out of it. That's the part of being captain nobody puts on a poster — carrying people who don't even know they're being carried."
+     },
+     {
+      "c": [
+       {
+        "t": "That's real leadership.",
+        "a": 12,
+        "r": [
+         "...Yeah. It is.",
+         {
+          "n": "catches herself sounding sincere"
+         },
+         "Don't go telling them I said the soft version out loud."
+        ]
+       },
+       {
+        "t": "Sounds like a lot to hold.",
+        "a": 6,
+        "r": "It is. I'd rather hold it than watch it drop, though."
+       }
+      ]
+     },
+     {
+      "h": "Same time tomorrow, if you're actually curious and not just wasting my afternoon. I'll pretend not to notice either way."
+     },
+     {
+      "c": [
+       {
+        "t": "I'm curious.",
+        "a": 6,
+        "r": "We'll see if that holds."
+       },
+       {
+        "t": "I'll be around.",
+        "a": 12,
+        "r": "Good. Don't embarrass yourself."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "hearts": 1,
+    "s": [
+     {
+      "n": "Post-practice, hair still damp, but she doesn't immediately posture into captain mode this time."
+     },
+     {
+      "h": "You keep showing up here. I've stopped pretending I don't notice."
+     },
+     {
+      "c": [
+       {
+        "t": "Good, I wanted you to notice.",
+        "a": 12,
+        "r": "...Bold. I like bold. Keep doing that and see what happens."
+       },
+       {
+        "t": "Figured you'd clock it eventually.",
+        "a": 6,
+        "r": "I clock everything. Occupational habit."
+       }
+      ]
+     },
+     {
+      "h": "Being captain is exhausting some days, if I'm honest — which I don't do often, so make a note of the occasion. Today wasn't one of the good days."
+     },
+     {
+      "c": [
+       {
+        "t": "Want to talk about it, or just vent?",
+        "a": 12,
+        "r": "Vent. I don't need it solved. I just need someone to hear it who isn't going to use it against me later."
+       },
+       {
+        "t": "You don't have to carry it alone.",
+        "a": 6,
+        "r": "...Noted. I'm not great at the 'not alone' part. Working on it."
+       }
+      ]
+     },
+     {
+      "h": "Anyway. Thanks for asking, actually. Most people just want the highlight reel version of me. Not everyone bothers with the tired one."
+     }
+    ]
+   },
+   {
+    "hearts": 1,
+    "s": [
+     {
+      "n": "Alex is sitting on the bleachers instead of running drills, unusual for her."
+     },
+     {
+      "h": "Give me a minute before you say anything. I'm allowed exactly one unglamorous moment a week and I'm cashing it in right now."
+     },
+     {
+      "c": [
+       {
+        "t": "Take your time.",
+        "a": 12,
+        "r": "...Thanks. Genuinely. Most people would've made a joke by now."
+       },
+       {
+        "t": "Rough one today?",
+        "a": 6,
+        "r": "You could say that. Nothing dramatic. Just tired down to the bone, in the boring way."
+       }
+      ]
+     },
+     {
+      "h": "I don't let people see this version of me often. The tired one. It doesn't photograph well and it definitely doesn't inspire confidence in a captain."
+     },
+     {
+      "c": [
+       {
+        "t": "I don't mind seeing it.",
+        "a": 12,
+        "r": "...Good. Because it's apparently the version that shows up around you a lot lately."
+       },
+       {
+        "t": "Everyone gets tired. Even queens.",
+        "a": 6,
+        "r": "Especially queens. Nobody warns you about that part going in."
+       }
+      ]
+     },
+     {
+      "h": "Okay. Unglamorous moment officially over. Back to being spectacular. Thanks for not making it weird."
+     }
+    ]
+   }
   ],
-  'Greywater Commons':[
-   {s:[
-    {n:"Alex holds up two nearly identical jackets, dead serious."},
-    {h:"Oh good, a witness. Do I need this, or do I deserve it? Different questions. I only care about the second one."},
-    {c:[{t:"You deserve it.",a:6,r:"Correct answer. You may accompany me."},{t:"Depends what it's for.",a:12,r:["...Huh. Nobody usually asks that part.",{n:"a beat"},"Fine — I like it. That's the whole reason. Happy now?"]}]},
-    {n:"She sets a second jacket aside, quieter, almost defensive about it."},
-    {h:"That one's not for me. Don't ask."},
-    {c:[{t:"Didn't say anything.",a:12,r:"...It's for someone who'd never buy it for herself. That's all you're getting out of me."},{t:"Who's it for?",a:-6,r:"I said don't ask.",rn:"she folds it over her arm anyway and keeps walking — more flustered than actually annoyed"}]},
-    {h:"The light in here is unforgivable and I refuse to be seen in it a second longer. Come on, or don't."},
-    {c:[{t:"Lead the way.",a:6,r:"Finally, someone with sense."},{t:"Right behind you.",a:12,r:"Good. Keep up."}]}
-   ]},
-   {s:[
-    {n:"Alex sips a smoothie, watching the food court crowd with the detached focus of someone conducting field research."},
-    {h:"People-watching is criminally underrated. That guy's been checking his reflection in the window for two full minutes. I'm timing him."},
-    {c:[{t:"You come here often to judge people?",a:6,r:"Judge is a strong word. Observe. Casually."},{t:"What gave him away?",a:12,r:"The angle. Nobody stands like that by accident. I'd know — I've perfected it."}]},
-    {h:"It's not mean. I'd want someone to tell me if I had spinach in my teeth. This is basically the same principle, expanded to a societal scale."},
-    {c:[{t:"Generous framing.",a:6,r:"I contain multitudes."},{t:"I'll take the warning as a compliment, then.",a:12,r:"You should. Not everyone gets my attention span for more than four seconds."}]},
-    {h:"Anyway, I've got places to be and a very limited tolerance for mall lighting. This was a nice break — don't get used to it."},
-    {c:[{t:"Wasn't planning on it.",a:6,r:"Good instincts."},{t:"I'll take what I can get.",a:12,r:"...Fine. Maybe there's more where that came from."}]}
-   ]}
+  "Greywater Commons": [
+   {
+    "s": [
+     {
+      "n": "Alex holds up two nearly identical jackets, dead serious."
+     },
+     {
+      "h": "Oh good, a witness. Do I need this, or do I deserve it? Different questions. I only care about the second one."
+     },
+     {
+      "c": [
+       {
+        "t": "You deserve it.",
+        "a": 6,
+        "r": "Correct answer. You may accompany me."
+       },
+       {
+        "t": "Depends what it's for.",
+        "a": 12,
+        "r": [
+         "...Huh. Nobody usually asks that part.",
+         {
+          "n": "a beat"
+         },
+         "Fine — I like it. That's the whole reason. Happy now?"
+        ]
+       }
+      ]
+     },
+     {
+      "n": "She sets a second jacket aside, quieter, almost defensive about it."
+     },
+     {
+      "h": "That one's not for me. Don't ask."
+     },
+     {
+      "c": [
+       {
+        "t": "Didn't say anything.",
+        "a": 12,
+        "r": "...It's for someone who'd never buy it for herself. That's all you're getting out of me."
+       },
+       {
+        "t": "Who's it for?",
+        "a": -6,
+        "r": "I said don't ask.",
+        "rn": "she folds it over her arm anyway and keeps walking — more flustered than actually annoyed"
+       }
+      ]
+     },
+     {
+      "h": "The light in here is unforgivable and I refuse to be seen in it a second longer. Come on, or don't."
+     },
+     {
+      "c": [
+       {
+        "t": "Lead the way.",
+        "a": 6,
+        "r": "Finally, someone with sense."
+       },
+       {
+        "t": "Right behind you.",
+        "a": 12,
+        "r": "Good. Keep up."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "s": [
+     {
+      "n": "Alex sips a smoothie, watching the food court crowd with the detached focus of someone conducting field research."
+     },
+     {
+      "h": "People-watching is criminally underrated. That guy's been checking his reflection in the window for two full minutes. I'm timing him."
+     },
+     {
+      "c": [
+       {
+        "t": "You come here often to judge people?",
+        "a": 6,
+        "r": "Judge is a strong word. Observe. Casually."
+       },
+       {
+        "t": "What gave him away?",
+        "a": 12,
+        "r": "The angle. Nobody stands like that by accident. I'd know — I've perfected it."
+       }
+      ]
+     },
+     {
+      "h": "It's not mean. I'd want someone to tell me if I had spinach in my teeth. This is basically the same principle, expanded to a societal scale."
+     },
+     {
+      "c": [
+       {
+        "t": "Generous framing.",
+        "a": 6,
+        "r": "I contain multitudes."
+       },
+       {
+        "t": "I'll take the warning as a compliment, then.",
+        "a": 12,
+        "r": "You should. Not everyone gets my attention span for more than four seconds."
+       }
+      ]
+     },
+     {
+      "h": "Anyway, I've got places to be and a very limited tolerance for mall lighting. This was a nice break — don't get used to it."
+     },
+     {
+      "c": [
+       {
+        "t": "Wasn't planning on it.",
+        "a": 6,
+        "r": "Good instincts."
+       },
+       {
+        "t": "I'll take what I can get.",
+        "a": 12,
+        "r": "...Fine. Maybe there's more where that came from."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "hearts": 1,
+    "s": [
+     {
+      "n": "Alex browses without her usual urgency, actually waiting for him to catch up."
+     },
+     {
+      "h": "I'm not even shopping for anything specific today. I just wanted somewhere to walk and talk. Don't read too much into that."
+     },
+     {
+      "c": [
+       {
+        "t": "Too late, I'm already reading into it.",
+        "a": 12,
+        "r": "...Fine. Read into it. Just don't announce it, I have a reputation."
+       },
+       {
+        "t": "Sounds nice, honestly.",
+        "a": 6,
+        "r": "It is. Don't tell anyone I said that about a mall, of all places."
+       }
+      ]
+     },
+     {
+      "h": "I like that you don't need me to be 'on' the whole time we're together. Most people want the performance. You seem fine with the regular version."
+     },
+     {
+      "c": [
+       {
+        "t": "The regular version's pretty great too.",
+        "a": 12,
+        "r": "...Okay, don't say things like that in a food court, I will not be held responsible for my reaction."
+       },
+       {
+        "t": "Both versions are fine by me.",
+        "a": 6,
+        "r": "Diplomatic. I respect it, even if I wanted a more decisive answer."
+       }
+      ]
+     },
+     {
+      "h": "Anyway. Walk with me a while longer? I'm not in any hurry today, which is rare enough that you should probably appreciate it."
+     }
+    ]
+   },
+   {
+    "hearts": 1,
+    "s": [
+     {
+      "n": "Alex sits at the food court table, unusually still, watching the crowd without her usual running commentary."
+     },
+     {
+      "h": "I had a weird thought earlier and I've been sitting on it all day. You want to hear it or should I keep pretending I'm normal?"
+     },
+     {
+      "c": [
+       {
+        "t": "Let's hear the weird thought.",
+        "a": 12,
+        "r": "...I think I actually like you. Not the 'useful to have around' kind. The real kind. I hate how much that costs me to say."
+       },
+       {
+        "t": "Only if you actually want to tell me.",
+        "a": 6,
+        "r": "I do. I just need a second to build up to it. Give me a second."
+       }
+      ]
+     },
+     {
+      "h": "I don't say things like that. Ever. I don't know what you're doing to my usual defenses, but I'd like a full report so I can start rebuilding them."
+     },
+     {
+      "c": [
+       {
+        "t": "Maybe don't rebuild them so fast.",
+        "a": 12,
+        "r": "...Careful. That's a dangerous thing to say to someone with my ego."
+       },
+       {
+        "t": "I'll take the compliment as it is.",
+        "a": 6,
+        "r": "Take it. It's rare. Don't waste it."
+       }
+      ]
+     },
+     {
+      "h": "Okay. Enough vulnerability for one food court visit. I have a reputation to maintain and a smoothie to finish."
+     }
+    ]
+   }
   ],
-  'Fox & Fern':[
-   {s:[
-    {n:"Alex glances around at the tiny café, visibly out of her element, arms tightening around herself like she might catch something."},
-    {h:"Didn't take you for a Fox & Fern person. It's not really my scene. I just... end up here sometimes."},
-    {c:[{t:"Not your scene how?",a:12,r:["Four tables and a guy who only speaks French isn't exactly built for an audience.",{n:"quieter"},"I don't come here to be seen."]},{t:"The coffee's worth it, though.",a:6,r:"It really is. Don't tell the campus crowd I drink somewhere this small — I have an image."}]},
-    {h:"It's quiet in here. Nobody's really keeping score. That's most of the appeal, if I'm being honest, which I hate doing."},
-    {c:[{t:"Sounds like a nice break from being watched.",a:12,r:["...Yeah. It is.",{n:"catches herself, straightens up"},"Don't make it weird."]},{t:"Everybody needs somewhere like that.",a:6,r:"Suppose so. This is mine."},{t:"Seems like a strange place for you, still.",a:-6,r:"Maybe. I like it anyway. Not everything I do needs to make sense to an outside observer.",rn:"she says it a little too fast, then goes quiet over her coffee"}]},
-    {h:"I've got twenty minutes before I have somewhere else to be. Sit if you want. Don't expect me to share the scone."},
-    {c:[{t:"Wouldn't dream of it.",a:6,r:"Smart."},{t:"I'll sit.",a:12,r:"Fine by me."}]}
-   ]},
-   {s:[
-    {n:"Alex stares out the rain-streaked window, arms crossed, radiating displeasure at the weather personally."},
-    {h:"Trapped. Bad lighting, worse signal, and now you. Could be worse company, I guess."},
-    {c:[{t:"High praise, coming from you.",a:6,r:"It is, actually. Don't get used to it."},{t:"I'll take 'could be worse.'",a:12,r:"Take it. You earned it, somehow."}]},
-    {h:"Nobody expects you to be anywhere in weather like this. No crowd, no audience, just... stuck. It's kind of a relief, honestly, not that I'll be repeating that."},
-    {c:[{t:"Sounds like you don't get many of those.",a:12,r:["Not many, no.",{n:"a real pause"},"This one's not bad, though."]},{t:"Rain's not that bad.",a:-6,r:"Easy for you to say. You didn't do your hair this morning for nothing.",rn:"dry, more amused than actually annoyed — she doesn't move away from the window"}]},
-    {h:"Reprieve's about over. Back to being spectacular. Walk me to the door, at least — I'll allow that much."},
-    {c:[{t:"Only that much?",a:6,r:"Don't push it."},{t:"Happy to.",a:12,r:"...Good. Come on, then."}]}
-   ]},
-   {hearts:1,s:[
-    {h:"…Huh. Didn't expect you here. This place isn't exactly the main stage."},
-    {c:[{t:"That's kind of why I like it.",a:7,r:"…Yeah. Me too. Don't tell anyone the queen has an off switch."},{t:"Following the queen to her secret lair.",a:3,r:"Secret lair. It's a four-table café run by a man who only speaks French. Very regal."}]},
-    {h:"Chloe works the counter. We go back — before any of this. She's the one person who's never once been impressed by me, and it's the most relaxing thing in the world."},
-    {c:[{t:"Everyone needs one of those.",a:12,r:"One person the performance doesn't work on. She's mine. Maybe you're… a candidate."},{t:"So this is where you go to be nobody.",a:7,r:"To be a person. Not nobody — a person. There's a difference, and I only figured it out recently."}]},
-    {h:"It took me a long time to figure out I'm allowed to have a version of me that isn't for anyone. Sounds obvious. It wasn't. Not for years."},
-    {c:[{t:"I'm glad you found it.",a:12,r:"…Me too. And — this'll sound strange — I don't mind you seeing it. That's new."},{t:"So who's this version for?",a:12,r:"Nobody. That's the point. …Okay. Maybe me. Maybe, lately, a little bit you."}]},
-    {h:"Sit. Order the French roast — it's the only thing he makes and it's perfect. And… thanks. For not making it weird that I'm like this here."}
-   ]},
-   {hearts:1,s:[
-    {h:"Twice in one week. People are going to think you have a type, and it's 'exhausted cheer captain in a hoodie.'"},
-    {c:[{t:"Maybe I do.",a:7,r:"…Careful. I might believe you."},{t:"I have a type. It's 'off-duty.'",a:3,r:"Off-duty. You know that's the version almost nobody gets, right."}]},
-    {h:"Real talk, because Lumière doesn't understand a word and Chloe's pretending not to listen: it's a lot. Being the thing everyone expects, every day. You don't get an off day when you're the standard."},
-    {h:"So I come here. Bad lighting, worse wifi, one grumpy Frenchman. And I get to just… be tired. Best part of my week, least glamorous thing I do."},
-    {c:[{t:"The tired version's my favorite, honestly.",a:12,r:"…Okay. That one landed. I don't know what to do with that, but — it landed. Thank you."},{t:"Your secret's safe. All of it.",a:7,r:"I know. That's why I let you sit down. Don't make me regret it."}]},
-    {h:"Can I tell you something stupid? Sometimes I'm scared this is the only place I know how to be real. Like the second I walk out that door the armor's back on before I've even decided to put it on."},
-    {c:[{t:"Then we'll just have to find you more places.",a:12,r:"…You'd do that? …Okay. That — yeah. Okay."},{t:"The armor's not the enemy. It got you here.",a:7,r:"…Huh. Never thought of it like that. That's almost annoyingly wise. Thank you."}]},
-    {h:"Okay. Enough. If you tell a soul I have feelings I'll ruin you — I have the social capital to do it. …Same time next week?"}
-   ]}
+  "Fox & Fern": [
+   {
+    "s": [
+     {
+      "n": "Alex glances around at the tiny café, visibly out of her element, arms tightening around herself like she might catch something."
+     },
+     {
+      "h": "Didn't take you for a Fox & Fern person. It's not really my scene. I just... end up here sometimes."
+     },
+     {
+      "c": [
+       {
+        "t": "Not your scene how?",
+        "a": 12,
+        "r": [
+         "Four tables and a guy who only speaks French isn't exactly built for an audience.",
+         {
+          "n": "quieter"
+         },
+         "I don't come here to be seen."
+        ]
+       },
+       {
+        "t": "The coffee's worth it, though.",
+        "a": 6,
+        "r": "It really is. Don't tell the campus crowd I drink somewhere this small — I have an image."
+       }
+      ]
+     },
+     {
+      "h": "It's quiet in here. Nobody's really keeping score. That's most of the appeal, if I'm being honest, which I hate doing."
+     },
+     {
+      "c": [
+       {
+        "t": "Sounds like a nice break from being watched.",
+        "a": 12,
+        "r": [
+         "...Yeah. It is.",
+         {
+          "n": "catches herself, straightens up"
+         },
+         "Don't make it weird."
+        ]
+       },
+       {
+        "t": "Everybody needs somewhere like that.",
+        "a": 6,
+        "r": "Suppose so. This is mine."
+       },
+       {
+        "t": "Seems like a strange place for you, still.",
+        "a": -6,
+        "r": "Maybe. I like it anyway. Not everything I do needs to make sense to an outside observer.",
+        "rn": "she says it a little too fast, then goes quiet over her coffee"
+       }
+      ]
+     },
+     {
+      "h": "I've got twenty minutes before I have somewhere else to be. Sit if you want. Don't expect me to share the scone."
+     },
+     {
+      "c": [
+       {
+        "t": "Wouldn't dream of it.",
+        "a": 6,
+        "r": "Smart."
+       },
+       {
+        "t": "I'll sit.",
+        "a": 12,
+        "r": "Fine by me."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "s": [
+     {
+      "n": "Alex stares out the rain-streaked window, arms crossed, radiating displeasure at the weather personally."
+     },
+     {
+      "h": "Trapped. Bad lighting, worse signal, and now you. Could be worse company, I guess."
+     },
+     {
+      "c": [
+       {
+        "t": "High praise, coming from you.",
+        "a": 6,
+        "r": "It is, actually. Don't get used to it."
+       },
+       {
+        "t": "I'll take 'could be worse.'",
+        "a": 12,
+        "r": "Take it. You earned it, somehow."
+       }
+      ]
+     },
+     {
+      "h": "Nobody expects you to be anywhere in weather like this. No crowd, no audience, just... stuck. It's kind of a relief, honestly, not that I'll be repeating that."
+     },
+     {
+      "c": [
+       {
+        "t": "Sounds like you don't get many of those.",
+        "a": 12,
+        "r": [
+         "Not many, no.",
+         {
+          "n": "a real pause"
+         },
+         "This one's not bad, though."
+        ]
+       },
+       {
+        "t": "Rain's not that bad.",
+        "a": -6,
+        "r": "Easy for you to say. You didn't do your hair this morning for nothing.",
+        "rn": "dry, more amused than actually annoyed — she doesn't move away from the window"
+       }
+      ]
+     },
+     {
+      "h": "Reprieve's about over. Back to being spectacular. Walk me to the door, at least — I'll allow that much."
+     },
+     {
+      "c": [
+       {
+        "t": "Only that much?",
+        "a": 6,
+        "r": "Don't push it."
+       },
+       {
+        "t": "Happy to.",
+        "a": 12,
+        "r": "...Good. Come on, then."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "hearts": 1,
+    "s": [
+     {
+      "n": "Alex is already at a corner table when he arrives, like she came here on purpose this time rather than tagging along."
+     },
+     {
+      "h": "I came here without Chloe today. On purpose. That's new information you're allowed to have."
+     },
+     {
+      "c": [
+       {
+        "t": "Why the change?",
+        "a": 12,
+        "r": "I wanted somewhere quiet, and I wanted it to be with you specifically. There. Said it. Don't make a whole thing of it."
+       },
+       {
+        "t": "Glad you did.",
+        "a": 6,
+        "r": "Me too, apparently. This is becoming a habit I didn't plan for."
+       }
+      ]
+     },
+     {
+      "h": "This place doesn't care who I am. It's strangely restful, not being 'Alex Vasquez' for twenty minutes. I think I could get used to that with the right company."
+     },
+     {
+      "c": [
+       {
+        "t": "I like being 'the right company.'",
+        "a": 12,
+        "r": "...Don't let it go to your head. But yes. You are."
+       },
+       {
+        "t": "Everyone deserves a place like that.",
+        "a": 6,
+        "r": "Agreed. This is mine. I'm letting you borrow it, temporarily."
+       }
+      ]
+     },
+     {
+      "h": "Anyway. Sit. Stay a while. I'm not in a rush to be anywhere else today, which — again — you should note as significant."
+     }
+    ]
+   },
+   {
+    "hearts": 1,
+    "s": [
+     {
+      "n": "Alex stirs her coffee without drinking it, quieter than her usual energy."
+     },
+     {
+      "h": "Can I say something and you just... let it sit there without making it a whole thing?"
+     },
+     {
+      "c": [
+       {
+        "t": "Of course.",
+        "a": 12,
+        "r": "I like who I am around you. That's it. That's the whole sentence. I don't know what to do with it, so I'm just going to leave it there like you said."
+       },
+       {
+        "t": "Go for it.",
+        "a": 6,
+        "r": "Okay. Just — don't react too hard. I'm still deciding how I feel about saying it out loud."
+       }
+      ]
+     },
+     {
+      "h": "I spend most of my life being who everyone expects. This is different. I don't know what to call it yet, but I like it more than I'm comfortable admitting."
+     },
+     {
+      "c": [
+       {
+        "t": "You don't have to name it yet.",
+        "a": 12,
+        "r": "...Thank you for that. I hate not having a category for something. This is a good exception, though."
+       },
+       {
+        "t": "Take your time figuring it out.",
+        "a": 6,
+        "r": "I intend to. Slowly. Don't rush me."
+       }
+      ]
+     },
+     {
+      "h": "Okay. That's my quota of sincerity for the week. Drink your coffee before I take it back and go be intimidating somewhere else."
+     }
+    ]
+   }
   ]
  },
- 'Chloe':{
-  'Fox & Fern':[
-   {s:[
-    {n:"Chloe, behind the counter, not looking up."},
-    {h:"New face. Or a regular I've successfully ignored until now. Either way — it's French roast, we don't do the whipped-cream stuff, and Lumière doesn't speak English. Questions?"},
-    {c:[{t:"Just the French roast, then.",a:6,r:"A person who knows what they want. Rare. I respect it."},{t:"Surprise me.",a:3,r:"It's French roast or French roast. Your one surprise: it's good."}]},
-    {h:"That's Lumière — owns the place, hates change, has never once learned the words 'oat milk.' We communicate through vibes and mutual disappointment."},
-    {c:[{t:"Sounds like a good boss.",a:6,r:"He's a menace and I'd take a bullet for him. Same thing, around here."},{t:"How do you even work here?",a:3,r:"Patience. And a deep suspicion of anywhere with a drive-thru."}]},
-    {n:"She notices you're still around."},
-    {h:"Most people take the coffee and go pretend to work somewhere else. You're... lingering."},
-    {c:[{t:"It's a good place to just sit.",a:12,r:"...It is. Don't tell the influencers, they'll find it and ruin it."},{t:"Bit dead in here, though.",a:-6,r:"Dead. Right. It's quiet. There's a difference.",rn:"she goes back to wiping down the counter, unbothered, not actually annoyed"}]}
-   ]},
-   {s:[
-    {n:"Chloe, closing up, chairs half-stacked."},
-    {h:"We close in twenty. You picked the dead shift — Lumière's already gone home to yell at his television."},
-    {c:[{t:"Sounds perfect, honestly.",a:12,r:"...It kind of is. The best hour. Nobody comes in expecting a show."},{t:"I can head out if you're closing.",a:6,r:"Sit. I said twenty minutes, not 'leave.' You're not the annoying kind of customer. Yet."}]},
-    {h:"This is when I actually like the place. Chairs up, lights half off, one bad playlist. It's like the café finally exhales."},
-    {c:[{t:"Everywhere's better without an audience.",a:12,r:"...Now you're getting it. Careful, you'll fit in."},{t:"You could just lock up and leave, you know.",a:6,r:"And miss my favorite hour? No. The tips aren't why I stay this late."},{t:"Seems like a strange way to spend extra time.",a:-6,r:"Maybe. Works for me.",rn:"she keeps stacking chairs, dry and unbothered rather than defensive"}]},
-    {h:"Out you go — I've got chairs to stack. This was a decent shift, though. You made the dead hour less dead."}
-   ]}
+ "Chloe": {
+  "Fox & Fern": [
+   {
+    "s": [
+     {
+      "n": "Chloe, behind the counter, not looking up."
+     },
+     {
+      "h": "New face. Or a regular I've successfully ignored until now. Either way — it's French roast, we don't do the whipped-cream stuff, and Lumière doesn't speak English. Questions?"
+     },
+     {
+      "c": [
+       {
+        "t": "Just the French roast, then.",
+        "a": 6,
+        "r": "A person who knows what they want. Rare. I respect it."
+       },
+       {
+        "t": "Surprise me.",
+        "a": 3,
+        "r": "It's French roast or French roast. Your one surprise: it's good."
+       }
+      ]
+     },
+     {
+      "h": "That's Lumière — owns the place, hates change, has never once learned the words 'oat milk.' We communicate through vibes and mutual disappointment."
+     },
+     {
+      "c": [
+       {
+        "t": "Sounds like a good boss.",
+        "a": 6,
+        "r": "He's a menace and I'd take a bullet for him. Same thing, around here."
+       },
+       {
+        "t": "How do you even work here?",
+        "a": 3,
+        "r": "Patience. And a deep suspicion of anywhere with a drive-thru."
+       }
+      ]
+     },
+     {
+      "n": "She notices you're still around."
+     },
+     {
+      "h": "Most people take the coffee and go pretend to work somewhere else. You're... lingering."
+     },
+     {
+      "c": [
+       {
+        "t": "It's a good place to just sit.",
+        "a": 12,
+        "r": "...It is. Don't tell the influencers, they'll find it and ruin it."
+       },
+       {
+        "t": "Bit dead in here, though.",
+        "a": -6,
+        "r": "Dead. Right. It's quiet. There's a difference.",
+        "rn": "she goes back to wiping down the counter, unbothered, not actually annoyed"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "s": [
+     {
+      "n": "Chloe, closing up, chairs half-stacked."
+     },
+     {
+      "h": "We close in twenty. You picked the dead shift — Lumière's already gone home to yell at his television."
+     },
+     {
+      "c": [
+       {
+        "t": "Sounds perfect, honestly.",
+        "a": 12,
+        "r": "...It kind of is. The best hour. Nobody comes in expecting a show."
+       },
+       {
+        "t": "I can head out if you're closing.",
+        "a": 6,
+        "r": "Sit. I said twenty minutes, not 'leave.' You're not the annoying kind of customer. Yet."
+       }
+      ]
+     },
+     {
+      "h": "This is when I actually like the place. Chairs up, lights half off, one bad playlist. It's like the café finally exhales."
+     },
+     {
+      "c": [
+       {
+        "t": "Everywhere's better without an audience.",
+        "a": 12,
+        "r": "...Now you're getting it. Careful, you'll fit in."
+       },
+       {
+        "t": "You could just lock up and leave, you know.",
+        "a": 6,
+        "r": "And miss my favorite hour? No. The tips aren't why I stay this late."
+       },
+       {
+        "t": "Seems like a strange way to spend extra time.",
+        "a": -6,
+        "r": "Maybe. Works for me.",
+        "rn": "she keeps stacking chairs, dry and unbothered rather than defensive"
+       }
+      ]
+     },
+     {
+      "h": "Out you go — I've got chairs to stack. This was a decent shift, though. You made the dead hour less dead."
+     }
+    ]
+   },
+   {
+    "hearts": 1,
+    "s": [
+     {
+      "n": "Chloe already has a second cup poured before he's even sat down."
+     },
+     {
+      "h": "Figured you'd show up eventually. Started pouring on instinct. Don't read too much into it."
+     },
+     {
+      "c": [
+       {
+        "t": "Too late for that.",
+        "a": 12,
+        "r": "...Fine. Read into it a little. Just don't make it weird."
+       },
+       {
+        "t": "Appreciate the instinct.",
+        "a": 6,
+        "r": "It's not charity. It's efficiency. You just happen to benefit from it."
+       }
+      ]
+     },
+     {
+      "h": "I've been in a decent mood since you started coming around more. Don't tell Lumière — he'll think it's the coffee and take credit."
+     },
+     {
+      "c": [
+       {
+        "t": "Our secret.",
+        "a": 6,
+        "r": "Good man. Guard it with your life."
+       },
+       {
+        "t": "Glad I get some of the credit, at least.",
+        "a": 12,
+        "r": "...Fine. Some. Don't get greedy about it."
+       }
+      ]
+     },
+     {
+      "h": "Anyway. Sit. Stay as long as you want, I'm not exactly overrun with customers."
+     }
+    ]
+   },
+   {
+    "hearts": 1,
+    "s": [
+     {
+      "n": "Chloe wipes down the counter slower than strictly necessary, clearly not in a hurry for him to leave."
+     },
+     {
+      "h": "Can I say something without you making a whole thing out of it?"
+     },
+     {
+      "c": [
+       {
+        "t": "Go ahead.",
+        "a": 12,
+        "r": "I like having you around more than I expected to. That's it. That's the whole confession. Don't ask me to elaborate, I've used up my quota."
+       },
+       {
+        "t": "I'll try to contain myself.",
+        "a": 6,
+        "r": "Appreciated. Emotionally I'm operating on a very thin margin right now."
+       }
+      ]
+     },
+     {
+      "h": "I don't usually let people in this easily. Most people get the counter version of me — polite, efficient, gone in five minutes. You've been getting more than that lately."
+     },
+     {
+      "c": [
+       {
+        "t": "I like the version I've been getting.",
+        "a": 12,
+        "r": "...Good. It's not one I hand out a lot. Consider it noted."
+       },
+       {
+        "t": "I won't take that for granted.",
+        "a": 6,
+        "r": "Good. See that you don't."
+       }
+      ]
+     },
+     {
+      "h": "Okay. That's enough sincerity for one shift. Drink your coffee before it goes cold and I have to judge you for wasting it."
+     }
+    ]
+   }
   ],
-  'Greywater University':[
-   {s:[
-    {n:"Chloe, in the art building hallway, paint-smudged sleeves."},
-    {h:"Oh — you. In here. Either you're lost, or you actually came looking, and I genuinely can't tell which is more surprising."},
-    {c:[{t:"Came looking.",a:6,r:"...Huh. Okay. You found me. Congratulations, I suppose."},{t:"Bit of both.",a:3,r:"Honest. I'll allow it."}]},
-    {h:"This is my fourth attempt at the same stupid corner of light. Keeps coming out like a smudge. Art's mostly failing in public, if you were curious."},
-    {c:[{t:"Failing in public takes guts.",a:12,r:"...Ha. Generous way to put it. I'll take it."},{t:"Looks kind of like a smudge, honestly.",a:-6,r:"Wow. Riveting feedback. Truly.",rn:"she doesn't storm off — just turns the canvas slightly away, still talking, just a bit dryer"}]},
-    {h:"I've got a canvas that's judging me, and it's winning. Go on. Decent talking to you, though. Don't make it weird."},
-    {c:[{t:"Good luck with the canvas.",a:6,r:"It'll need it more than I will."},{t:"See you around.",a:12,r:"...Yeah. See you around."}]}
-   ]},
-   {s:[
-    {n:"Chloe leans against a wall outside a lecture hall, arms crossed, clearly avoiding going back in."},
-    {h:"Ugh. Critique day. Everyone in there using the word 'liminal' like it's punctuation."},
-    {c:[{t:"The talkers are never the makers.",a:12,r:"...God, thank you. Somebody said it. That's going on a plaque."},{t:"Isn't that a bit gatekeep-y?",a:-6,r:"Maybe. Or maybe I've sat through nine hundred hours of it.",rn:"a slight shrug, more tired than annoyed, and she keeps talking"}]},
-    {h:"There's this one guy who paints a single grey square and talks for forty minutes about 'the absence of light.' It's a grey square, my man."},
-    {c:[{t:"Sounds like you should be teaching the class.",a:6,r:"Ha — no. I'd fail everyone who said 'juxtaposition.' A massacre."},{t:"Maybe the square's a metaphor.",a:6,r:"It's a metaphor for 'I ran out of time,' which I respect more than he'd admit."}]},
-    {h:"Anyway — I've got a real critique to survive. Thanks for the pre-game. Made the liminal nonsense easier to face."},
-    {c:[{t:"Good luck in there.",a:6,r:"I'll need it. Wish me a quiet room."},{t:"You've got this.",a:12,r:"...Yeah. Thanks. I might, actually."}]}
-   ]}
+  "Greywater University": [
+   {
+    "s": [
+     {
+      "n": "Chloe, in the art building hallway, paint-smudged sleeves."
+     },
+     {
+      "h": "Oh — you. In here. Either you're lost, or you actually came looking, and I genuinely can't tell which is more surprising."
+     },
+     {
+      "c": [
+       {
+        "t": "Came looking.",
+        "a": 6,
+        "r": "...Huh. Okay. You found me. Congratulations, I suppose."
+       },
+       {
+        "t": "Bit of both.",
+        "a": 3,
+        "r": "Honest. I'll allow it."
+       }
+      ]
+     },
+     {
+      "h": "This is my fourth attempt at the same stupid corner of light. Keeps coming out like a smudge. Art's mostly failing in public, if you were curious."
+     },
+     {
+      "c": [
+       {
+        "t": "Failing in public takes guts.",
+        "a": 12,
+        "r": "...Ha. Generous way to put it. I'll take it."
+       },
+       {
+        "t": "Looks kind of like a smudge, honestly.",
+        "a": -6,
+        "r": "Wow. Riveting feedback. Truly.",
+        "rn": "she doesn't storm off — just turns the canvas slightly away, still talking, just a bit dryer"
+       }
+      ]
+     },
+     {
+      "h": "I've got a canvas that's judging me, and it's winning. Go on. Decent talking to you, though. Don't make it weird."
+     },
+     {
+      "c": [
+       {
+        "t": "Good luck with the canvas.",
+        "a": 6,
+        "r": "It'll need it more than I will."
+       },
+       {
+        "t": "See you around.",
+        "a": 12,
+        "r": "...Yeah. See you around."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "s": [
+     {
+      "n": "Chloe leans against a wall outside a lecture hall, arms crossed, clearly avoiding going back in."
+     },
+     {
+      "h": "Ugh. Critique day. Everyone in there using the word 'liminal' like it's punctuation."
+     },
+     {
+      "c": [
+       {
+        "t": "The talkers are never the makers.",
+        "a": 12,
+        "r": "...God, thank you. Somebody said it. That's going on a plaque."
+       },
+       {
+        "t": "Isn't that a bit gatekeep-y?",
+        "a": -6,
+        "r": "Maybe. Or maybe I've sat through nine hundred hours of it.",
+        "rn": "a slight shrug, more tired than annoyed, and she keeps talking"
+       }
+      ]
+     },
+     {
+      "h": "There's this one guy who paints a single grey square and talks for forty minutes about 'the absence of light.' It's a grey square, my man."
+     },
+     {
+      "c": [
+       {
+        "t": "Sounds like you should be teaching the class.",
+        "a": 6,
+        "r": "Ha — no. I'd fail everyone who said 'juxtaposition.' A massacre."
+       },
+       {
+        "t": "Maybe the square's a metaphor.",
+        "a": 6,
+        "r": "It's a metaphor for 'I ran out of time,' which I respect more than he'd admit."
+       }
+      ]
+     },
+     {
+      "h": "Anyway — I've got a real critique to survive. Thanks for the pre-game. Made the liminal nonsense easier to face."
+     },
+     {
+      "c": [
+       {
+        "t": "Good luck in there.",
+        "a": 6,
+        "r": "I'll need it. Wish me a quiet room."
+       },
+       {
+        "t": "You've got this.",
+        "a": 12,
+        "r": "...Yeah. Thanks. I might, actually."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "hearts": 1,
+    "s": [
+     {
+      "n": "In the art building courtyard, Chloe actually looks up when he approaches instead of staying buried in her sketchbook."
+     },
+     {
+      "h": "Oh — you found me on purpose this time. Progress."
+     },
+     {
+      "c": [
+       {
+        "t": "Wasn't hard to find you.",
+        "a": 6,
+        "r": "Flattering, or slightly concerning. I'll take it as flattering."
+       },
+       {
+        "t": "I was hoping to.",
+        "a": 12,
+        "r": "...Huh. Okay. Noted. I'll allow that to be a nice thing instead of overanalyzing it."
+       }
+      ]
+     },
+     {
+      "h": "I showed my professor a piece I actually care about today, instead of the safe stuff I usually turn in. Terrifying. Also kind of a relief. I've been thinking about why lately."
+     },
+     {
+      "c": [
+       {
+        "t": "That sounds like real growth.",
+        "a": 12,
+        "r": "Maybe. Or I'm just tired of hiding the stuff that actually matters. Same result, less dramatic framing."
+       },
+       {
+        "t": "What changed?",
+        "a": 6,
+        "r": "Honestly? Having someone around who doesn't need me to be impressive all the time. Turns out that's freeing."
+       }
+      ]
+     },
+     {
+      "h": "Anyway. I've got a canvas that's still judging me, but less than usual today. Thanks for that, somehow."
+     }
+    ]
+   },
+   {
+    "hearts": 1,
+    "s": [
+     {
+      "n": "Chloe sits on the steps outside the lecture hall, sketchbook open but not really drawing."
+     },
+     {
+      "h": "You ever have a day where everything you make feels honest instead of performed? Rare occurrence for me. Today's one of them."
+     },
+     {
+      "c": [
+       {
+        "t": "What's different about today?",
+        "a": 12,
+        "r": "You, probably. Don't let it go to your head. But probably you."
+       },
+       {
+        "t": "Sounds like a good day, then.",
+        "a": 6,
+        "r": "It is. Quietly. The best kind, honestly."
+       }
+      ]
+     },
+     {
+      "h": "I don't usually explain my work to people. Most of it doesn't need explaining, or I don't feel like doing the work of translating it. With you it's less effort than usual."
+     },
+     {
+      "c": [
+       {
+        "t": "I like hearing about it, though.",
+        "a": 12,
+        "r": "...Noted. I'll keep that in mind next time I'm deciding whether to bother explaining something."
+       },
+       {
+        "t": "You don't have to explain if you don't want to.",
+        "a": 6,
+        "r": "Appreciated. Doesn't mean I won't anyway, sometimes."
+       }
+      ]
+     },
+     {
+      "h": "Anyway. I should get back to actually failing at this corner of light again. Thanks for the company. It helped more than I'll probably admit twice."
+     }
+    ]
+   }
   ],
-  'Driftwood Park':[
-   {s:[
-    {n:"Chloe sits on a damp bench, unbothered by the drizzle."},
-    {h:"It's raining, you know. Most people have the sense to be inside. Neither of us, apparently."},
-    {c:[{t:"The rain's kind of the point.",a:12,r:"Exactly. The park's better empty and wet. Don't quote me on that."},{t:"Could ask you the same.",a:6,r:"Fair. Touché. There's room on the bench."}]},
-    {h:"I come here most evenings. Same bench. It's the one part of the day nobody needs anything from me."},
-    {c:[{t:"I'll keep the crowd at one, then.",a:12,r:"...Appreciated. You're low-maintenance. Rare quality."},{t:"Everyone needs a bench like that.",a:6,r:"They do. Most people never find theirs. I got lucky with mine."},{t:"Sounds kind of lonely, honestly.",a:-6,r:"Doesn't feel like it. But sure.",rn:"she says it evenly, not defensive, and keeps looking out at the water"}]},
-    {h:"Rain's easing. That's usually my cue. This was alright, though — the not-talking-too-much part. You're okay at that."}
-   ]},
-   {s:[
-    {n:"Fog rolls in off the bay, visibility down to almost nothing."},
-    {h:"Can't see the water tonight, but you can hear it. I like it better this way. Leaves more to the imagination than a postcard."},
-    {c:[{t:"A view you have to listen for.",a:12,r:"...Yeah. Exactly that. You've got a way of putting things. Don't let it go to your head."},{t:"Kind of eerie, though.",a:6,r:"Eerie's underrated. Everyone wants pretty. Pretty gets boring by Tuesday."}]},
-    {h:"People act like this city's a consolation prize. Grey, dreary, all that. I don't mind it. Never have."},
-    {c:[{t:"Sounds like you've made peace with it.",a:12,r:"I have. Took a while. But yeah — this is mine."},{t:"Some people would call that low standards.",a:-6,r:"Some people can keep their opinion, then.",rn:"a short, dry laugh — more amused than actually offended"}]},
-    {h:"Fog's not lifting. That's my cue to head in before I get poetic about weather. Glad you were here for it, though."}
-   ]}
+  "Driftwood Park": [
+   {
+    "s": [
+     {
+      "n": "Chloe sits on a damp bench, unbothered by the drizzle."
+     },
+     {
+      "h": "It's raining, you know. Most people have the sense to be inside. Neither of us, apparently."
+     },
+     {
+      "c": [
+       {
+        "t": "The rain's kind of the point.",
+        "a": 12,
+        "r": "Exactly. The park's better empty and wet. Don't quote me on that."
+       },
+       {
+        "t": "Could ask you the same.",
+        "a": 6,
+        "r": "Fair. Touché. There's room on the bench."
+       }
+      ]
+     },
+     {
+      "h": "I come here most evenings. Same bench. It's the one part of the day nobody needs anything from me."
+     },
+     {
+      "c": [
+       {
+        "t": "I'll keep the crowd at one, then.",
+        "a": 12,
+        "r": "...Appreciated. You're low-maintenance. Rare quality."
+       },
+       {
+        "t": "Everyone needs a bench like that.",
+        "a": 6,
+        "r": "They do. Most people never find theirs. I got lucky with mine."
+       },
+       {
+        "t": "Sounds kind of lonely, honestly.",
+        "a": -6,
+        "r": "Doesn't feel like it. But sure.",
+        "rn": "she says it evenly, not defensive, and keeps looking out at the water"
+       }
+      ]
+     },
+     {
+      "h": "Rain's easing. That's usually my cue. This was alright, though — the not-talking-too-much part. You're okay at that."
+     }
+    ]
+   },
+   {
+    "s": [
+     {
+      "n": "Fog rolls in off the bay, visibility down to almost nothing."
+     },
+     {
+      "h": "Can't see the water tonight, but you can hear it. I like it better this way. Leaves more to the imagination than a postcard."
+     },
+     {
+      "c": [
+       {
+        "t": "A view you have to listen for.",
+        "a": 12,
+        "r": "...Yeah. Exactly that. You've got a way of putting things. Don't let it go to your head."
+       },
+       {
+        "t": "Kind of eerie, though.",
+        "a": 6,
+        "r": "Eerie's underrated. Everyone wants pretty. Pretty gets boring by Tuesday."
+       }
+      ]
+     },
+     {
+      "h": "People act like this city's a consolation prize. Grey, dreary, all that. I don't mind it. Never have."
+     },
+     {
+      "c": [
+       {
+        "t": "Sounds like you've made peace with it.",
+        "a": 12,
+        "r": "I have. Took a while. But yeah — this is mine."
+       },
+       {
+        "t": "Some people would call that low standards.",
+        "a": -6,
+        "r": "Some people can keep their opinion, then.",
+        "rn": "a short, dry laugh — more amused than actually offended"
+       }
+      ]
+     },
+     {
+      "h": "Fog's not lifting. That's my cue to head in before I get poetic about weather. Glad you were here for it, though."
+     }
+    ]
+   },
+   {
+    "hearts": 1,
+    "s": [
+     {
+      "n": "Chloe scoots over on the bench without being asked, an unusual gesture from her."
+     },
+     {
+      "h": "Sit. I saved room. Don't make it a whole thing."
+     },
+     {
+      "c": [
+       {
+        "t": "Wouldn't dream of it.",
+        "a": 6,
+        "r": "Good. Keep that energy."
+       },
+       {
+        "t": "Noted, and appreciated.",
+        "a": 12,
+        "r": "...Fine. Appreciated back. There, we're even."
+       }
+      ]
+     },
+     {
+      "h": "I've been coming here less alone lately. Didn't plan that. Just sort of happened, the way things that actually matter tend to."
+     },
+     {
+      "c": [
+       {
+        "t": "I don't mind being the reason.",
+        "a": 12,
+        "r": "...Good. Because you kind of are one, at this point."
+       },
+       {
+        "t": "Glad I get to share the bench.",
+        "a": 6,
+        "r": "It's a good bench. You're earning your spot on it, slowly."
+       }
+      ]
+     },
+     {
+      "h": "Anyway. Fog's not too bad tonight. Stay a while, if you want. I'm not in any hurry."
+     }
+    ]
+   },
+   {
+    "hearts": 1,
+    "s": [
+     {
+      "n": "Chloe watches the water, quieter than usual, voice a little more open."
+     },
+     {
+      "h": "Can I tell you something and you just let it sit there without making it bigger than it is?"
+     },
+     {
+      "c": [
+       {
+        "t": "Of course.",
+        "a": 12,
+        "r": "I like who I am when you're around. Not performing anything, not managing anything. Just... existing. That's rare enough that I noticed it."
+       },
+       {
+        "t": "Go for it.",
+        "a": 6,
+        "r": "Okay. Just don't turn it into a whole conversation. I need it to just be a fact for a second."
+       }
+      ]
+     },
+     {
+      "h": "I don't usually let people see the version of me that isn't already decided about everything. This one's still figuring itself out. It's a little exposed, honestly."
+     },
+     {
+      "c": [
+       {
+        "t": "That version's welcome here too.",
+        "a": 12,
+        "r": "...Thanks. Genuinely. That's not a small thing to say, and I noticed."
+       },
+       {
+        "t": "Take your time with it.",
+        "a": 6,
+        "r": "Intend to. Slowly. Don't rush me on this one."
+       }
+      ]
+     },
+     {
+      "h": "Okay. That's my sincerity quota for the week, officially exceeded. Let's talk about literally anything else before I say something else real."
+     }
+    ]
+   }
   ]
  },
- 'Ha-yoon':{
-  'Greywater University':[
-   {s:[
-    {h:"Oh — hello. You found the quiet floor. Most people give up two flights down. …I have a plant up here I'm not technically allowed to have, so if you're library security, I've never seen it before in my life."},
-    {c:[{t:"Your secret's safe with me.",a:12,r:"…Thank you. Her name is Pythagoras. She's judging my proof. Fairly, I think."},{t:"Noted. I'll pretend I didn't see a thing.",a:6,r:"A professional. I appreciate someone who doesn't need the whole backstory."}]},
-    {h:"I'm supposed to prove something is true for all n. It's true for the first thousand. It refuses to admit it's true for the rest. Stubborn."},
-    {c:[{t:"What happens when it finally clicks?",a:12,r:"…You want to know? It's — the best feeling there is. Cleaner than almost anything. I'll stop before I embarrass myself."},{t:"Sounds like the kind of thing that'd drive me insane.",a:6,r:"It does. Regularly. I've made my peace with the insanity. Mostly."},{t:"Isn't there an easier way to prove it?",a:-6,r:"…Probably. There usually is. I like this way. It's not really about easy.",rn:"she doesn't leave — just goes back to the page, a little more guarded than before"}]},
-    {h:"Sorry — I get like this about it. Talkative. It's not usually a good look, apparently."},
-    {c:[{t:"I don't mind. Keep going.",a:12,r:"…Oh. Okay. I will hold you to that, then. Fair warning."},{t:"It's a good look on you, actually.",a:6,r:"…That's — a strange thing to say about someone doing math badly out loud. But. Thank you."}]},
-    {h:"The proof still isn't going to solve itself. But it's a little more bearable with the room not being completely silent. …Feel free to come back, if the quiet floor treats you well."}
-   ]},
-   {s:[
-    {n:"Ha-yoon comes hurrying down the hall, arms full of a stack of returned exams, and nearly loses the whole pile rounding the corner."},
-    {h:"Oh — sorry. Occupational hazard of being both a student and a TA's least reliable helper."},
-    {c:[{t:"Let me grab a few of those.",a:12,r:"…Oh. You don't have to. But — thank you. This section always overloads on the same day the professor decides to hand back midterms."},{t:"You looked like you had it under control.",a:6,r:"I did. Technically. 'Under control' is a generous read of 'not yet dropped,' but I'll take the compliment."}]},
-    {n:"Once the papers are steadied."},
-    {h:"I'm not usually this scattered. I promise I'm generally considered the reliable one."},
-    {c:[{t:"Everyone gets scattered sometimes.",a:12,r:"…Maybe. I don't get scattered often, though. I don't love how it feels."},{t:"Reliable people don't usually say that about themselves.",a:6,r:"…Huh. That's fair. I suppose reliable people also don't get caught mid-collapse in a hallway."},{t:"Could've fooled me.",a:-6,r:"…I'll take that as further evidence, then.",rn:"a small, wry not-quite-smile — she's not offended, just filing it away"}]},
-    {h:"Anyway. I should get these back to the office before someone reports a math TA missing, presumed buried under paperwork."},
-    {c:[{t:"Good luck out there.",a:6,r:"Thank you. I may need it more than the students do."},{t:"I hope the rest of your day is less chaotic.",a:12,r:"…That's kind. I appreciate that more than you'd think."}]}
-   ]}
+ "Ha-yoon": {
+  "Greywater University": [
+   {
+    "s": [
+     {
+      "h": "Oh — hello. You found the quiet floor. Most people give up two flights down. …I have a plant up here I'm not technically allowed to have, so if you're library security, I've never seen it before in my life."
+     },
+     {
+      "c": [
+       {
+        "t": "Your secret's safe with me.",
+        "a": 12,
+        "r": "…Thank you. Her name is Pythagoras. She's judging my proof. Fairly, I think."
+       },
+       {
+        "t": "Noted. I'll pretend I didn't see a thing.",
+        "a": 6,
+        "r": "A professional. I appreciate someone who doesn't need the whole backstory."
+       }
+      ]
+     },
+     {
+      "h": "I'm supposed to prove something is true for all n. It's true for the first thousand. It refuses to admit it's true for the rest. Stubborn."
+     },
+     {
+      "c": [
+       {
+        "t": "What happens when it finally clicks?",
+        "a": 12,
+        "r": "…You want to know? It's — the best feeling there is. Cleaner than almost anything. I'll stop before I embarrass myself."
+       },
+       {
+        "t": "Sounds like the kind of thing that'd drive me insane.",
+        "a": 6,
+        "r": "It does. Regularly. I've made my peace with the insanity. Mostly."
+       },
+       {
+        "t": "Isn't there an easier way to prove it?",
+        "a": -6,
+        "r": "…Probably. There usually is. I like this way. It's not really about easy.",
+        "rn": "she doesn't leave — just goes back to the page, a little more guarded than before"
+       }
+      ]
+     },
+     {
+      "h": "Sorry — I get like this about it. Talkative. It's not usually a good look, apparently."
+     },
+     {
+      "c": [
+       {
+        "t": "I don't mind. Keep going.",
+        "a": 12,
+        "r": "…Oh. Okay. I will hold you to that, then. Fair warning."
+       },
+       {
+        "t": "It's a good look on you, actually.",
+        "a": 6,
+        "r": "…That's — a strange thing to say about someone doing math badly out loud. But. Thank you."
+       }
+      ]
+     },
+     {
+      "h": "The proof still isn't going to solve itself. But it's a little more bearable with the room not being completely silent. …Feel free to come back, if the quiet floor treats you well."
+     }
+    ]
+   },
+   {
+    "s": [
+     {
+      "n": "Ha-yoon comes hurrying down the hall, arms full of a stack of returned exams, and nearly loses the whole pile rounding the corner."
+     },
+     {
+      "h": "Oh — sorry. Occupational hazard of being both a student and a TA's least reliable helper."
+     },
+     {
+      "c": [
+       {
+        "t": "Let me grab a few of those.",
+        "a": 12,
+        "r": "…Oh. You don't have to. But — thank you. This section always overloads on the same day the professor decides to hand back midterms."
+       },
+       {
+        "t": "You looked like you had it under control.",
+        "a": 6,
+        "r": "I did. Technically. 'Under control' is a generous read of 'not yet dropped,' but I'll take the compliment."
+       }
+      ]
+     },
+     {
+      "n": "Once the papers are steadied."
+     },
+     {
+      "h": "I'm not usually this scattered. I promise I'm generally considered the reliable one."
+     },
+     {
+      "c": [
+       {
+        "t": "Everyone gets scattered sometimes.",
+        "a": 12,
+        "r": "…Maybe. I don't get scattered often, though. I don't love how it feels."
+       },
+       {
+        "t": "Reliable people don't usually say that about themselves.",
+        "a": 6,
+        "r": "…Huh. That's fair. I suppose reliable people also don't get caught mid-collapse in a hallway."
+       },
+       {
+        "t": "Could've fooled me.",
+        "a": -6,
+        "r": "…I'll take that as further evidence, then.",
+        "rn": "a small, wry not-quite-smile — she's not offended, just filing it away"
+       }
+      ]
+     },
+     {
+      "h": "Anyway. I should get these back to the office before someone reports a math TA missing, presumed buried under paperwork."
+     },
+     {
+      "c": [
+       {
+        "t": "Good luck out there.",
+        "a": 6,
+        "r": "Thank you. I may need it more than the students do."
+       },
+       {
+        "t": "I hope the rest of your day is less chaotic.",
+        "a": 12,
+        "r": "…That's kind. I appreciate that more than you'd think."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "hearts": 1,
+    "s": [
+     {
+      "n": "Ha-yoon waves him over to her table without hesitation, an actual empty chair already pulled out."
+     },
+     {
+      "h": "I saved you a seat. I don't usually do that. Consider it noted, and don't make it weird."
+     },
+     {
+      "c": [
+       {
+        "t": "Wouldn't dream of it.",
+        "a": 6,
+        "r": "Good. Sit. I have a proof I want a second opinion on, and you're apparently my second opinion now."
+       },
+       {
+        "t": "I'm honored, genuinely.",
+        "a": 12,
+        "r": "...Don't be dramatic about it. But — thank you. It's nice having someone specific to save it for."
+       }
+      ]
+     },
+     {
+      "h": "I told my roommates about you. Not — not like that. Just that there's someone I talk to on the quiet floor now. Maya has opinions. Many opinions."
+     },
+     {
+      "c": [
+       {
+        "t": "What kind of opinions?",
+        "a": 12,
+        "r": "The loud, theorizing kind. I'm choosing not to repeat most of them. Some things are better left in the dorm."
+       },
+       {
+        "t": "Should I be worried?",
+        "a": 6,
+        "r": "Only mildly. Maya's harmless. Mostly."
+       }
+      ]
+     },
+     {
+      "h": "Anyway. I have forty minutes before my next class and a proof that refuses to cooperate. Stay and suffer through it with me?"
+     },
+     {
+      "c": [
+       {
+        "t": "Wouldn't miss it.",
+        "a": 12,
+        "r": "Good. Misery loves a witness."
+       },
+       {
+        "t": "I'll stay.",
+        "a": 6,
+        "r": "Appreciated. Try to look interested, even if you're not."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "hearts": 1,
+    "s": [
+     {
+      "n": "Ha-yoon catches him in the hallway, actually stops instead of just nodding and continuing on."
+     },
+     {
+      "h": "Oh — good. I was hoping I'd run into you today. I had a strange thought I wanted to say out loud before I talked myself out of it."
+     },
+     {
+      "c": [
+       {
+        "t": "I'm listening.",
+        "a": 12,
+        "r": "...Okay. It's small. I just realized I look forward to seeing you around campus more than I look forward to most of my actual classes. That's the whole thought. I'm slightly embarrassed by it now that it's out."
+       },
+       {
+        "t": "Now I'm curious.",
+        "a": 6,
+        "r": "You should be. It's not a big thing. Just an honest one."
+       }
+      ]
+     },
+     {
+      "h": "I don't usually say things like that. Out loud, I mean. I have a whole internal committee that reviews sentences before they're allowed to leave my mouth. This one got through anyway."
+     },
+     {
+      "c": [
+       {
+        "t": "I'm glad it got past the committee.",
+        "a": 12,
+        "r": "Me too, apparently. The committee is reconsidering its policies."
+       },
+       {
+        "t": "Sounds like a strict committee.",
+        "a": 6,
+        "r": "You have no idea. It's exhausting being on it."
+       }
+      ]
+     },
+     {
+      "h": "I should get to class before I say something else the committee didn't approve. …But I meant it. The looking forward part."
+     }
+    ]
+   }
   ],
-  'Dorms':[
-   {s:[
-    {n:"Ha-yoon cracks the door open a few inches, a half-eaten granola bar in hand."},
-    {h:"Oh. Sorry — I thought you were my roommate coming back for the fifth time to ask if she left her charger here. She did. It's always the charger."},
-    {c:[{t:"Sounds like a very consistent roommate.",a:6,r:"Consistent is one word for it. I've started keeping a spare charger just for these visits."},{t:"Bad timing — I can come back.",a:12,r:"No, it's fine. Honestly the interruption's a decent excuse to stop staring at the same paragraph."}]},
-    {h:"This dorm is small enough that privacy is more of a theoretical concept than a practical one. You get used to it. Mostly."},
-    {c:[{t:"That sounds exhausting, honestly.",a:6,r:"It has its moments. Also its upsides — nobody around here lets you disappear for long, whether you want to or not."},{t:"Sounds like it keeps things lively, at least.",a:12,r:"It does. Relentlessly. I've stopped fighting it."},{t:"I'd hate that.",a:-6,r:"…Fair. It's not for everyone. I didn't expect to get used to it either.",rn:"a small shrug — not defensive, just honest"}]},
-    {h:"Anyway — I should get back to actually reading this paragraph instead of just looking at it. It's not going to absorb by proximity, unfortunately."},
-    {c:[{t:"Good luck with it.",a:6,r:"Thank you. I'll need it — apparently proximity-absorption isn't a real study method."},{t:"Let me know if proximity-absorption ever works.",a:12,r:"…If it does, I'm patenting it immediately and never reading a textbook again."}]}
-   ]},
-   {s:[
-    {n:"Ha-yoon sits cross-legged on the floor of the common room, a mug balanced precariously on her knee, surrounded by color-coded index cards."},
-    {h:"If you're looking for a chair, I've unfortunately annexed most of the furniture for this. Strategic planning purposes."},
-    {c:[{t:"What's the strategy for?",a:12,r:"Reorganizing an entire semester's notes by topic instead of by date. It's either going to save me hours later or be a complete waste of an afternoon. Statistically, I like my odds."},{t:"Looks pretty intense for a common room activity.",a:6,r:"It is a bit much for shared space, admittedly. Nobody's complained yet, though I suspect that's just Midwestern politeness from my roommate's side of the room."}]},
-    {h:"I like having a system, even if the system occasionally takes longer to build than it saves. There's something calming about it."},
-    {c:[{t:"That makes sense to me.",a:12,r:"…Good. I was half-expecting you to tell me it sounds excessive. Most people do."},{t:"Sounds like the process is the point, not the result.",a:6,r:"…That's a more generous read than I usually give myself. But maybe. Yes."},{t:"Seems like a lot of effort for index cards.",a:-6,r:"…Maybe. It works for me, though.",rn:"she goes back to sorting, a little quieter, but doesn't ask you to leave"}]},
-    {h:"I should probably let you have the chair back eventually. Emphasis on 'eventually.' No promises on the timeline."},
-    {c:[{t:"Take your time.",a:6,r:"Appreciated. I'll try not to abuse the privilege too badly."},{t:"I'll hold you to 'eventually.'",a:12,r:"…Fair enough. I did say it like a warning, didn't I."}]}
-   ]}
+  "Dorms": [
+   {
+    "s": [
+     {
+      "n": "Ha-yoon cracks the door open a few inches, a half-eaten granola bar in hand."
+     },
+     {
+      "h": "Oh. Sorry — I thought you were my roommate coming back for the fifth time to ask if she left her charger here. She did. It's always the charger."
+     },
+     {
+      "c": [
+       {
+        "t": "Sounds like a very consistent roommate.",
+        "a": 6,
+        "r": "Consistent is one word for it. I've started keeping a spare charger just for these visits."
+       },
+       {
+        "t": "Bad timing — I can come back.",
+        "a": 12,
+        "r": "No, it's fine. Honestly the interruption's a decent excuse to stop staring at the same paragraph."
+       }
+      ]
+     },
+     {
+      "h": "This dorm is small enough that privacy is more of a theoretical concept than a practical one. You get used to it. Mostly."
+     },
+     {
+      "c": [
+       {
+        "t": "That sounds exhausting, honestly.",
+        "a": 6,
+        "r": "It has its moments. Also its upsides — nobody around here lets you disappear for long, whether you want to or not."
+       },
+       {
+        "t": "Sounds like it keeps things lively, at least.",
+        "a": 12,
+        "r": "It does. Relentlessly. I've stopped fighting it."
+       },
+       {
+        "t": "I'd hate that.",
+        "a": -6,
+        "r": "…Fair. It's not for everyone. I didn't expect to get used to it either.",
+        "rn": "a small shrug — not defensive, just honest"
+       }
+      ]
+     },
+     {
+      "h": "Anyway — I should get back to actually reading this paragraph instead of just looking at it. It's not going to absorb by proximity, unfortunately."
+     },
+     {
+      "c": [
+       {
+        "t": "Good luck with it.",
+        "a": 6,
+        "r": "Thank you. I'll need it — apparently proximity-absorption isn't a real study method."
+       },
+       {
+        "t": "Let me know if proximity-absorption ever works.",
+        "a": 12,
+        "r": "…If it does, I'm patenting it immediately and never reading a textbook again."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "s": [
+     {
+      "n": "Ha-yoon sits cross-legged on the floor of the common room, a mug balanced precariously on her knee, surrounded by color-coded index cards."
+     },
+     {
+      "h": "If you're looking for a chair, I've unfortunately annexed most of the furniture for this. Strategic planning purposes."
+     },
+     {
+      "c": [
+       {
+        "t": "What's the strategy for?",
+        "a": 12,
+        "r": "Reorganizing an entire semester's notes by topic instead of by date. It's either going to save me hours later or be a complete waste of an afternoon. Statistically, I like my odds."
+       },
+       {
+        "t": "Looks pretty intense for a common room activity.",
+        "a": 6,
+        "r": "It is a bit much for shared space, admittedly. Nobody's complained yet, though I suspect that's just Midwestern politeness from my roommate's side of the room."
+       }
+      ]
+     },
+     {
+      "h": "I like having a system, even if the system occasionally takes longer to build than it saves. There's something calming about it."
+     },
+     {
+      "c": [
+       {
+        "t": "That makes sense to me.",
+        "a": 12,
+        "r": "…Good. I was half-expecting you to tell me it sounds excessive. Most people do."
+       },
+       {
+        "t": "Sounds like the process is the point, not the result.",
+        "a": 6,
+        "r": "…That's a more generous read than I usually give myself. But maybe. Yes."
+       },
+       {
+        "t": "Seems like a lot of effort for index cards.",
+        "a": -6,
+        "r": "…Maybe. It works for me, though.",
+        "rn": "she goes back to sorting, a little quieter, but doesn't ask you to leave"
+       }
+      ]
+     },
+     {
+      "h": "I should probably let you have the chair back eventually. Emphasis on 'eventually.' No promises on the timeline."
+     },
+     {
+      "c": [
+       {
+        "t": "Take your time.",
+        "a": 6,
+        "r": "Appreciated. I'll try not to abuse the privilege too badly."
+       },
+       {
+        "t": "I'll hold you to 'eventually.'",
+        "a": 12,
+        "r": "…Fair enough. I did say it like a warning, didn't I."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "hearts": 1,
+    "s": [
+     {
+      "n": "Ha-yoon's door is already open, and she waves him in without the usual hesitation."
+     },
+     {
+      "h": "Come in, come in — ignore the mess, Maya's side of the room has achieved a kind of chaos that I've stopped trying to understand scientifically."
+     },
+     {
+      "c": [
+       {
+        "t": "It's not that bad.",
+        "a": 6,
+        "r": "You're being generous. I appreciate it, but you're being generous."
+       },
+       {
+        "t": "Every side of a dorm room has its own ecosystem.",
+        "a": 12,
+        "r": "That's a very diplomatic way to put it. I like that. I'm stealing it for the next time Sarah complains."
+       }
+      ]
+     },
+     {
+      "h": "I've been showing Maya and Sarah your name on my phone screen more than I probably should. They've started asking questions I don't fully have answers for yet."
+     },
+     {
+      "c": [
+       {
+        "t": "What kind of questions?",
+        "a": 12,
+        "r": "The 'so what IS this' kind. I told them I didn't know. That's still true. But I don't mind not knowing, for once."
+       },
+       {
+        "t": "No rush on the answers.",
+        "a": 6,
+        "r": "...Thank you for saying that. I mean it more than the casual tone suggests."
+       }
+      ]
+     },
+     {
+      "h": "Stay a while, if you want. I don't have anywhere to be for a couple hours, which is a rare enough occurrence that I'd like to actually enjoy it."
+     },
+     {
+      "c": [
+       {
+        "t": "I'd like that.",
+        "a": 12,
+        "r": "Good. I'll try not to talk exclusively about proofs. No promises, though."
+       },
+       {
+        "t": "Sounds good to me.",
+        "a": 6,
+        "r": "Good. Sit wherever doesn't have Maya's stuff on it. Good luck finding that spot."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "hearts": 1,
+    "s": [
+     {
+      "n": "Ha-yoon sits on the floor against her bed, notebook closed for once, just looking up as he comes in."
+     },
+     {
+      "h": "I wasn't doing anything productive. I was just thinking. Which, for me, is unusual enough to mention."
+     },
+     {
+      "c": [
+       {
+        "t": "What about?",
+        "a": 12,
+        "r": "You, actually. Nothing dramatic — just replaying a conversation we had earlier and smiling at my desk like an idiot. Maya caught me. It was mortifying."
+       },
+       {
+        "t": "Good thoughts, I hope.",
+        "a": 6,
+        "r": "Good enough that I got caught smiling about them. So, yes."
+       }
+      ]
+     },
+     {
+      "h": "I don't usually let myself be unproductive on purpose. It feels like I'm breaking a rule nobody actually wrote down. But I've been doing it more since I met you. I'm still deciding how I feel about that."
+     },
+     {
+      "c": [
+       {
+        "t": "I hope you decide it's a good thing.",
+        "a": 12,
+        "r": "...I think I already have. I just like saying it out loud less than I like knowing it."
+       },
+       {
+        "t": "Rules you make up can be broken.",
+        "a": 6,
+        "r": "A very convenient philosophy. I might adopt it more broadly."
+       }
+      ]
+     },
+     {
+      "h": "Anyway. Come sit. The floor's surprisingly comfortable once you accept that the chair situation in this room is a lost cause."
+     }
+    ]
+   }
   ],
-  'Driftwood Park':[
-   {s:[
-    {n:"Ha-yoon sits on a bench with a takeout coffee, watching a dog chase a stick with more enthusiasm than success."},
-    {h:"I come here when the library starts to feel like it's closing in. Turns out grass is a reasonably effective antidote."},
-    {c:[{t:"Grass is underrated.",a:12,r:"It is. Nobody expects a proof from grass. Refreshing."},{t:"What's got the library closing in today?",a:6,r:"Nothing dramatic. Just the usual — too many hours, not enough progress to show for them. The grass doesn't ask for progress. I like that about it."}]},
-    {h:"I give myself a set amount of time out here before I have to go back. It's a very controlled sort of relaxing, admittedly."},
-    {c:[{t:"Controlled relaxing still counts.",a:12,r:"I've decided to believe that too. Glad someone else agrees."},{t:"That sounds like the opposite of relaxing.",a:6,r:"Maybe. But the alternative is not relaxing at all, so I'll take what I can get."},{t:"Sounds like you can't actually switch off.",a:-6,r:"…Probably true. I'm working on it. Slowly.",rn:"she doesn't defend it further, just watches the dog for a moment longer than necessary"}]},
-    {h:"My time's about up, unfortunately. Back to it. …The bench isn't going anywhere, if you ever need somewhere to sit and not think about anything in particular."},
-    {c:[{t:"I might take you up on that.",a:6,r:"I'd like that, actually."},{t:"I'll remember the bench.",a:12,r:"Good. It's a good bench. Underrated, like the grass."}]}
-   ]},
-   {s:[
-    {n:"Ha-yoon is crouched near a flowerbed at the edge of the path, gently checking the soil around a cluster of winter pansies with obvious, focused care."},
-    {h:"Sorry — I'll move. I just noticed these looked a little dry and got distracted. Occupational hazard of having a balcony full of plants with opinions."},
-    {c:[{t:"Don't let me interrupt. What kind of opinions?",a:12,r:"Mostly about water. My basil thinks it deserves more than the mint. The mint disagrees, aggressively."},{t:"You garden?",a:6,r:"A little. Badly, some would say. I'd say 'ambitiously.'"}]},
-    {h:"It's not something I'm particularly good at, technically speaking. But it's nice to have one thing that doesn't require being good at it."},
-    {c:[{t:"That's a nice way to think about a hobby.",a:12,r:"I've decided it has to be, or I'd have given up on the tomato plant months ago."},{t:"Everyone should have something like that.",a:6,r:"Agreed. Mine's just unusually easy to accidentally kill."},{t:"Seems like a strange thing to get attached to.",a:-6,r:"Maybe. I still check on them daily, though.",rn:"she straightens up, brushing dirt off her hands, a little more reserved than a moment ago — but still there"}]},
-    {h:"I should get back before I start diagnosing every plant in this park instead of just the ones on my balcony. There's a real risk of that happening."},
-    {c:[{t:"A worthy risk, honestly.",a:6,r:"I appreciate the validation. Not everyone would agree."},{t:"Good luck keeping the mint in line.",a:12,r:"…I'll need it. That plant has ambitions I can't fully account for."}]}
-   ]}
+  "Driftwood Park": [
+   {
+    "s": [
+     {
+      "n": "Ha-yoon sits on a bench with a takeout coffee, watching a dog chase a stick with more enthusiasm than success."
+     },
+     {
+      "h": "I come here when the library starts to feel like it's closing in. Turns out grass is a reasonably effective antidote."
+     },
+     {
+      "c": [
+       {
+        "t": "Grass is underrated.",
+        "a": 12,
+        "r": "It is. Nobody expects a proof from grass. Refreshing."
+       },
+       {
+        "t": "What's got the library closing in today?",
+        "a": 6,
+        "r": "Nothing dramatic. Just the usual — too many hours, not enough progress to show for them. The grass doesn't ask for progress. I like that about it."
+       }
+      ]
+     },
+     {
+      "h": "I give myself a set amount of time out here before I have to go back. It's a very controlled sort of relaxing, admittedly."
+     },
+     {
+      "c": [
+       {
+        "t": "Controlled relaxing still counts.",
+        "a": 12,
+        "r": "I've decided to believe that too. Glad someone else agrees."
+       },
+       {
+        "t": "That sounds like the opposite of relaxing.",
+        "a": 6,
+        "r": "Maybe. But the alternative is not relaxing at all, so I'll take what I can get."
+       },
+       {
+        "t": "Sounds like you can't actually switch off.",
+        "a": -6,
+        "r": "…Probably true. I'm working on it. Slowly.",
+        "rn": "she doesn't defend it further, just watches the dog for a moment longer than necessary"
+       }
+      ]
+     },
+     {
+      "h": "My time's about up, unfortunately. Back to it. …The bench isn't going anywhere, if you ever need somewhere to sit and not think about anything in particular."
+     },
+     {
+      "c": [
+       {
+        "t": "I might take you up on that.",
+        "a": 6,
+        "r": "I'd like that, actually."
+       },
+       {
+        "t": "I'll remember the bench.",
+        "a": 12,
+        "r": "Good. It's a good bench. Underrated, like the grass."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "s": [
+     {
+      "n": "Ha-yoon is crouched near a flowerbed at the edge of the path, gently checking the soil around a cluster of winter pansies with obvious, focused care."
+     },
+     {
+      "h": "Sorry — I'll move. I just noticed these looked a little dry and got distracted. Occupational hazard of having a balcony full of plants with opinions."
+     },
+     {
+      "c": [
+       {
+        "t": "Don't let me interrupt. What kind of opinions?",
+        "a": 12,
+        "r": "Mostly about water. My basil thinks it deserves more than the mint. The mint disagrees, aggressively."
+       },
+       {
+        "t": "You garden?",
+        "a": 6,
+        "r": "A little. Badly, some would say. I'd say 'ambitiously.'"
+       }
+      ]
+     },
+     {
+      "h": "It's not something I'm particularly good at, technically speaking. But it's nice to have one thing that doesn't require being good at it."
+     },
+     {
+      "c": [
+       {
+        "t": "That's a nice way to think about a hobby.",
+        "a": 12,
+        "r": "I've decided it has to be, or I'd have given up on the tomato plant months ago."
+       },
+       {
+        "t": "Everyone should have something like that.",
+        "a": 6,
+        "r": "Agreed. Mine's just unusually easy to accidentally kill."
+       },
+       {
+        "t": "Seems like a strange thing to get attached to.",
+        "a": -6,
+        "r": "Maybe. I still check on them daily, though.",
+        "rn": "she straightens up, brushing dirt off her hands, a little more reserved than a moment ago — but still there"
+       }
+      ]
+     },
+     {
+      "h": "I should get back before I start diagnosing every plant in this park instead of just the ones on my balcony. There's a real risk of that happening."
+     },
+     {
+      "c": [
+       {
+        "t": "A worthy risk, honestly.",
+        "a": 6,
+        "r": "I appreciate the validation. Not everyone would agree."
+       },
+       {
+        "t": "Good luck keeping the mint in line.",
+        "a": 12,
+        "r": "…I'll need it. That plant has ambitions I can't fully account for."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "hearts": 1,
+    "s": [
+     {
+      "n": "Ha-yoon is already sitting on 'her' bench, scooting over without being asked."
+     },
+     {
+      "h": "I saved you room this time. Consider it a pattern forming."
+     },
+     {
+      "c": [
+       {
+        "t": "I like the pattern.",
+        "a": 12,
+        "r": "Good. I was hoping you would. I don't start patterns with just anyone."
+       },
+       {
+        "t": "A pattern I'm happy to be part of.",
+        "a": 6,
+        "r": "...Good answer. Sit down before I overthink having said that."
+       }
+      ]
+     },
+     {
+      "h": "I've been thinking about the garden more since I mentioned it. I looked up the hours twice this week. That's progress, I think. Small, but real."
+     },
+     {
+      "c": [
+       {
+        "t": "That's real progress.",
+        "a": 12,
+        "r": "I think so too. It's strange how much easier it is to want something once you've said it out loud to someone."
+       },
+       {
+        "t": "What's stopping you from just going?",
+        "a": 6,
+        "r": "Nothing, technically. Just the usual — the fear finding new excuses to dress itself up as logic."
+       }
+      ]
+     },
+     {
+      "h": "Anyway. I don't want to make every conversation about the garden. Tell me something about your week. I've been doing all the talking lately, and I've noticed."
+     }
+    ]
+   },
+   {
+    "hearts": 1,
+    "s": [
+     {
+      "n": "Ha-yoon watches the water rather than looking at him directly, voice a little quieter than usual."
+     },
+     {
+      "h": "Can I tell you something I don't usually admit? I like these ordinary moments more than the big ones. The gallery was wonderful. But this — a bench, nothing happening — this is the part I actually think about afterward."
+     },
+     {
+      "c": [
+       {
+        "t": "I feel the same way.",
+        "a": 12,
+        "r": "...Good. I was hoping I wasn't the only one. It felt like a strange thing to prefer."
+       },
+       {
+        "t": "The ordinary moments count too.",
+        "a": 6,
+        "r": "I've decided they might count more, actually. I'm still working out why."
+       }
+      ]
+     },
+     {
+      "h": "I used to think a life had to be full of big, impressive things to be worth anything. I'm starting to suspect that's not entirely true. Or maybe I just needed someone to sit on a bench with before I could notice the difference."
+     },
+     {
+      "c": [
+       {
+        "t": "Maybe both are true.",
+        "a": 12,
+        "r": "Probably. I like that answer. It doesn't try too hard to be tidy."
+       },
+       {
+        "t": "You're allowed to change your mind about that.",
+        "a": 6,
+        "r": "I'm working on believing that. Slowly."
+       }
+      ]
+     },
+     {
+      "h": "The wind's picking up. We should probably head back before it decides to actually rain. …I'm glad you were here for this, though. The ordinary part."
+     }
+    ]
+   }
   ]
  },
- 'Ari':{
-  'Greywater Commons':[
-   {s:[
-    {n:"Ari is hunched over a bag of clearance ribbon like it personally wronged her."},
-    {h:"okay don't judge me, I have a costume deadline and seven yards of the wrong-color satin. this is a whole crisis. a glamorous one."},
-    {c:[{t:"What's the costume?",a:12,r:"ok you asked — no, I'll spare you, it's a whole lore thing. but the fact that you asked? noted."},{t:"Seven yards of chaos, respect.",a:6,r:"RIGHT. chaos is the medium. glue gun's the brush."}]},
-    {h:"people think this is just buying clothes. it's engineering. I did more geometry for one bodice than in all of high school."},
-    {c:[{t:"That's genuinely impressive craft.",a:12,r:"...okay you can't just SAY things like that, give me a second. ...thanks. that landed weird and good."},{t:"Sounds like a lot of effort for a costume.",a:-6,r:"sure. a lot of effort. cool.",rn:"she keeps digging through the ribbon bin, a little quieter, but doesn't leave"}]},
-    {h:"okay I need four more colors and a miracle. good talking to you, wish me luck against the fabric store."},
-    {c:[{t:"Good luck out there.",a:6,r:"I'll need it. pray for my card statement."},{t:"You've got this.",a:12,r:"obviously. but thanks for the vote of confidence anyway."}]}
-   ]},
-   {s:[
-    {n:"Ari stands very still in front of the pet store window, absolutely transfixed."},
-    {h:"okay don't say anything. I'm just looking. this is a look-only excursion."},
-    {c:[{t:"What are we looking at?",a:12,r:"there's a cat backpack. WITH a little window. I have no defense, I just needed you to know it exists."},{t:"'Look-only' rarely holds, does it.",a:6,r:"it's a personal myth I maintain. we both know how it ends."}]},
-    {h:"I do this when I need to reset, honestly. Come look at soft dumb things I don't need. very healthy coping mechanism, probably."},
-    {c:[{t:"Whatever works, that's not nothing.",a:12,r:"yeah. everyone assumes I'm always 'on' — turns out the off switch is a store full of cat merch."},{t:"Sounds like avoiding your problems.",a:-6,r:"okay doctor. it's a backpack, not a whole diagnosis.",rn:"she says it lightly, already moving to the next window, not actually rattled"}]},
-    {h:"okay the backpack and I need to part ways before I do something reckless. see you around — come menace a store with me again sometime."},
-    {c:[{t:"Anytime.",a:6,r:"noted. I'm holding you to that."},{t:"Wouldn't miss it.",a:12,r:"good answer. very good answer."}]}
-   ]}
+ "Ari": {
+  "Greywater Commons": [
+   {
+    "s": [
+     {
+      "n": "Ari is hunched over a bag of clearance ribbon like it personally wronged her."
+     },
+     {
+      "h": "okay don't judge me, I have a costume deadline and seven yards of the wrong-color satin. this is a whole crisis. a glamorous one."
+     },
+     {
+      "c": [
+       {
+        "t": "What's the costume?",
+        "a": 12,
+        "r": "ok you asked — no, I'll spare you, it's a whole lore thing. but the fact that you asked? noted."
+       },
+       {
+        "t": "Seven yards of chaos, respect.",
+        "a": 6,
+        "r": "RIGHT. chaos is the medium. glue gun's the brush."
+       }
+      ]
+     },
+     {
+      "h": "people think this is just buying clothes. it's engineering. I did more geometry for one bodice than in all of high school."
+     },
+     {
+      "c": [
+       {
+        "t": "That's genuinely impressive craft.",
+        "a": 12,
+        "r": "...okay you can't just SAY things like that, give me a second. ...thanks. that landed weird and good."
+       },
+       {
+        "t": "Sounds like a lot of effort for a costume.",
+        "a": -6,
+        "r": "sure. a lot of effort. cool.",
+        "rn": "she keeps digging through the ribbon bin, a little quieter, but doesn't leave"
+       }
+      ]
+     },
+     {
+      "h": "okay I need four more colors and a miracle. good talking to you, wish me luck against the fabric store."
+     },
+     {
+      "c": [
+       {
+        "t": "Good luck out there.",
+        "a": 6,
+        "r": "I'll need it. pray for my card statement."
+       },
+       {
+        "t": "You've got this.",
+        "a": 12,
+        "r": "obviously. but thanks for the vote of confidence anyway."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "s": [
+     {
+      "n": "Ari stands very still in front of the pet store window, absolutely transfixed."
+     },
+     {
+      "h": "okay don't say anything. I'm just looking. this is a look-only excursion."
+     },
+     {
+      "c": [
+       {
+        "t": "What are we looking at?",
+        "a": 12,
+        "r": "there's a cat backpack. WITH a little window. I have no defense, I just needed you to know it exists."
+       },
+       {
+        "t": "'Look-only' rarely holds, does it.",
+        "a": 6,
+        "r": "it's a personal myth I maintain. we both know how it ends."
+       }
+      ]
+     },
+     {
+      "h": "I do this when I need to reset, honestly. Come look at soft dumb things I don't need. very healthy coping mechanism, probably."
+     },
+     {
+      "c": [
+       {
+        "t": "Whatever works, that's not nothing.",
+        "a": 12,
+        "r": "yeah. everyone assumes I'm always 'on' — turns out the off switch is a store full of cat merch."
+       },
+       {
+        "t": "Sounds like avoiding your problems.",
+        "a": -6,
+        "r": "okay doctor. it's a backpack, not a whole diagnosis.",
+        "rn": "she says it lightly, already moving to the next window, not actually rattled"
+       }
+      ]
+     },
+     {
+      "h": "okay the backpack and I need to part ways before I do something reckless. see you around — come menace a store with me again sometime."
+     },
+     {
+      "c": [
+       {
+        "t": "Anytime.",
+        "a": 6,
+        "r": "noted. I'm holding you to that."
+       },
+       {
+        "t": "Wouldn't miss it.",
+        "a": 12,
+        "r": "good answer. very good answer."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "hearts": 1,
+    "s": [
+     {
+      "n": "Ari spots him first, actually waves instead of just launching into a bit."
+     },
+     {
+      "h": "hey! okay this is weird, I was hoping I'd run into you today, which is a sentence I don't say a lot, so, historic moment, mark your calendar."
+     },
+     {
+      "c": [
+       {
+        "t": "Historic moment noted.",
+        "a": 12,
+        "r": "good. I'm gonna need witnesses for this later, nobody's gonna believe I said something sincere without immediately following it with a joke."
+       },
+       {
+        "t": "Why were you hoping that?",
+        "a": 6,
+        "r": "no reason. several reasons. I'm choosing to be mysterious about it, deal with it."
+       }
+      ]
+     },
+     {
+      "h": "okay actual reason: I wanted to show you something and I didn't want an audience of a thousand strangers for it."
+     },
+     {
+      "n": "She pulls up a sketch on her phone — early concept art for a costume, unfinished, clearly personal."
+     },
+     {
+      "h": "this is dumb, ignore it, I don't know why I'm showing you."
+     },
+     {
+      "c": [
+       {
+        "t": "This is really good, Ari.",
+        "a": 12,
+        "r": "...okay you can't just SAY that, I don't have a bit ready, give me a second to recover from being sincerely complimented."
+       },
+       {
+        "t": "Why'd you want to show me specifically?",
+        "a": 6,
+        "r": "because you don't just say 'cool' and scroll away. you actually look. that's rarer than you'd think."
+       }
+      ]
+     },
+     {
+      "h": "okay anyway, moving on before I say something else embarrassing. you wanna get food or are you just gonna stand there being a good audience member?"
+     }
+    ]
+   },
+   {
+    "hearts": 1,
+    "s": [
+     {
+      "n": "Ari sits on a bench, phone face-down for once instead of mid-scroll."
+     },
+     {
+      "h": "okay don't make this weird but I've been thinking about you. like, an above-average amount. I'm choosing radical honesty today, apparently."
+     },
+     {
+      "c": [
+       {
+        "t": "I've been thinking about you too.",
+        "a": 12,
+        "r": "...okay THAT was not the response I prepared a joke for. give me a second, I need to recalibrate my whole plan."
+       },
+       {
+        "t": "Radical honesty, huh? Bold choice.",
+        "a": 6,
+        "r": "terrifying choice, actually. I don't recommend it. 10/10 do not repeat."
+       }
+      ]
+     },
+     {
+      "h": "I don't usually say the quiet-thoughts version out loud. the loud version's safer, it's got jokes built in as a landing pad. this one didn't have a landing pad. kind of scary, actually."
+     },
+     {
+      "c": [
+       {
+        "t": "You don't need a landing pad with me.",
+        "a": 12,
+        "r": "...okay, filing that away for later, that's a very good sentence and I'm gonna think about it at 3am probably."
+       },
+       {
+        "t": "I like the version without the landing pad.",
+        "a": 6,
+        "r": "noted. dangerous information. I'm gonna need a minute."
+       }
+      ]
+     },
+     {
+      "h": "okay, sincerity quota met for the day, I need a snack and a subject change before I combust. come on."
+     }
+    ]
+   }
   ],
-  'Fox & Fern':[
-   {s:[
-    {n:"Ari is tucked into a corner table, visibly out of her usual gear."},
-    {h:"oh — hi. didn't expect a face I know somewhere this quiet. I'm hiding. the internet's loud today and this place doesn't have wifi, which is basically a spa."},
-    {c:[{t:"A wifi-free spa. Genius.",a:12,r:"RIGHT? nobody can @ me in here. Lumière doesn't even know what an @ is. king behavior."},{t:"Hiding from the internet, respectable.",a:6,r:"it's self-care. or cowardice. the line's blurry."}]},
-    {h:"it's weird being quiet. online I'm at max volume, here I'm just a person drinking coffee badly. spilled twice already."},
-    {c:[{t:"The quiet version's good too.",a:12,r:"...you think so? nobody really sees that one. thanks. that landed weird and good."},{t:"Bet the loud version's more fun, though.",a:-6,r:"probably, yeah. anyway.",rn:"a small shrug, she goes back to her coffee — not upset, just a little deflated"}]},
-    {h:"caffeine's wearing off and so's my ability to be a functional human. this was nice, though. quiet-you and quiet-me should do more nothing sometime."},
-    {c:[{t:"Sounds good to me.",a:6,r:"cool. holding you to it."},{t:"Anytime you need the quiet spot.",a:12,r:"...okay, noted, saved, filed under 'good people.'"}]}
-   ]},
-   {s:[
-    {n:"Ari eyes your fries with open, unashamed intent."},
-    {h:"okay new rule: if you get fries near me, socially, a percentage becomes mine. it's the law. I don't make the law. I mean, I do, but still."},
-    {c:[{t:"Take what you want.",a:12,r:"see, THIS is why we're friends already. you get the fry tax."},{t:"You could've just asked.",a:6,r:"asking's for people without the confidence to just take. (already taking one.)"}]},
-    {h:"I text like this too, by the way. you'll get a meme at 3am with zero context. that IS the context. it means 'thinking of you,' deniably."},
-    {c:[{t:"So the memes are secret miss-yous.",a:12,r:"...WOW. you decoded it. rude, that you got there that fast."},{t:"That's a weird way to communicate.",a:-6,r:"yeah, it's a lot, I guess. anyway.",rn:"she pulls back slightly, deflecting into a joke about the fries instead"}]},
-    {h:"the fries are gone and so is my dignity. good thing, though. steal fries with me again sometime — bring backup fries."},
-    {c:[{t:"Deal.",a:6,r:"excellent. I'll hold you to the backup fries specifically."},{t:"Only if I get my cut.",a:12,r:"look at you, learning the law already."}]}
-   ]}
+  "Fox & Fern": [
+   {
+    "s": [
+     {
+      "n": "Ari is tucked into a corner table, visibly out of her usual gear."
+     },
+     {
+      "h": "oh — hi. didn't expect a face I know somewhere this quiet. I'm hiding. the internet's loud today and this place doesn't have wifi, which is basically a spa."
+     },
+     {
+      "c": [
+       {
+        "t": "A wifi-free spa. Genius.",
+        "a": 12,
+        "r": "RIGHT? nobody can @ me in here. Lumière doesn't even know what an @ is. king behavior."
+       },
+       {
+        "t": "Hiding from the internet, respectable.",
+        "a": 6,
+        "r": "it's self-care. or cowardice. the line's blurry."
+       }
+      ]
+     },
+     {
+      "h": "it's weird being quiet. online I'm at max volume, here I'm just a person drinking coffee badly. spilled twice already."
+     },
+     {
+      "c": [
+       {
+        "t": "The quiet version's good too.",
+        "a": 12,
+        "r": "...you think so? nobody really sees that one. thanks. that landed weird and good."
+       },
+       {
+        "t": "Bet the loud version's more fun, though.",
+        "a": -6,
+        "r": "probably, yeah. anyway.",
+        "rn": "a small shrug, she goes back to her coffee — not upset, just a little deflated"
+       }
+      ]
+     },
+     {
+      "h": "caffeine's wearing off and so's my ability to be a functional human. this was nice, though. quiet-you and quiet-me should do more nothing sometime."
+     },
+     {
+      "c": [
+       {
+        "t": "Sounds good to me.",
+        "a": 6,
+        "r": "cool. holding you to it."
+       },
+       {
+        "t": "Anytime you need the quiet spot.",
+        "a": 12,
+        "r": "...okay, noted, saved, filed under 'good people.'"
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "s": [
+     {
+      "n": "Ari eyes your fries with open, unashamed intent."
+     },
+     {
+      "h": "okay new rule: if you get fries near me, socially, a percentage becomes mine. it's the law. I don't make the law. I mean, I do, but still."
+     },
+     {
+      "c": [
+       {
+        "t": "Take what you want.",
+        "a": 12,
+        "r": "see, THIS is why we're friends already. you get the fry tax."
+       },
+       {
+        "t": "You could've just asked.",
+        "a": 6,
+        "r": "asking's for people without the confidence to just take. (already taking one.)"
+       }
+      ]
+     },
+     {
+      "h": "I text like this too, by the way. you'll get a meme at 3am with zero context. that IS the context. it means 'thinking of you,' deniably."
+     },
+     {
+      "c": [
+       {
+        "t": "So the memes are secret miss-yous.",
+        "a": 12,
+        "r": "...WOW. you decoded it. rude, that you got there that fast."
+       },
+       {
+        "t": "That's a weird way to communicate.",
+        "a": -6,
+        "r": "yeah, it's a lot, I guess. anyway.",
+        "rn": "she pulls back slightly, deflecting into a joke about the fries instead"
+       }
+      ]
+     },
+     {
+      "h": "the fries are gone and so is my dignity. good thing, though. steal fries with me again sometime — bring backup fries."
+     },
+     {
+      "c": [
+       {
+        "t": "Deal.",
+        "a": 6,
+        "r": "excellent. I'll hold you to the backup fries specifically."
+       },
+       {
+        "t": "Only if I get my cut.",
+        "a": 12,
+        "r": "look at you, learning the law already."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "hearts": 1,
+    "s": [
+     {
+      "n": "Ari is already at the corner table, phone actually put away."
+     },
+     {
+      "h": "okay I came here by myself, on purpose, which is new — this is usually a place I end up, not a place I plan for. you're a whole variable in my routine now, weird flex but okay."
+     },
+     {
+      "c": [
+       {
+        "t": "Happy to be a variable.",
+        "a": 12,
+        "r": "a GOOD variable, for the record. the kind that makes the equation better instead of breaking it. I don't know why I just said that, ignore the math metaphor."
+       },
+       {
+        "t": "Didn't mean to disrupt your routine.",
+        "a": 6,
+        "r": "you didn't disrupt it, you improved it, there's a difference, I'm very precise about this."
+       }
+      ]
+     },
+     {
+      "h": "it's nice being quiet-me around you. that version doesn't get a lot of screen time. mostly it just exists for like twenty minutes at a time and then has to go be Ari-dot-exe again."
+     },
+     {
+      "c": [
+       {
+        "t": "I like quiet-you a lot.",
+        "a": 12,
+        "r": "...okay don't SAY things like that in a four-table café, I don't have anywhere to hide my whole face turning red."
+       },
+       {
+        "t": "You don't have to switch back on my account.",
+        "a": 6,
+        "r": "...noted. genuinely. that's a nice thing to hear, actually."
+       }
+      ]
+     },
+     {
+      "h": "okay, caffeine's kicking in and so's my ability to deflect, so let's talk about literally anything else before I say something else real."
+     }
+    ]
+   },
+   {
+    "hearts": 1,
+    "s": [
+     {
+      "n": "Ari nurses a drink, unusually still."
+     },
+     {
+      "h": "can I tell you something and you just... don't make a big deal of it? I need to test if that's actually possible, scientifically."
+     },
+     {
+      "c": [
+       {
+        "t": "I won't make it a big deal.",
+        "a": 12,
+        "r": "okay. sometimes I worry the loud version is the only one people actually like. thanks for not immediately confirming that fear, I guess. small win."
+       },
+       {
+        "t": "You can tell me anything.",
+        "a": 6,
+        "r": "bold offer. I might take you up on more of that than you're prepared for."
+       }
+      ]
+     },
+     {
+      "h": "most people just want the highlight reel. you keep asking for behind-the-scenes footage instead. it's throwing off my whole content strategy, honestly."
+     },
+     {
+      "c": [
+       {
+        "t": "Maybe the behind-the-scenes is better.",
+        "a": 12,
+        "r": "...okay, I don't have a comeback for that one, you just broke my system, congrats."
+       },
+       {
+        "t": "I like both versions of you.",
+        "a": 6,
+        "r": "diplomatic. also, weirdly, exactly what I needed to hear. don't tell anyone I said that."
+       }
+      ]
+     },
+     {
+      "h": "okay, real-talk quota exceeded, I need fries or a distraction or possibly both immediately."
+     }
+    ]
+   }
   ],
-  'Convention Center':[
-   {s:[
-    {n:"Ari is mid-costume, phone already up filming something."},
-    {h:"okay you found me on the floor — this is my Rome. I've been recognized four times and it's not even noon. best day."},
-    {c:[{t:"The costume looks incredible.",a:12,r:"the COSTUME, thank you, specificity, I respect it. thirty hours in this bodice and someone noticed."},{t:"This is chaos and I love it for you.",a:6,r:"chaos is my love language. you're keeping up admirably. drink water."}]},
-    {h:"someone asked to photograph it earlier and my brain went 'they see the work' and immediately after 'they'll find every flaw.' both, at once. that's cosplay, baby."},
-    {c:[{t:"The work shows. Genuinely.",a:12,r:"...okay you keep doing that, the sincerity-ambush thing. I'm defenseless. thank you."},{t:"I doubt anyone can tell the difference anyway.",a:-6,r:"they can. I can. that's the whole thing.",rn:"she says it flatly, then pivots back to the crowd, still friendly, just a beat quieter"}]},
-    {h:"duty calls, the people demand selfies and I am but a humble icon. find me later — I'm better company once the adrenaline wears off. slightly."},
-    {c:[{t:"I'll find you.",a:6,r:"good. don't make me come looking."},{t:"Wouldn't miss it.",a:12,r:"...okay, noted. see you in a bit."}]}
-   ]},
-   {s:[
-    {n:"Ari is slumped against a wall, panel finally over, badge askew."},
-    {h:"okay the panel's DONE and I said maybe four normal-person sentences and thirty jokes, so — success. adrenaline's crashing. I'm about to be a real person for nine minutes."},
-    {c:[{t:"I'll take the nine minutes.",a:12,r:"aw, okay. clock's running. it's nice, actually, sitting with someone who isn't a camera."},{t:"You crushed it up there.",a:6,r:"did I? it's a blur of me talking too fast. but thanks, I'll believe you over my memory."}]},
-    {h:"you wanna know a secret? I get stage fright. ME. right before I go on I'm SO sure everyone's about to realize I'm a fraud in a wig. then I go out and I'm fine. every time."},
-    {c:[{t:"You're not a fraud. You're just brave in a wig.",a:12,r:"...brave in a wig. putting that on my business cards. that helped more than it should've."},{t:"Maybe you're not cut out for the spotlight.",a:-6,r:"wow. okay. I do this every weekend, so — no. I need water.",rn:"she says it with a short laugh, more surprised than hurt, and doesn't actually leave"}]},
-    {h:"nine minutes are up, gotta go be a phenomenon again. save me a seat in the quiet later?"},
-    {c:[{t:"Always.",a:6,r:"good. don't forget."},{t:"Count on it.",a:12,r:"...okay. that's a nice thing to hear before going back out there."}]}
-   ]}
+  "Convention Center": [
+   {
+    "s": [
+     {
+      "n": "Ari is mid-costume, phone already up filming something."
+     },
+     {
+      "h": "okay you found me on the floor — this is my Rome. I've been recognized four times and it's not even noon. best day."
+     },
+     {
+      "c": [
+       {
+        "t": "The costume looks incredible.",
+        "a": 12,
+        "r": "the COSTUME, thank you, specificity, I respect it. thirty hours in this bodice and someone noticed."
+       },
+       {
+        "t": "This is chaos and I love it for you.",
+        "a": 6,
+        "r": "chaos is my love language. you're keeping up admirably. drink water."
+       }
+      ]
+     },
+     {
+      "h": "someone asked to photograph it earlier and my brain went 'they see the work' and immediately after 'they'll find every flaw.' both, at once. that's cosplay, baby."
+     },
+     {
+      "c": [
+       {
+        "t": "The work shows. Genuinely.",
+        "a": 12,
+        "r": "...okay you keep doing that, the sincerity-ambush thing. I'm defenseless. thank you."
+       },
+       {
+        "t": "I doubt anyone can tell the difference anyway.",
+        "a": -6,
+        "r": "they can. I can. that's the whole thing.",
+        "rn": "she says it flatly, then pivots back to the crowd, still friendly, just a beat quieter"
+       }
+      ]
+     },
+     {
+      "h": "duty calls, the people demand selfies and I am but a humble icon. find me later — I'm better company once the adrenaline wears off. slightly."
+     },
+     {
+      "c": [
+       {
+        "t": "I'll find you.",
+        "a": 6,
+        "r": "good. don't make me come looking."
+       },
+       {
+        "t": "Wouldn't miss it.",
+        "a": 12,
+        "r": "...okay, noted. see you in a bit."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "s": [
+     {
+      "n": "Ari is slumped against a wall, panel finally over, badge askew."
+     },
+     {
+      "h": "okay the panel's DONE and I said maybe four normal-person sentences and thirty jokes, so — success. adrenaline's crashing. I'm about to be a real person for nine minutes."
+     },
+     {
+      "c": [
+       {
+        "t": "I'll take the nine minutes.",
+        "a": 12,
+        "r": "aw, okay. clock's running. it's nice, actually, sitting with someone who isn't a camera."
+       },
+       {
+        "t": "You crushed it up there.",
+        "a": 6,
+        "r": "did I? it's a blur of me talking too fast. but thanks, I'll believe you over my memory."
+       }
+      ]
+     },
+     {
+      "h": "you wanna know a secret? I get stage fright. ME. right before I go on I'm SO sure everyone's about to realize I'm a fraud in a wig. then I go out and I'm fine. every time."
+     },
+     {
+      "c": [
+       {
+        "t": "You're not a fraud. You're just brave in a wig.",
+        "a": 12,
+        "r": "...brave in a wig. putting that on my business cards. that helped more than it should've."
+       },
+       {
+        "t": "Maybe you're not cut out for the spotlight.",
+        "a": -6,
+        "r": "wow. okay. I do this every weekend, so — no. I need water.",
+        "rn": "she says it with a short laugh, more surprised than hurt, and doesn't actually leave"
+       }
+      ]
+     },
+     {
+      "h": "nine minutes are up, gotta go be a phenomenon again. save me a seat in the quiet later?"
+     },
+     {
+      "c": [
+       {
+        "t": "Always.",
+        "a": 6,
+        "r": "good. don't forget."
+       },
+       {
+        "t": "Count on it.",
+        "a": 12,
+        "r": "...okay. that's a nice thing to hear before going back out there."
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "hearts": 1,
+    "s": [
+     {
+      "n": "Ari is between panels, badge askew, actually sitting still for once."
+     },
+     {
+      "h": "okay found a quiet corner, which at a con is basically a cryptid sighting. rare. treasure it while it lasts."
+     },
+     {
+      "c": [
+       {
+        "t": "Glad I get to witness the cryptid moment.",
+        "a": 12,
+        "r": "historic. truly. someone alert the community, Ari sat still for four consecutive minutes."
+       },
+       {
+        "t": "You looked like you needed the break.",
+        "a": 6,
+        "r": "I did. don't tell the panel schedule I said that, it gets jealous."
+       }
+      ]
+     },
+     {
+      "h": "it's a lot, being 'on' this much. I love it, genuinely, no notes — but I like having someone around who isn't expecting the performance version every single second."
+     },
+     {
+      "c": [
+       {
+        "t": "You don't have to perform for me.",
+        "a": 12,
+        "r": "...okay, noted, filed, possibly gonna cry a little about it later, don't tell anyone."
+       },
+       {
+        "t": "I like the non-performance version too.",
+        "a": 6,
+        "r": "good, because it's the one that's currently very tired and slightly greasy from con-hall food."
+       }
+      ]
+     },
+     {
+      "h": "okay, break's over, duty calls, the badge and the bit await. find me later — quiet-me makes a comeback around dinner."
+     }
+    ]
+   },
+   {
+    "hearts": 1,
+    "s": [
+     {
+      "n": "Post-panel, adrenaline crashing, Ari leans against a wall away from the crowd."
+     },
+     {
+      "h": "okay real talk: I keep looking for you in the crowd during panels. like, actively scanning. that's a whole new development I wasn't expecting to report today."
+     },
+     {
+      "c": [
+       {
+        "t": "I've been looking for you too.",
+        "a": 12,
+        "r": "...okay that's — I don't have a joke ready, you keep doing this, it's very unfair and also kind of great."
+       },
+       {
+        "t": "Guess I'm easy to spot.",
+        "a": 6,
+        "r": "you really are. tall, unbothered, standing there like a lighthouse for my chaos. very findable."
+       }
+      ]
+     },
+     {
+      "h": "I don't usually want an audience for the quiet parts. but I think I want you there for those too, not just the loud ones. that's new. that's a whole new category I didn't have before."
+     },
+     {
+      "c": [
+       {
+        "t": "I'd like to be there for both.",
+        "a": 12,
+        "r": "...okay, filing that under 'things that make quiet-Ari very happy,' it's a short list, you're near the top now."
+       },
+       {
+        "t": "Both versions, no complaints from me.",
+        "a": 6,
+        "r": "good. 'cause you're kind of stuck with both at this point."
+       }
+      ]
+     },
+     {
+      "h": "okay, adrenaline's crashing hard, I need food and a nap and possibly a hug, not necessarily in that order."
+     }
+    ]
+   }
   ]
  }
 };
@@ -1539,10 +4094,13 @@ function startTalk(girl){
   if(!state.talkSeen)state.talkSeen={}; if(!state.talkDay)state.talkDay={};
   const locName=_loc.name, hearts=Math.floor((state.affection[girl]||0)/100);
   let beats=null;
-  if(SCENES[girl]&&SCENES[girl][locName]){                                                // location-specific scenes (heart-gated, per-spot rotation)
-    const eligible=SCENES[girl][locName].filter(sc=>(sc.hearts||0)<=hearts);
-    if(eligible.length){
-      const key=girl+'|'+locName, seen=state.talkSeen[key]||0;
+  if(SCENES[girl]&&SCENES[girl][locName]){                                                // location-specific scenes — show ONLY the current unlocked heart tier (tier-exact rotation)
+    const pool=SCENES[girl][locName];
+    const tiers=pool.map(sc=>sc.hearts||0).filter(t=>t<=hearts);
+    if(tiers.length){
+      const tier=Math.max(...tiers);                                                      // highest tier the player has reached (falls back to the top written tier)
+      const eligible=pool.filter(sc=>(sc.hearts||0)===tier);
+      const key=girl+'|'+locName+'|h'+tier, seen=state.talkSeen[key]||0;                   // rotation counter is per-tier, so each tier starts fresh
       state.talkSeen[key]=seen+1;
       beats=sceneToBeats(eligible[seen%eligible.length].s);
     }
@@ -1742,74 +4300,553 @@ function socialViewHTML(){
    spends a little energy + time (a real outing). Save-compatible: datesDone/journal already exist in the save. */
 const DATE_COST={energy:15, mins:120};
 const DATES={
- 'Alex':[
-  {id:'alex1', title:'Game-Day Nerves', loc:'Tidewater Fitness', req:{hearts:1},
-   memory:"You caught Alex an hour before the gym opened, drilling her regionals routine alone. The unshakeable captain admitted she gets nervous too — and made you promise to be front-row on Saturday, in her colors.",
-   beats:[
-    {who:"narr",text:"Tidewater Fitness, an hour before it opens. Alex sent you a single pin drop and the words don't be late. The mats are empty. She is already stretching, hair up, no audience for once."},
-    {who:"her",text:"There you are. Good. I needed a witness who won't sell the footage. Regionals are Saturday, I have run this opener forty times, and it still isn't mine yet."},
-    {choose:[{label:"Show me. I'll keep count.",aff:18,say:"Okay. Eight-count, from the top. Don't clap at the wrong part, it throws me off."},{label:"Forty times? It's probably flawless by now.",aff:12,say:"Probably loses regionals. But — thank you. Watch anyway."}]},
-    {who:"narr",text:"She runs it — sharp, fast, precise — then stumbles the final turn and swears under her breath."},
-    {who:"her",text:"See? That. Every single time. My body knows the whole routine and then panics on the dismount like it has never met the floor before."},
-    {choose:[{label:"You're allowed to be nervous, you know.",aff:15,say:"Captains aren't. Everyone else gets to be nervous. I get to be the reason they aren't. ...But yes. I am. A little. Don't you dare look pleased about it."},{label:"Do it again. I've got you.",aff:12,say:"I've got you. You sound like a motivational poster. ...Fine. Again. Count me in."}]},
-    {who:"narr",text:"Second run. She lands the dismount clean and stares at her own feet like they betrayed her by cooperating."},
-    {who:"her",text:"Huh. It's easier when there's someone here who isn't keeping score. That is — I don't know what that is. New. I don't get a lot of new."},
-    {choose:[{label:"Then I'll be there Saturday. Front row.",aff:18,say:"Wear the colors. I mean it. I want to be able to find you in the crowd."},{label:"Anytime you need a non-judge, I'm around.",aff:12,say:"Careful. I might start believing that. ...Same mat, tomorrow. Bring the count."}]},
-    {who:"narr",text:"She walks you out into the grey morning, gym bag over one shoulder, standing a little straighter than she did an hour ago."}
-   ]},
-  {id:'alex2', title:'No Colors, No Crown', req:{hearts:2, after:'alex1'}, soon:true},
+ "Alex": [
+  {
+   "id": "alex1",
+   "title": "Off the Guest List",
+   "loc": "Greywater Commons → Driftwood Park",
+   "req": {
+    "hearts": 1
+   },
+   "memory": "Dinner at a nice restaurant turned into a receiving line the second Alex walked in. You ended up ditching the reservation for a park bench instead — where she admitted, quietly, how tiring it is to always be the one in charge.",
+   "beats": [
+    {
+     "who": "narr",
+     "text": "A restaurant with white tablecloths and a hostess who visibly lit up at the sight of Alex. It takes four minutes to reach the table, and every one of them is interrupted."
+    },
+    {
+     "who": "narr",
+     "text": "Alex smiles through gritted teeth as another table waves her over."
+    },
+    {
+     "who": "her",
+     "text": "I promise this isn't normal for a first —"
+    },
+    {
+     "who": "narr",
+     "text": "she catches herself"
+    },
+    {
+     "who": "her",
+     "text": "— for a dinner. It's just a very small city with a very large opinion of me."
+    },
+    {
+     "choose": [
+      {
+       "label": "Seems like a lot to manage over appetizers.",
+       "aff": 6,
+       "say": "You have no idea. Watch, someone's going to ask me about regionals before the bread even comes."
+      },
+      {
+       "label": "You handle it well.",
+       "aff": 12,
+       "say": "I've had practice.",
+       "sayNarr": "a tight smile, more tired than proud"
+      }
+     ]
+    },
+    {
+     "who": "narr",
+     "text": "Sure enough, three more interruptions arrive before the entrées do — a photo request, a squad member's little sister wanting an autograph, a guy from her econ class angling for small talk that's really about something else. By the fourth, Alex sets her fork down with more force than necessary."
+    },
+    {
+     "who": "narr",
+     "text": "Quietly, not looking up."
+    },
+    {
+     "who": "her",
+     "text": "Can we just — go? I don't want to be rude about it, I just — I need five minutes where I'm not performing 'Alex' for an audience."
+    },
+    {
+     "choose": [
+      {
+       "label": "Let's get out of here.",
+       "aff": 12,
+       "say": "...Thank you. I mean it. I wasn't going to ask twice."
+      },
+      {
+       "label": "Sure, wherever you want.",
+       "aff": 6,
+       "say": "Anywhere that isn't here. I don't even care where."
+      }
+     ]
+    },
+    {
+     "who": "narr",
+     "text": "They end up at Driftwood Park instead, a bench facing the water, the restaurant's white tablecloths traded for cold air and the sound of waves. Alex pulls her knees up, arms wrapped around them — a posture nobody at the restaurant would recognize as hers."
+    },
+    {
+     "who": "her",
+     "text": "People think being 'the queen' sounds fun. It is, some of the time. But it's also — I don't get to have a bad day. Ever. In public, at least. Somebody's always watching to see if the crown slips."
+    },
+    {
+     "choose": [
+      {
+       "label": "That sounds exhausting to carry all the time.",
+       "aff": 12,
+       "say": "It is. Nobody says it out loud, though. You're supposed to just... want it. Enjoy it. Never get tired."
+      },
+      {
+       "label": "You chose the spotlight, though.",
+       "aff": -6,
+       "say": "...I guess I did. Doesn't mean I don't get to be tired of it sometimes.",
+       "sayNarr": "she says it flatly, staring out at the water rather than at him — not storming off, just closing a door for a second"
+      }
+     ]
+    },
+    {
+     "who": "her",
+     "text": "Sometimes I just want someone else to be in charge for an hour. Pick the place, make the call, decide what happens next — and I get to just... exist. Not manage anything. Not perform anything. Just sit there."
+    },
+    {
+     "choose": [
+      {
+       "label": "I can be in charge for an hour, if that's what you need.",
+       "aff": 12,
+       "say": [
+        "...Yeah?",
+        {
+         "n": "she looks at him properly for the first time all night, something unguarded in it"
+        },
+        "Okay. Then it's your call from here. Don't waste it."
+       ]
+      },
+      {
+       "label": "You don't seem like someone who gives up control easily.",
+       "aff": 6,
+       "say": "I don't. That's exactly why it would mean something if I did, for once."
+      }
+     ]
+    },
+    {
+     "who": "narr",
+     "text": "The wind off the bay picks up, and for once Alex doesn't reach for her phone or check who's watching. She just sits there, unglamorous and unbothered by it, letting someone else hold the evening for a while."
+    },
+    {
+     "who": "narr",
+     "text": "Quieter, almost to herself."
+    },
+    {
+     "who": "her",
+     "text": "This is nice. Don't tell anyone I said that — 'Alex enjoyed sitting on a cold bench doing nothing' is not the headline I need circulating. But it's nice."
+    }
+   ]
+  },
+  {
+   "id": "alex2",
+   "title": "No Colors, No Crown",
+   "req": {
+    "hearts": 2,
+    "after": "alex1"
+   },
+   "soon": true
+  }
  ],
- 'Ari':[
-  {id:'ari1', title:'Con Floor Co-Op', loc:'Convention Center', req:{hearts:1},
-   memory:"Ari ran you through the con floor like a co-op campaign — bits, a rival cosplayer, a prototype build. Between the chaos she let the mask slip about coming home to a too-quiet apartment, then gave you matching pixel-heart pins so you would 'legally match.'",
-   beats:[
-    {who:"narr",text:"The Convention Center is wall-to-wall noise, foam swords, and lanyards. Ari finds you first — of course she does — half into a costume, phone already up and filming."},
-    {who:"her",text:"OKAY you actually came, hi, hello, say something for the vlog — no wait, don't, you'll be weird about it. Follow me. There is a prototype build in hall C and a guy cosplaying MY main and I need to judge him at close range."},
-    {choose:[{label:"Lead the way. I'm your camera guy.",aff:18,say:"CAMERA GUY. Promoted already. Okay, keep up, the good line is already forming and I do not queue politely."},{label:"Judge him? Be nice.",aff:9,say:"I am ALWAYS nice. I am devastatingly nice. I am just also correct. Come ON."}]},
-    {who:"narr",text:"Later, up on the quieter mezzanine, she chews the edge of her badge lanyard and deflates about half a notch."},
-    {who:"her",text:"Real talk for one second and then we never speak of it again. Days like this are the best thing ever, and then I get home and the apartment is so quiet it actually rings. You ever get that?"},
-    {choose:[{label:"Yeah. The comedown's the worst part.",aff:18,say:"Right?? Nobody says it out loud. Everyone just posts the highlight reel. Okay. You get a bonus life. Don't waste it."},{label:"That's why you keep the camera rolling.",aff:12,say:"Ough. Okay, don't be perceptive at a convention, it is against the rules. ...Yeah. Maybe. Whatever."}]},
-    {who:"narr",text:"She reboots almost instantly, grinning, and holds up two little enamel pins."},
-    {who:"her",text:"ANYWAY. Rescue mission complete, feelings quota met for the quarter. I got you a pin. It is a tiny pixel heart. It is deeply stupid. I already put the matching one on my bag, so now we match and you are legally not allowed to take it off."},
-    {choose:[{label:"Matching pins. We're basically a raid party.",aff:15,say:"A RAID PARTY. YES. Two-player co-op, no PvP, I call healer. Deal."},{label:"I'm never taking it off.",aff:18,say:"Cool. Cool cool cool. Normal response. Totally normal. ...Okay it is a little bit a big deal to me, whatever, MOVING ON, food court, let's go."}]},
-    {who:"narr",text:"She tows you back into the crowd by the sleeve, pixel heart bouncing on her bag, narrating the whole floor like it is a boss rush."}
-   ]},
-  {id:'ari2', title:'The Photoshoot', req:{hearts:2, after:'ari1'}, soon:true},
+ "Ari": [
+  {
+   "id": "ari1",
+   "title": "Behind the Mask",
+   "loc": "Convention Center",
+   "req": {
+    "hearts": 1
+   },
+   "memory": "Ari asked you to help her get in and out of costume before her panel — zippers, wig pins, the whole chaotic assembly line. Afterward, over food, the performance finally wound down, and she admitted how tired the mask gets, even when she loves wearing it.",
+   "beats": [
+    {
+     "who": "narr",
+     "text": "A cramped greenroom backstage, costume pieces draped over every available surface. Ari is half in, half out of an elaborate outfit, wig pins between her teeth, talking around them anyway."
+    },
+    {
+     "who": "her",
+     "text": "okay, emergency backup assistant, I need four hands and I only budgeted for two — can you get the back clasp? it's evil, it hates me specifically, we've had words."
+    },
+    {
+     "choose": [
+      {
+       "label": "On it. Hold still.",
+       "aff": 12,
+       "say": "finally, someone who takes the clasp seriously. this is a partnership now, I hope you know that."
+      },
+      {
+       "label": "This is a very specific skill to need.",
+       "aff": 6,
+       "say": "it's a NICHE skill. a valuable one. put it on a resume."
+      }
+     ]
+    },
+    {
+     "who": "narr",
+     "text": "Once she's zipped, pinned, and fully assembled, she does a full spin, checking the mirror with a critical, practiced eye — then catches your reflection watching and grins."
+    },
+    {
+     "who": "her",
+     "text": "okay be honest, on a scale of 'looks like a costume' to 'looks like she stepped out of the source material,' where are we landing? I need the truth, my ego can take it, probably."
+    },
+    {
+     "choose": [
+      {
+       "label": "Source material, easily.",
+       "aff": 12,
+       "say": "...okay you can't just SAY that with a straight face, I don't have a joke ready, give me a second."
+      },
+      {
+       "label": "Somewhere solidly in between, but a good in-between.",
+       "aff": 6,
+       "say": "I'll allow 'good in-between.' that's an honest B-plus and I respect the honesty."
+      }
+     ]
+    },
+    {
+     "who": "narr",
+     "text": "The panel goes well — better than well, judging by the noise from the hall after. When it's over, Ari finds you again, adrenaline still humming but visibly lower than her usual peak."
+    },
+    {
+     "who": "her",
+     "text": "okay real talk, off the clock: the mask's heavy by the end of a day like this. not the actual mask, the — you know. the performance. being ON for ten hours straight. I love it, genuinely, but it costs something. does that make sense or am I just tired-rambling."
+    },
+    {
+     "choose": [
+      {
+       "label": "It makes total sense. Everyone needs an off switch.",
+       "aff": 12,
+       "say": "...yeah. thank you. nobody usually asks about the after part, just the during part."
+      },
+      {
+       "label": "Seems like a lot to carry for a hobby.",
+       "aff": -6,
+       "say": "it's not JUST a hobby, but sure, okay.",
+       "sayNarr": "a flicker of hurt she covers fast with a joke about the food line, but she doesn't walk away"
+      }
+     ]
+    },
+    {
+     "who": "her",
+     "text": "anyway. food. I need something that isn't con-hall pretzel #4, I've had three already and I'm starting to worry about my sodium legacy."
+    },
+    {
+     "choose": [
+      {
+       "label": "Let's find something better than pretzel #4.",
+       "aff": 6,
+       "say": "a hero. an actual hero. lead the way."
+      },
+      {
+       "label": "I know a decent place nearby.",
+       "aff": 12,
+       "say": "ooh, look at you, having a plan. I'm into it."
+      }
+     ]
+    },
+    {
+     "who": "narr",
+     "text": "Away from the noise of the hall, over food that isn't pretzels, Ari's energy settles into something quieter — still her, still funny, but without the performance behind it."
+    },
+    {
+     "who": "her",
+     "text": "this is the good part, honestly. not the panel, not the photos — this. just eating something and not having to be 'on.' I don't get a lot of this. I don't know if I even realized how much I needed it until right now."
+    },
+    {
+     "choose": [
+      {
+       "label": "I like this version too. No mask required.",
+       "aff": 12,
+       "say": "...okay, don't say things like that while I'm holding a fork, I don't have a comeback ready and it's very unfair."
+      },
+      {
+       "label": "You don't always have to perform. Not with me.",
+       "aff": 6,
+       "say": "...noted. filing that away. might actually believe it eventually."
+      }
+     ]
+    },
+    {
+     "who": "her",
+     "text": "okay, adrenaline's fully crashed, I'm one bad joke away from falling asleep in this booth. but thanks for today. the clasp-wrangling and the food and the — all of it. good day. genuinely."
+    }
+   ]
+  },
+  {
+   "id": "ari2",
+   "title": "The Photoshoot",
+   "req": {
+    "hearts": 2,
+    "after": "ari1"
+   },
+   "soon": true
+  }
  ],
- 'Chloe':[
-  {id:'chloe1', title:'After Close', loc:'Fox & Fern', req:{hearts:1},
-   memory:"Chloe locked up Fox & Fern, broke out Lumière's rationed reserve beans, and — for the first time — told you she writes songs. She wouldn't play one. But she said 'ask me again in a month.'",
-   beats:[
-    {who:"narr",text:"Fox & Fern, past close. Chairs up on the tables, one lamp still on, the espresso machine ticking as it cools. Chloe locks the door behind you and pointedly does not flip the sign."},
-    {who:"her",text:"Lumière went home, which means the good beans come out — the reserve he rations like it is enriched uranium. Sit. Don't tell him. He will know anyway. He always knows."},
-    {choose:[{label:"Contraband coffee. I'm honored.",aff:15,say:"You should be. I do not pull the reserve for just anyone. Two people, actually. You are the second."},{label:"You could just lock up and go home?",aff:9,say:"And miss the one hour this place is actually mine? No. This is the part I like. Empty room, no orders, nobody performing. Sit down."}]},
-    {who:"narr",text:"She slides a cup across the counter, wraps both hands around her own, and goes quiet for a moment."},
-    {who:"her",text:"Can I tell you something without you turning it into a whole thing. I write songs. Not for anyone. In a notebook nobody reads. It's stupid, I know it's stupid."},
-    {choose:[{label:"It's not stupid. I'd listen, if you ever wanted.",aff:18,say:"...Maybe. Not tonight. But you didn't laugh. People laugh, or they get weird and encouraging. You just offered. Noted."},{label:"Play me one.",aff:9,say:"Ha. No. Absolutely not, we are not there. ...Yet. Ask me again in a month and don't act surprised if I say maybe."}]},
-    {who:"narr",text:"She pulls the notebook half out of her bag, then thinks better of it and pushes it back, half a smile on her face."},
-    {who:"her",text:"God. Look at me. One reserve coffee and I'm handing you the diary. Lumière's beans are basically a truth serum. Do not let that get around."},
-    {choose:[{label:"Your secret's safe. All of them.",aff:18,say:"...I believe you. That is the weird part. I usually don't. To the empty room, then."},{label:"I like this version of you.",aff:12,say:"This is not a version. This is just the one nobody buys coffee from. ...But okay. I like that you like it. Don't tell anyone I said that either."}]},
-    {who:"narr",text:"You drink the contraband roast in the dark quiet while she talks, her guard down an inch, the locked door holding the rest of the world off a little longer."}
-   ]},
-  {id:'chloe2', title:'Sketching at Driftwood', req:{hearts:2, after:'chloe1'}, soon:true},
+ "Chloe": [
+  {
+   "id": "chloe1",
+   "title": "After Close, Track Two",
+   "loc": "Fox & Fern",
+   "req": {
+    "hearts": 1
+   },
+   "memory": "Chloe stayed after her shift to talk music over the last of the day's coffee. Between arguing about which bands are actually good, she mentioned — almost like she was testing the words out loud — that there's a show at the Convention Center next weekend she wants to go to.",
+   "beats": [
+    {
+     "who": "narr",
+     "text": "Fox & Fern, chairs half-stacked, the closed sign not quite flipped. Chloe pours two cups from what's left in the pot rather than making a fresh batch — the good stuff's already put away for the night."
+    },
+    {
+     "who": "her",
+     "text": "Figured if you were going to hang around anyway, you might as well be useful. Or at least good company. Jury's still out on which one you are."
+    },
+    {
+     "choose": [
+      {
+       "label": "I'll take 'jury's out' as an improvement.",
+       "aff": 6,
+       "say": "Don't get ahead of yourself. It's a low bar, but you've cleared it."
+      },
+      {
+       "label": "I can be both, probably.",
+       "aff": 12,
+       "say": "...Bold claim. I'll allow you to attempt it."
+      }
+     ]
+    },
+    {
+     "who": "narr",
+     "text": "She nods at the low music playing from a speaker behind the counter."
+    },
+    {
+     "who": "her",
+     "text": "This is at least a band worth arguing about. Most of what plays in here is elevator music Lumière refuses to update. What do you actually listen to, or is that too personal a question for a Tuesday?"
+    },
+    {
+     "choose": [
+      {
+       "label": "Nothing that'll impress you, probably.",
+       "aff": 6,
+       "say": "Low expectations. Smart strategy. Try me anyway."
+      },
+      {
+       "label": "Depends on my mood, honestly.",
+       "aff": 12,
+       "say": "Fair. Most good taste is mood-dependent. The people who claim one favorite forever are lying to themselves."
+      }
+     ]
+    },
+    {
+     "who": "narr",
+     "text": "The conversation drifts easily from there — a genuine, unhurried back-and-forth about bands, bad lyrics, songs that got ruined by overplay. Chloe is more animated than her usual dry economy of words, leaning into the topic with real, unguarded enthusiasm."
+    },
+    {
+     "who": "narr",
+     "text": "She stops mid-sentence, looking almost surprised at herself."
+    },
+    {
+     "who": "her",
+     "text": "There's a band playing the Convention Center next weekend. Small venue, not the big hall — I checked. I've wanted to see them live for a while now. I don't know why I'm telling you that like it's a secret. It's just a concert."
+    },
+    {
+     "choose": [
+      {
+       "label": "Sounds like it's more than just a concert to you.",
+       "aff": 12,
+       "say": "...Maybe. I don't let myself want things out loud very often. Guess that one slipped out."
+      },
+      {
+       "label": "You should go. Sounds like it'd be good.",
+       "aff": 6,
+       "say": "I plan to. Wasn't sure I'd actually say it to someone first, though."
+      },
+      {
+       "label": "Not really my kind of thing, but sure.",
+       "aff": -6,
+       "say": "Didn't ask you to come. Just mentioned it.",
+       "sayNarr": "a little clipped, but she keeps talking rather than dropping the subject entirely"
+      }
+     ]
+    },
+    {
+     "who": "narr",
+     "text": "Recovering, dry again."
+    },
+    {
+     "who": "her",
+     "text": "Anyway. Don't make it a thing. I just don't usually say what I actually want out loud, so hearing myself do it was a little strange. New sensation. Ten out of ten, might try it again sometime."
+    },
+    {
+     "choose": [
+      {
+       "label": "For what it's worth, I liked hearing it.",
+       "aff": 12,
+       "say": "...Yeah? Okay. Noted. Don't let it go to your head, though."
+      },
+      {
+       "label": "Wanting things out loud isn't so bad.",
+       "aff": 6,
+       "say": "Easy for you to say. You're not the one who has to live with having said it."
+      }
+     ]
+    },
+    {
+     "who": "narr",
+     "text": "She starts stacking the last of the chairs, the conversation winding down naturally, but there's a looseness in her that wasn't there at the start of the shift — the particular ease of someone who said a true thing and the room didn't collapse."
+    },
+    {
+     "who": "her",
+     "text": "Same time next week, maybe. If the offer's still open. I might even tell you more about the band if you ask nicely."
+    }
+   ]
+  },
+  {
+   "id": "chloe2",
+   "title": "Sketching at Driftwood",
+   "req": {
+    "hearts": 2,
+    "after": "chloe1"
+   },
+   "soon": true
+  }
  ],
- 'Ha-yoon':[
-  {id:'hayoon1', title:'Study Session', loc:'Greywater University', req:{hearts:1},
-   memory:"You studied with Ha-yoon in the library's quiet corner, supervised by Basil — her potted plant. She admitted she always studies alone at home, that this was 'less lonely,' and quietly confessed she takes a Thursday tango class she has told almost no one about.",
-   beats:[
-    {who:"narr",text:"The university library, top floor, the quiet corner by the tall windows. Ha-yoon has saved you a seat — with a small potted plant sitting on the desk like a chaperone."},
-    {who:"her",text:"You came. Good. I brought Basil. The plant, not the herb — it is a long story and Maya named him. He supervises. Do not let him hear you call math boring; he takes it personally."},
-    {choose:[{label:"Hi, Basil. I'll be on my best behavior.",aff:18,say:"He approves. That is rare. He did not approve of the last person, who called him a weed. They failed their midterm. Coincidence, probably."},{label:"A supervised study date. Very official.",aff:12,say:"I am a serious person. ...Also, I did not want to sit alone today. Both things are true."}]},
-    {who:"narr",text:"She works quietly for a while, then sets her pen down and folds her hands."},
-    {who:"her",text:"Can I say something. Studying next to someone is different than studying alone. I did not expect it. At home I always study alone. Here it is quieter but somehow less lonely. That does not make sense, I think."},
-    {choose:[{label:"It makes perfect sense to me.",aff:18,say:"Then perhaps I am not so strange after all. Okay. Good. Back to work. Basil is watching you."},{label:"We can do this more often, if you like.",aff:15,say:"...I would like that. I will not say it twice, so please remember I said it once, very clearly. More often. Yes."}]},
-    {who:"narr",text:"Near the end of the hour she turns her phone toward you — a paused video of a tango step, one figure mid-turn."},
-    {who:"her",text:"I take a class. On Thursdays. I am not good yet. The footwork is like a proof — every step must follow from the last — but the body keeps forgetting the logic. I have told almost no one. I do not know why I am telling you."},
-    {choose:[{label:"I'd love to see you dance sometime.",aff:18,say:"...Maybe. When I am less clumsy. That could be a long time. But — maybe. I will think about it."},{label:"A proof you dance instead of write. I like that.",aff:12,say:"Yes. Exactly that. You understand it. Not everyone hears it that way."}]},
-    {who:"narr",text:"You study side by side until the light goes amber in the tall windows, Basil presiding, the silence between you easy now instead of shy."}
-   ]},
-  {id:'hayoon2', title:'The Botanical Garden', req:{hearts:2, after:'hayoon1'}, soon:true},
- ],
+ "Ha-yoon": [
+  {
+   "id": "hayoon1",
+   "title": "Quiet Floor, Loud Thoughts",
+   "loc": "Greywater University",
+   "req": {
+    "hearts": 1
+   },
+   "memory": "You spent an evening helping Ha-yoon study on the library's quiet floor. Between derivatives, she admitted — half in Korean, before catching herself — that she's wanted to visit the botanical garden for months, and has never gone because she's afraid of getting lost or misunderstood on her own.",
+   "beats": [
+    {
+     "who": "narr",
+     "text": "The graduate reading room, past nine. Pythagoras the plant sits between two stacks of notes. Ha-yoon has claimed the corner table again, but tonight there are two chairs pulled up to it instead of one."
+    },
+    {
+     "who": "her",
+     "text": "I have an exam Thursday and approximately four hours of material I haven't looked at yet. This is either going to be very productive or a complete disaster. I appreciate you not making it more disastrous by being bad at explaining things."
+    },
+    {
+     "choose": [
+      {
+       "label": "High praise. I'll try to live up to it.",
+       "aff": 6,
+       "say": "Please do. My grade is depending on your teaching ability, no pressure."
+      },
+      {
+       "label": "We'll get through it together.",
+       "aff": 12,
+       "say": "...Okay. I like the sound of that more than I probably should."
+      }
+     ]
+    },
+    {
+     "who": "narr",
+     "text": "Twenty minutes in, the studying has slowed to something closer to just talking, notebooks forgotten between them."
+    },
+    {
+     "who": "her",
+     "text": "Can I admit something a little embarrassing? I've been meaning to go to the botanical garden since September. There's an exhibit on —"
+    },
+    {
+     "who": "narr",
+     "text": "she catches herself, switches without noticing"
+    },
+    {
+     "who": "her",
+     "text": "식물의 나선형 패턴 (spiral patterns in plants), phyllotaxis, the Fibonacci sequence in the way leaves grow. I think it would be beautiful. I have just never gone."
+    },
+    {
+     "choose": [
+      {
+       "label": "Why not, if you've wanted to for months?",
+       "aff": 12,
+       "say": "...I don't know how to explain it without it sounding small. Which probably means it isn't small at all."
+      },
+      {
+       "label": "That sounds like something you'd love.",
+       "aff": 6,
+       "say": "I think I would. That's sort of the problem — wanting something and not doing anything about it for four months."
+      }
+     ]
+    },
+    {
+     "who": "her",
+     "text": "It's silly. I know the bus route. I know the address. I just —"
+    },
+    {
+     "who": "narr",
+     "text": "she pauses, frustration flickering across her face"
+    },
+    {
+     "who": "her",
+     "text": "길을 잃을까 봐 무서워요 (I'm afraid of getting lost), and then having to ask someone for directions in English that isn't good enough, and just standing there looking foolish in front of strangers. It is a very small fear to have such a large effect."
+    },
+    {
+     "choose": [
+      {
+       "label": "Your English is fine, Hya. That's not the real problem, is it.",
+       "aff": 12,
+       "say": "...No. Fine, no. The real problem is I don't want to look lost. Even to a stranger who will forget me in five minutes. I don't know why that matters so much."
+      },
+      {
+       "label": "Getting lost isn't the worst thing that could happen.",
+       "aff": 6,
+       "say": "Logically, I know that. It doesn't stop the feeling."
+      },
+      {
+       "label": "You should just go. It's not that big a deal.",
+       "aff": -6,
+       "say": "...Easy for you to say. You've never had to translate your own panic in real time.",
+       "sayNarr": "she goes quiet, embarrassed, but doesn't shut the conversation down — just looks back at her notes for a moment"
+      }
+     ]
+    },
+    {
+     "who": "narr",
+     "text": "Quieter, not quite looking at him."
+    },
+    {
+     "who": "her",
+     "text": "I don't suppose... you'd want to go with me sometime? You wouldn't have to do anything. Just — exist nearby. So it isn't just me and the fear of getting lost."
+    },
+    {
+     "choose": [
+      {
+       "label": "I'd like that. Name the day.",
+       "aff": 12,
+       "say": "...Really? Okay. Okay — I'll look at the hours tonight. Thank you. I mean that more than the casual way I'm about to move on from it."
+      },
+      {
+       "label": "Sure, whenever works.",
+       "aff": 6,
+       "say": "Whenever works. I'll hold you to whenever."
+      }
+     ]
+    },
+    {
+     "who": "narr",
+     "text": "She goes back to her proof a few minutes later, but there's a lightness in her that wasn't there an hour ago — the particular relief of having said a small, true thing out loud and had it land gently."
+    },
+    {
+     "who": "her",
+     "text": "Thank you for tonight. Not just the derivatives."
+    },
+    {
+     "who": "narr",
+     "text": "a small, genuine smile"
+    },
+    {
+     "who": "her",
+     "text": "I think that's the first time I've said that out loud to anyone. The garden thing. It's strange how much lighter it feels now that it isn't just mine to carry."
+    }
+   ]
+  },
+  {
+   "id": "hayoon2",
+   "title": "The Botanical Garden",
+   "req": {
+    "hearts": 2,
+    "after": "hayoon1"
+   },
+   "soon": true
+  }
+ ]
 };
 function skillLvl(name){for(const grp of ['personal','vocational'])if(state[grp]&&state[grp][name])return state[grp][name].lvl||0;return 0;}
 function dateHearts(girl){return Math.floor((state.affection[girl]||0)/100);}
