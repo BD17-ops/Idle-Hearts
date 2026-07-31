@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<!-- Idle Hearts — Build V11.7 -->
+<!-- Idle Hearts — Build V13.1 -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Idle Hearts — Build V11.7</title>
+<title>Idle Hearts — Build V13.1</title>
 <style>
   :root{
     --bg:#14101c; --panel:#1e1830; --panel-2:#261e3d;
@@ -38,7 +38,17 @@
   .gb-title{display:flex;align-items:center;gap:8px}
   .clk-money{font-size:14px;font-weight:800;color:var(--gold);font-variant-numeric:tabular-nums}
   /* Notification Area (top-right of Menu Bar) */
-  .notif{display:flex;flex-direction:column;gap:4px;margin-left:auto;padding-left:14px;border-left:1px solid var(--edge);white-space:nowrap;}
+  .topright{display:flex;align-items:center;gap:12px;margin-left:auto}
+  .notif{display:flex;flex-direction:column;gap:4px;padding-left:14px;border-left:1px solid var(--edge);white-space:nowrap;}
+  /* Time-of-day wheel (V13.1) */
+  .tod-wheel{position:relative;width:42px;height:42px;flex:none}
+  .tod-chevron{position:absolute;top:-8px;left:50%;transform:translateX(-50%);color:#ff4d4d;font-size:12px;line-height:1;z-index:3;filter:drop-shadow(0 1px 1px rgba(0,0,0,.6))}
+  .tod-rot{position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 50% 36%,#2b2242,#191330);border:1px solid var(--edge);box-shadow:inset 0 0 6px rgba(0,0,0,.45);transform:rotate(var(--tod,0deg));transition:transform .6s cubic-bezier(.34,1.35,.5,1)}
+  .tod-ico{position:absolute;width:16px;height:16px;line-height:16px;text-align:center;font-size:12px;transition:transform .6s cubic-bezier(.34,1.35,.5,1)}
+  .ti0{top:2px;left:50%;transform:translateX(-50%) rotate(calc(-1*var(--tod,0deg)))}
+  .ti1{left:2px;top:50%;transform:translateY(-50%) rotate(calc(-1*var(--tod,0deg)))}
+  .ti2{bottom:2px;left:50%;transform:translateX(-50%) rotate(calc(-1*var(--tod,0deg)))}
+  .ti3{right:2px;top:50%;transform:translateY(-50%) rotate(calc(-1*var(--tod,0deg)))}
   .clk-row{display:flex;align-items:baseline;gap:12px;justify-content:flex-end}
   .notif .day{font-weight:700;font-size:13px}
   .notif .date{font-size:12px;color:var(--text)}
@@ -106,9 +116,12 @@
   .playermenu{background:linear-gradient(180deg,#221a37,#1a1430);border-right:1px solid var(--edge);padding:12px 10px;display:flex;flex-direction:column;min-height:0;}
   .pm-title{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:2px 6px 8px}
   .pm-list{display:flex;flex-direction:column;gap:6px;overflow-y:auto;max-height:calc(5 * 46px + 4 * 6px);padding-right:4px;}
-  .pm-list::-webkit-scrollbar{width:6px}
-  .pm-list::-webkit-scrollbar-thumb{background:var(--edge);border-radius:3px}
-  .pm-list::-webkit-scrollbar-track{background:transparent}
+  /* Unified scrollbar (V13.1) — the Player Menu style applied everywhere that scrolls */
+  .pm-list,.playerpanel,.mv-body,.soc-info,.comp-content,.comp-nav,.sched-scroll{scrollbar-width:thin;scrollbar-color:var(--edge) transparent}
+  .pm-list::-webkit-scrollbar,.playerpanel::-webkit-scrollbar,.mv-body::-webkit-scrollbar,.soc-info::-webkit-scrollbar,.comp-content::-webkit-scrollbar,.comp-nav::-webkit-scrollbar,.sched-scroll::-webkit-scrollbar{width:6px;height:6px}
+  .pm-list::-webkit-scrollbar-thumb,.playerpanel::-webkit-scrollbar-thumb,.mv-body::-webkit-scrollbar-thumb,.soc-info::-webkit-scrollbar-thumb,.comp-content::-webkit-scrollbar-thumb,.comp-nav::-webkit-scrollbar-thumb,.sched-scroll::-webkit-scrollbar-thumb{background:var(--edge);border-radius:3px}
+  .pm-list::-webkit-scrollbar-thumb:hover,.playerpanel::-webkit-scrollbar-thumb:hover,.mv-body::-webkit-scrollbar-thumb:hover,.soc-info::-webkit-scrollbar-thumb:hover,.comp-content::-webkit-scrollbar-thumb:hover,.comp-nav::-webkit-scrollbar-thumb:hover,.sched-scroll::-webkit-scrollbar-thumb:hover{background:var(--accent)}
+  .pm-list::-webkit-scrollbar-track,.playerpanel::-webkit-scrollbar-track,.mv-body::-webkit-scrollbar-track,.soc-info::-webkit-scrollbar-track,.comp-content::-webkit-scrollbar-track,.comp-nav::-webkit-scrollbar-track,.sched-scroll::-webkit-scrollbar-track{background:transparent}
   .tab{display:flex;align-items:center;gap:10px;min-height:46px;padding:0 12px;border-radius:9px;cursor:pointer;font-size:13px;font-weight:600;color:var(--muted);border:1px solid transparent;transition:.15s;flex:none;}
   .tab .ti{font-size:17px;width:20px;text-align:center}
   .tab:hover{background:#2a2143;color:var(--text)}
@@ -293,6 +306,42 @@
   .sv-desc{font-size:11px;color:var(--muted);margin:4px 0 10px}
   .sv-buy{background:var(--panel);border:1px solid var(--gold);color:var(--gold);font-weight:700;font-size:13px;padding:6px 14px;border-radius:8px;cursor:pointer}
   .sv-buy:hover{background:#2e2447}
+  /* Dates (V12.0) */
+  .dv-girl{font-weight:800;font-size:13px;margin:16px 0 6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .dv-girl:first-of-type{margin-top:4px}
+  .dv-girl .dv-h{font-weight:600;font-size:11px;color:var(--muted);letter-spacing:.5px}
+  .dv-card .dv-loc{font-weight:600;color:var(--muted);font-size:11px}
+  .dv-main{min-width:0}
+  .dv-right{display:flex;align-items:center;gap:8px;white-space:nowrap;flex-shrink:0}
+  .dv-go{background:linear-gradient(90deg,var(--accent),var(--accent-2));border:none;color:#fff;font-weight:700;font-size:12px;padding:7px 13px;border-radius:8px;cursor:pointer}
+  .dv-go:hover{filter:brightness(1.08);transform:translateY(-1px)}
+  .dv-card.done{opacity:.85}
+  .dv-card.done .dv-tag{color:var(--accent);border-color:var(--accent)}
+  /* Journal (V12.0) */
+  .jv-mem li{display:block}
+  .jv-m-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+  .jv-m-top b{color:var(--text);font-size:13px}
+  .jv-when{font-size:10px;color:var(--muted);white-space:nowrap;letter-spacing:.4px}
+  .jv-m-body{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.45}
+  .jv-empty{color:var(--muted);font-style:italic}
+  .jv-cat{display:inline-block;width:16px;text-align:center}
+  .jv-sub{font-weight:600;font-size:10px;color:var(--muted);letter-spacing:.4px}
+  .jv-done li{color:var(--muted);display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+  .obj-box{display:inline-block;width:16px;text-align:center}
+  li.obj-slide .obj-box{color:var(--good);font-weight:800}
+  li.obj-slide{animation:objComplete .76s ease forwards}
+  @keyframes objComplete{
+    0%{transform:translateY(0);opacity:1;background:var(--panel-2)}
+    18%{background:rgba(107,224,160,.32)}
+    55%{transform:translateY(0);background:rgba(107,224,160,.22)}
+    100%{transform:translateY(48px);opacity:0;background:rgba(107,224,160,.10)}
+  }
+  .jv-fold{margin-top:2px}
+  .jv-fold>summary{display:list-item;list-style-position:inside;cursor:pointer;user-select:none;margin-top:12px}
+  .jv-fold>summary::marker{color:var(--muted);font-size:11px}
+  .jv-fold>summary::-webkit-details-marker{color:var(--muted)}
+  .jv-fold>summary:hover{color:var(--accent)}
+  .jv-count{display:inline-block;min-width:16px;padding:0 6px;border-radius:10px;background:var(--panel-2);border:1px solid var(--edge-soft);font-size:10px;font-weight:700;color:var(--muted)}
   /* Social view (two-pane: girl nav rail + mock profile page) */
   .soc-wrap{display:grid;grid-template-columns:150px 1fr;gap:14px;align-items:stretch;flex:1 1 auto;min-height:0}
   .soc-nav{display:flex;flex-direction:column;gap:6px}
@@ -314,8 +363,28 @@
   .soc-name{font-weight:800;font-size:17px}
   .soc-handle{font-size:12px;color:var(--muted)}
   .soc-tag{font-size:12px;color:var(--accent-2);margin-top:3px}
-  .soc-follow{flex:none;margin-bottom:4px;background:var(--panel);border:1px solid var(--accent);color:var(--accent);font-weight:700;font-size:12px;padding:6px 15px;border-radius:20px;cursor:pointer}
+  .soc-follow{flex:none;background:var(--panel);border:1px solid var(--accent);color:var(--accent);font-weight:700;font-size:12px;padding:6px 15px;border-radius:20px;cursor:pointer}
   .soc-follow:hover{background:#2e2447}
+  .soc-actions{flex:none;display:flex;flex-direction:column;gap:6px;align-items:stretch}
+  .soc-gift{background:linear-gradient(90deg,var(--accent),var(--accent-2));border:none;color:#fff;font-weight:700;font-size:12px;padding:6px 12px;border-radius:20px;cursor:pointer;white-space:nowrap}
+  .soc-gift:hover{filter:brightness(1.08)}
+  .soc-gift.spent{background:var(--panel-2);color:var(--muted);cursor:default;filter:none}
+  .soc-gifts{margin-top:14px}
+  .gl-h{font-weight:700;font-size:13px;margin-bottom:6px}
+  .gl-chips{display:flex;flex-wrap:wrap;gap:6px}
+  .gl-chip{background:rgba(224,114,154,.14);border:1px solid var(--accent);color:#f3d3df;font-size:12px;font-weight:600;padding:4px 10px;border-radius:14px}
+  /* Greybird schedule grid (V13.1) — uniform time-block columns, no wrap */
+  .sched-scroll{overflow-x:auto;max-width:100%}
+  .sg-table{border-collapse:collapse;table-layout:fixed}
+  .sg-c0{width:72px}
+  .sg-cx{width:128px}
+  .sg-table th,.sg-table td{white-space:nowrap;padding:5px 6px;font-size:11.5px}
+  .sg-h{color:#b8b8c4;font-weight:600;text-align:center}
+  .sg-rowh{color:#b8b8c4;font-weight:600;text-align:left}
+  .sg-cell{text-align:center;border:1px solid rgba(255,255,255,.10)}
+  .sg-known{background:rgba(120,200,140,.16);color:#eaf5ec}
+  .sg-unknown{background:rgba(255,255,255,.03);color:#7d7d8a}
+  .sg-now{box-shadow:inset 0 0 0 2px #ff6fa5;border-radius:3px}
   .soc-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:12px 18px 0;font-size:12px}
   .soc-hearts{color:var(--accent);letter-spacing:.5px}
   .soc-dot{color:var(--muted)}
@@ -339,6 +408,16 @@
       <button class="btn" id="btnSettings" data-view="settings">⚙️ Settings</button>
     </div>
     <div class="needsbar" id="needsBar"></div>
+    <div class="topright">
+    <div class="tod-wheel" id="todWheel" title="Time of day">
+      <div class="tod-chevron">▼</div>
+      <div class="tod-rot" id="todRot">
+        <span class="tod-ico ti0">🌅</span>
+        <span class="tod-ico ti1">☀️</span>
+        <span class="tod-ico ti2">🌆</span>
+        <span class="tod-ico ti3">🌙</span>
+      </div>
+    </div>
     <div class="notif">
       <div class="clk-row">
         <span class="day" id="clkDay">Day 1</span>
@@ -352,6 +431,7 @@
         </div>
         <span class="clk-money" id="clkMoney">💰 $500</span>
       </div>
+    </div>
     </div>
   </div>
 
@@ -438,7 +518,7 @@
 </div></div>
 
 <script>
-const BUILD="V11.7";
+const BUILD="V13.1";
 document.getElementById('buildStamp').textContent="Idle Hearts Build "+BUILD;
 
 /* ================= GAME STATE ================= */
@@ -451,7 +531,7 @@ function defaultState(){return{
   affection:{Alex:0,Ari:0,Chloe:0,'Ha-yoon':0},
   spark:{Alex:0,Ari:0,Chloe:0,'Ha-yoon':0},
   inventory:{
-    gifts:[{emj:'🌹',nm:'Rose',qty:99},{emj:'🍫',nm:'Chocolate',qty:7},{emj:'💍',nm:'Ring',qty:1},{emj:'🧸',nm:'Plushie',qty:2},{emj:'📓',nm:'Journal',qty:1},{emj:'🎫',nm:'Movie Ticket',qty:3}],
+    gifts:[],
     wardrobe:[{emj:'👕',nm:'Casual',qty:'★'},{emj:'🧥',nm:'Jacket',qty:'★'},{emj:'🤵',nm:'Formal',qty:'🔒'},{emj:'🏖️',nm:'Beach',qty:'🔒'}],
     key:[{emj:'🔑',nm:'Apt Key',qty:1},{emj:'📱',nm:'Phone',qty:1},{emj:'🗺️',nm:'City Pass',qty:1}],
     consumables:[{emj:'☕',nm:'Coffee',qty:5},{emj:'🍰',nm:'Cake',qty:2},{emj:'🥤',nm:'Energy Drink',qty:6}],
@@ -466,7 +546,14 @@ function defaultState(){return{
   talkDay:{},             // girl → day number last talked (once/day gate)
   talkSeen:{},            // girl → count of talks (rotates dialogue)
   datesDone:{},           // completed date ids (dates system builds on this)
-  journal:[],             // earned memories
+  journal:[],             // earned memories / achievements
+  objectives:[],          // active weekly objectives (up to 4)
+  objWeek:null,           // Monday-key of the current objective week
+  objDone:[],             // completed objectives (Completed section)
+  giftsGiven:{},          // gifts given per girl (objectives + future Shop)
+  giftDay:{},             // girl → day number last gifted (one gift per girl per day)
+  giftLikes:{},           // girl → {giftName:true} the player has DISCOVERED she likes
+  schedDone:{},           // girls whose full-schedule achievement has fired
 };}
 const DEFAULT_DATE=()=>new Date(2026,0,1); // Thursday, Jan 1, 2026 (real calendar)
 const state=defaultState();
@@ -503,6 +590,15 @@ const NEED_META={
   Stress:{ico:'🔥',color:'var(--stress)',baseline:null,note:'Piled on by work/school, relieved by the Park and rest. (Idle drift comes later.)'},
 };
 const NPC=[{k:'Alex',emj:'👑'},{k:'Ari',emj:'🎮'},{k:'Chloe',emj:'🖤'},{k:'Ha-yoon',emj:'🌱'}];
+/* Gift catalog (V13.1). Tier-1 ($50) gifts: each girl has one she loves (+7 ♥ & spark), and giving her
+   RIVAL's favorite is a miss (−7 ♥). Rivals: Ari↔Ha-yoon, Alex↔Chloe. More tiers/effects come later. */
+const GIFTS={
+  'Rose':        {emj:'🌹', price:50, likedBy:'Ha-yoon'},
+  'Anime Figure':{emj:'🎎', price:50, likedBy:'Ari'},
+  'Graphic Tee': {emj:'👕', price:50, likedBy:'Chloe'},
+  'Chocolate':   {emj:'🍫', price:50, likedBy:'Alex'},
+};
+const RIVAL={'Ari':'Ha-yoon','Ha-yoon':'Ari','Alex':'Chloe','Chloe':'Alex'};
 const PERSONAL_ORDER=['Fitness','Charm','Intelligence'];
 const VOC_ORDER=['Business','Hospitality','Cooking','Style'];
 const NEEDS_ORDER=['Energy','Happiness','Stress'];
@@ -685,7 +781,7 @@ function applyEffects(loc){
     if(state.spark[k]>0){amt=Math.round(amt*(1.1+(state.spark[k]-1)*0.1)*10)/10;state.spark[k]--;}  // ×2.0→×1.1 over 10 gains
     state.affection[k]=clampAff((state.affection[k]||0)+amt);
     if(!isMet(k)){state.met[k]=true;_metNow.push(k);}                                   // first encounter → unlock profile
-    if(!isDisc(k,_wk,_b)){discRec(k)[_wk][_b]=true; if(!_metNow.includes(k))_slotNow.push({k,wk:_wk,b:_b,loc:loc.name});}  // reveal this schedule slot
+    if(!isDisc(k,_wk,_b)){discRec(k)[_wk][_b]=true; if(!_metNow.includes(k))_slotNow.push({k,wk:_wk,b:_b,loc:loc.name}); checkScheduleComplete(k);}  // reveal this schedule slot (+ full-routine achievement)
   }
   state.location=loc.name;
   if(loc.sleep){state.day++;gameDate.setDate(gameDate.getDate()+1);state.timeMin=DAY_START;state.needs.Energy=100;}
@@ -710,7 +806,18 @@ function updateClock(){
   document.getElementById('clkTime').textContent=fmtTime(state.timeMin);
   document.getElementById('clkMoney').textContent='💰 $'+state.money.toLocaleString();
   document.getElementById('notifLoc').textContent='📍 '+state.location;
+  updateTodWheel();
   updateNeedsBar();
+}
+/* Time-of-day wheel: spins clockwise so the current block's icon sits under the red chevron.
+   _todAngle accumulates only forward (clockwise), even across the night→morning wrap. */
+let _todAngle=null,_todPrev=null;
+function updateTodWheel(){
+  const rot=document.getElementById('todRot'); if(!rot)return;
+  const b=schedBlock(state.timeMin);
+  if(_todPrev===null){_todPrev=b;_todAngle=b*90;}
+  else if(b!==_todPrev){_todAngle+=((((b-_todPrev)%4)+4)%4)*90;_todPrev=b;}
+  rot.style.setProperty('--tod',_todAngle+'deg');
 }
 function updateNeedsBar(){
   document.getElementById('needsBar').innerHTML=NEEDS_ORDER.map(k=>{
@@ -780,29 +887,55 @@ const panels={skills:panelSkills,resources:panelResources,
 let activeCat='skills';
 const panelEl=document.getElementById('panel');
 function render(cat){activeCat=cat;panelEl.innerHTML=panels[cat]();}
-function refresh(){panelEl.innerHTML=panels[activeCat]();}
+function refresh(){runJournalTick();panelEl.innerHTML=panels[activeCat]();}
 document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',()=>{
   document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');render(t.dataset.cat);}));
-/* ===== gift giving (Rose only for now) ===== */
-function openGivePopup(){
-  const rose=state.inventory.gifts.find(g=>g.nm==='Rose');
-  if(!rose||rose.qty<=0){showPopup('No Roses','You have no Roses to give right now.');return;}
-  const met=NPC.filter(n=>isMet(n.k));
-  if(!met.length){showPopup('No one to give to yet','You haven’t met anyone to give a Rose to. Explore the city to meet people first.');return;}
-  const buttons=met.map(n=>({label:`${n.emj} ${n.k}`,variant:'primary',onClick:()=>giveRose(n.k)}));
-  buttons.push({label:'Cancel',variant:'ghost'});
-  showModal({title:'Give a Rose to…',msg:`You have ${rose.qty} Rose${rose.qty>1?'s':''}. Giving one lights her spark — her next 10 affection gains get ×2.0 tapering to ×1.1.`,buttons});
+/* ===== gift giving (V13.1): choose a gift from your inventory to send a girl from her Greybird profile.
+   Her favorite → +7 ♥ + spark (3-heart FX); her rival's favorite → −7 ♥ (heart-break FX); else no effect.
+   One gift per girl per in-game day. ===== */
+function giftItems(){return (state.inventory.gifts||[]).filter(g=>g.qty>0);}
+/* Reveal (to the player) that `girl` likes gift `nm` — surfaces it on her Greybird profile.
+   Called when the player gives her the right gift; a dialogue hook can call this later too. Returns true if newly learned. */
+function revealGiftLike(girl,nm){
+  if(!state.giftLikes)state.giftLikes={};
+  if(!state.giftLikes[girl])state.giftLikes[girl]={};
+  if(state.giftLikes[girl][nm])return false;
+  state.giftLikes[girl][nm]=true; return true;
 }
-function giveRose(girl){
-  const rose=state.inventory.gifts.find(g=>g.nm==='Rose');
-  if(!rose||rose.qty<=0)return;
-  rose.qty--; state.spark[girl]=10;
-  toast(`Gave ${girl} a Rose ✨ spark lit!`);
-  refresh();
+function openGiveGift(girl){
+  if(!isMet(girl))return;
+  if(state.giftDay&&state.giftDay[girl]===state.day){toast(`You already gave ${girl} a gift today.`);return;}
+  const items=giftItems();
+  if(!items.length){showModal({title:'Your gift bag is empty',msg:'You have no gifts to give. Pick some up at the Shop first.',buttons:[{label:'OK',variant:'primary'}]});return;}
+  const buttons=items.map(it=>({label:`${it.emj} ${it.nm}  ×${it.qty}`,variant:'primary',onClick:()=>giveGift(girl,it.nm)}));
+  buttons.push({label:'Cancel',variant:'ghost'});
+  showModal({title:`🎁 Give ${girl} a gift`,msg:`Pick something to send ${girl}. You can give each person one gift a day — the right one means more.`,buttons});
+}
+function giveGift(girl,nm){
+  if(state.giftDay&&state.giftDay[girl]===state.day){toast(`You already gave ${girl} a gift today.`);return;}
+  const it=(state.inventory.gifts||[]).find(g=>g.nm===nm);
+  if(!it||it.qty<=0){toast(`No ${nm} left to give.`);return;}
+  it.qty--;
+  state.giftDay=state.giftDay||{}; state.giftDay[girl]=state.day;
+  state.giftsGiven=state.giftsGiven||{}; state.giftsGiven[girl]=(state.giftsGiven[girl]||0)+1;   // objective progress
+  const g=GIFTS[nm]||{}, liked=g.likedBy===girl, rivalGift=g.likedBy===RIVAL[girl];
+  const cx=(typeof window!=='undefined'&&window.innerWidth?window.innerWidth:800)*0.5,
+        cy=(typeof window!=='undefined'&&window.innerHeight?window.innerHeight:600)*0.42;
+  let delta=0,msg;
+  if(liked){delta=7;state.spark[girl]=10;heartFX(cx,cy,12);
+    const learned=revealGiftLike(girl,nm);
+    msg=learned?`${girl} lights up — she loves the ${nm}! ♥ +7 · spark lit ✨ (added to her profile 📓)`:`${girl} loves the ${nm}! ♥ +7 · spark lit ✨`;}
+  else if(rivalGift){delta=-7;heartFX(cx,cy,-6);msg=`${girl} is not impressed by the ${nm}. ♥ −7`;}
+  else{msg=`${girl} accepts the ${nm} politely — but it's not really her thing. (No effect)`;}
+  if(delta)state.affection[girl]=clampAff((state.affection[girl]||0)+delta);
+  toast(msg);
+  runJournalTick();
+  refresh(); buildMap(); updateActionBar();
+  if(mainView==='social')renderMainView('social');
 }
 panelEl.addEventListener('click',e=>{
   const item=e.target.closest('.item');
-  if(item && activeCat==='gifts' && item.dataset.nm==='Rose') openGivePopup();
+  if(item && activeCat==='gifts') toast('Open a girl’s Greybird profile and tap 🎁 Give Gift');
 });
 
 /* ================= MODAL ================= */
@@ -870,6 +1003,13 @@ function loadGame(){
     state.talkSeen=(st.talkSeen&&typeof st.talkSeen==='object')?st.talkSeen:{};
     state.datesDone=(st.datesDone&&typeof st.datesDone==='object')?st.datesDone:{};
     state.journal=Array.isArray(st.journal)?st.journal:[];
+    state.objectives=Array.isArray(st.objectives)?st.objectives:[];
+    state.objWeek=st.objWeek||null;
+    state.objDone=Array.isArray(st.objDone)?st.objDone:[];
+    state.giftsGiven=(st.giftsGiven&&typeof st.giftsGiven==='object')?st.giftsGiven:{};
+    state.giftDay=(st.giftDay&&typeof st.giftDay==='object')?st.giftDay:{};
+    state.giftLikes=(st.giftLikes&&typeof st.giftLikes==='object')?st.giftLikes:{};
+    state.schedDone=(st.schedDone&&typeof st.schedDone==='object')?st.schedDone:{};
     for(const n of NPC){ if((state.affection[n.k]||0)>0) state.met[n.k]=true; }
     state.lastSeen=(typeof st.lastSeen==='number')?st.lastSeen:0;
     state.inventory=Object.assign({},def.inventory,st.inventory);
@@ -951,9 +1091,18 @@ function discoveryCompendiumHTML(){
     <h4>💤 Away hours</h4><p>Some parts of the day she's home or off the grid and can't be found by exploring. Those slots stay a mystery… for now.</p>
     <h4>🔮 Other ways to learn (coming)</h4><p>Exploring won't be the only way to fill in the blanks. Later, girls will open up about their routines — and reveal more of themselves — through <b>conversations and story events</b>, not just by being spotted around town.</p>`;
 }
+function journalCompendiumHTML(){
+  return `<h3>The Journal — Objectives &amp; Memories</h3>
+    <p>Your <b>Journal</b> tracks what to chase next and what you've already lived through.</p>
+    <h4>🎯 Objectives</h4><p>You always hold <b>up to four objectives</b> at once, each pulled from a different pool: reaching a first heart with a girl, igniting a spark, raising a skill to the next milestone, giving a girl a gift, or going on a date. You'll always have at least one that's about a girl.</p>
+    <h4>🔁 They reshuffle every Monday</h4><p>Objectives are re-drawn <b>every Monday</b>. Finish them during the week if you can — come Monday, a fresh set is picked from the pool, and any you didn't complete are swapped out. As you progress, new objectives (like higher skill milestones, or dating a girl once you've earned a heart) join the pool.</p>
+    <h4>✅ Completed Objectives</h4><p>Finishing an objective moves it down to <b>Completed Objectives</b>, where it's kept as a record.</p>
+    <h4>⭐ Memories</h4><p>Milestones — a girl's first date, or fully uncovering her weekly routine — are saved as <b>Memories</b>: permanent achievements you earn by living out the big moments.</p>`;
+}
 const COMPENDIUM=[
   {id:'ui',title:'🖥 UI Layout',html:legendSchematicHTML},
   {id:'discovery',title:'💘 Meeting Girls',html:discoveryCompendiumHTML},
+  {id:'journal',title:'📖 Journal &amp; Objectives',html:journalCompendiumHTML},
   {id:'needs',title:'⚡ Needs',html:needsCompendiumHTML},
   {id:'skills',title:'💪 Skills',html:skillsCompendiumHTML},
 ];
@@ -1400,7 +1549,7 @@ function startTalk(girl){
   }
   state.talkDay[girl]=state.day;
   const rev=revealableSlot(girl);
-  if(rev){ discRec(girl)[rev.wk][rev.b]=true;
+  if(rev){ discRec(girl)[rev.wk][rev.b]=true; checkScheduleComplete(girl);
     beats.push({who:'narr',text:`(${girl} mentions she's usually at ${rev.loc} on ${rev.wk==='weekend'?'weekends':'weekdays'}, around ${BLOCK_LABEL[rev.b].toLowerCase()}. Her schedule filled in a little.)`}); }
   openScene(girl,beats);
 }
@@ -1429,6 +1578,7 @@ function girlsAt(locName){return NPC.map(n=>n.k).filter(g=>girlLocNow(g)===locNa
 const VISIT_AFF=5;   // affection granted per visit to each girl present
 /* ----- Discovery (V10.1): meeting a girl unlocks her profile; catching her somewhere reveals that schedule slot ----- */
 const BLOCK_LABEL=['Morning','Midday','Evening','Night'];
+const BLOCK_ICON=['🌅','☀️','🌆','🌙'];   // shared by the schedule grid + the time-of-day wheel
 function isMet(g){return !!(state.met && state.met[g]);}
 function discRec(g){ if(!state.disc)state.disc={}; if(!state.disc[g])state.disc[g]={weekday:[false,false,false,false],weekend:[false,false,false,false]}; return state.disc[g]; }
 function isDisc(g,wk,b){return !!discRec(g)[wk][b];}
@@ -1462,6 +1612,7 @@ function liveTick(){
   const now=Date.now(), dt=(now-state.lastSeen)/1000;
   if(dt<=0)return;
   applyIdle(dt); state.lastSeen=now;
+  runJournalTick();
   updateNeedsBar();
   if(activeCat==='resources') refresh();
 }
@@ -1512,25 +1663,31 @@ Reliably found near: the park in the rain, the corner table with the bad wifi, a
 
 There's stuff I don't put out here. Everybody's got a drawer they don't open for the timeline; mine's just quieter than most. Ask me about a band, not about that.`},
 };
+/* "Gifts she likes" — hidden until the player discovers a favorite (by giving the right gift, or later a dialogue reveal) */
+function giftLikesHTML(gk){
+  const known=(state.giftLikes&&state.giftLikes[gk])?Object.keys(state.giftLikes[gk]):[];
+  if(!known.length)return '';
+  const chips=known.map(nm=>{const g=GIFTS[nm]||{};return `<span class="gl-chip">${g.emj||'🎁'} ${nm}</span>`;}).join('');
+  return `<div class="soc-gifts"><div class="gl-h">🎁 Gifts she likes</div><div class="gl-chips">${chips}</div></div>`;
+}
 function schedGridHTML(gk){
   const cur=curWk(), curB=schedBlock(state.timeMin);
-  const head=`<tr><th style="text-align:left;padding:4px 6px;color:#b8b8c4;font-weight:600"></th>`+
-    BLOCK_LABEL.map((b,i)=>`<th style="padding:4px 6px;color:#b8b8c4;font-weight:600;font-size:11px">${['🌅','☀️','🌆','🌙'][i]} ${b}</th>`).join('')+`</tr>`;
+  const head=`<tr><th class="sg-rowh"></th>`+
+    BLOCK_LABEL.map((b,i)=>`<th class="sg-h">${BLOCK_ICON[i]} ${b}</th>`).join('')+`</tr>`;
   const rows=['weekday','weekend'].map(wk=>{
     const cells=[0,1,2,3].map(b=>{
       const known=isDisc(gk,wk,b), loc=SCHEDULE[gk][wk][b], now=(wk===cur&&b===curB);
-      const base='padding:5px 6px;text-align:center;border:1px solid rgba(255,255,255,.10);font-size:11.5px;'+(now?'box-shadow:inset 0 0 0 2px #ff6fa5;border-radius:3px;':'');
-      return known
-        ? `<td style="${base}background:rgba(120,200,140,.16);color:#eaf5ec">${loc||'Away'}</td>`
-        : `<td style="${base}background:rgba(255,255,255,.03);color:#7d7d8a">❓</td>`;
+      const cls='sg-cell '+(known?'sg-known':'sg-unknown')+(now?' sg-now':'');
+      return `<td class="${cls}">${known?(loc||'Away'):'❓'}</td>`;
     }).join('');
-    return `<tr><th style="text-align:left;padding:5px 6px;color:#b8b8c4;font-weight:600;font-size:11.5px">${wk==='weekday'?'Weekday':'Weekend'}</th>${cells}</tr>`;
+    return `<tr><th class="sg-rowh">${wk==='weekday'?'Weekday':'Weekend'}</th>${cells}</tr>`;
   }).join('');
   const known=[0,1,2,3].reduce((a,b)=>a+(isDisc(gk,'weekday',b)?1:0)+(isDisc(gk,'weekend',b)?1:0),0);
+  const cols=`<colgroup><col class="sg-c0">${[0,1,2,3].map(()=>'<col class="sg-cx">').join('')}</colgroup>`;
   return `<div class="soc-sched" style="margin-top:16px">
     <div style="font-weight:700;font-size:13px;margin-bottom:2px">📅 Schedule <span style="font-weight:400;color:#8a8a99">— discovered ${known}/8</span></div>
     <p class="mv-note" style="margin:2px 0 8px">Catch her somewhere at the right time to fill this in. ❓ = still unknown.</p>
-    <table style="width:100%;border-collapse:collapse">${head}${rows}</table></div>`;
+    <div class="sched-scroll"><table class="sg-table">${cols}${head}${rows}</table></div></div>`;
 }
 const GB_LOGO='<svg class="gb-logo" viewBox="0 0 64 64" width="20" height="20" aria-hidden="true"><g fill="none" stroke="#b4bcc8" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 41 Q19 24 32 33 Q45 24 57 41"/></g><path fill="#b4bcc8" d="M32 30 q3 0 3.2 4 q-0.2 5 -3.2 8 q-3 -3 -3.2 -8 q0.2 -4 3.2 -4 Z"/></svg>';
 function socialViewHTML(){
@@ -1558,37 +1715,266 @@ function socialViewHTML(){
     <div class="soc-head">
       <div class="soc-avatar">${g.emj}</div>
       <div class="soc-id"><div class="soc-name">${g.k}</div><div class="soc-handle">@${info.handle}</div><div class="soc-tag">${info.tag}</div></div>
-      <button class="soc-follow" data-act="socFollow">Following</button>
+      <div class="soc-actions">
+        <button class="soc-follow" data-act="socFollow">Following</button>
+        <button class="soc-gift${state.giftDay&&state.giftDay[g.k]===state.day?' spent':''}" data-act="giveGiftTo" data-girl="${g.k}">${state.giftDay&&state.giftDay[g.k]===state.day?'✓ Gift sent':'🎁 Give Gift'}</button>
+      </div>
     </div>
     <div class="soc-meta"><span class="soc-hearts">${'♥'.repeat(hearts)}${'♡'.repeat(10-hearts)} ${hearts}/10 with you</span><span class="soc-dot">·</span><span class="soc-loc">${locLine}</span></div>
     <div class="soc-bio">${paras}</div>
+    ${giftLikesHTML(g.k)}
     ${schedGridHTML(g.k)}
   </div>`;
   return `<div class="soc-scope"><div class="mv-title gb-title">${GB_LOGO}Greybird</div><p class="mv-note">Profiles you've unlocked by meeting people. <b>Placeholder feed.</b></p>
     <div class="soc-wrap"><div class="soc-nav">${nav}</div><div class="soc-main">${portrait}${infoCol}</div></div></div>`;
 }
+/* ================= DATES (V12.0) — scripted, heart-gated outings that pay off the affection loop =================
+   DATES[girl] = ordered list. Each date: {id, title, loc?, req:{hearts?,skill?,after?}, beats:[VN beats], memory}.
+   Beats are the VN-native format ({who,text} / {choose:[{label,aff,say}]}). Date choices are all-positive (a date is a
+   good time) and their affection IS the payoff; the shared end-of-scene ♥ toast reports the total. `soon:true` = locked
+   placeholder for a not-yet-written date. Completing a date marks state.datesDone[id], writes a Journal memory, and
+   spends a little energy + time (a real outing). Save-compatible: datesDone/journal already exist in the save. */
+const DATE_COST={energy:15, mins:120};
+const DATES={
+ 'Alex':[
+  {id:'alex1', title:'Game-Day Nerves', loc:'Tidewater Fitness', req:{hearts:1},
+   memory:"You caught Alex an hour before the gym opened, drilling her regionals routine alone. The unshakeable captain admitted she gets nervous too — and made you promise to be front-row on Saturday, in her colors.",
+   beats:[
+    {who:"narr",text:"Tidewater Fitness, an hour before it opens. Alex sent you a single pin drop and the words don't be late. The mats are empty. She is already stretching, hair up, no audience for once."},
+    {who:"her",text:"There you are. Good. I needed a witness who won't sell the footage. Regionals are Saturday, I have run this opener forty times, and it still isn't mine yet."},
+    {choose:[{label:"Show me. I'll keep count.",aff:18,say:"Okay. Eight-count, from the top. Don't clap at the wrong part, it throws me off."},{label:"Forty times? It's probably flawless by now.",aff:12,say:"Probably loses regionals. But — thank you. Watch anyway."}]},
+    {who:"narr",text:"She runs it — sharp, fast, precise — then stumbles the final turn and swears under her breath."},
+    {who:"her",text:"See? That. Every single time. My body knows the whole routine and then panics on the dismount like it has never met the floor before."},
+    {choose:[{label:"You're allowed to be nervous, you know.",aff:15,say:"Captains aren't. Everyone else gets to be nervous. I get to be the reason they aren't. ...But yes. I am. A little. Don't you dare look pleased about it."},{label:"Do it again. I've got you.",aff:12,say:"I've got you. You sound like a motivational poster. ...Fine. Again. Count me in."}]},
+    {who:"narr",text:"Second run. She lands the dismount clean and stares at her own feet like they betrayed her by cooperating."},
+    {who:"her",text:"Huh. It's easier when there's someone here who isn't keeping score. That is — I don't know what that is. New. I don't get a lot of new."},
+    {choose:[{label:"Then I'll be there Saturday. Front row.",aff:18,say:"Wear the colors. I mean it. I want to be able to find you in the crowd."},{label:"Anytime you need a non-judge, I'm around.",aff:12,say:"Careful. I might start believing that. ...Same mat, tomorrow. Bring the count."}]},
+    {who:"narr",text:"She walks you out into the grey morning, gym bag over one shoulder, standing a little straighter than she did an hour ago."}
+   ]},
+  {id:'alex2', title:'No Colors, No Crown', req:{hearts:2, after:'alex1'}, soon:true},
+ ],
+ 'Ari':[
+  {id:'ari1', title:'Con Floor Co-Op', loc:'Convention Center', req:{hearts:1},
+   memory:"Ari ran you through the con floor like a co-op campaign — bits, a rival cosplayer, a prototype build. Between the chaos she let the mask slip about coming home to a too-quiet apartment, then gave you matching pixel-heart pins so you would 'legally match.'",
+   beats:[
+    {who:"narr",text:"The Convention Center is wall-to-wall noise, foam swords, and lanyards. Ari finds you first — of course she does — half into a costume, phone already up and filming."},
+    {who:"her",text:"OKAY you actually came, hi, hello, say something for the vlog — no wait, don't, you'll be weird about it. Follow me. There is a prototype build in hall C and a guy cosplaying MY main and I need to judge him at close range."},
+    {choose:[{label:"Lead the way. I'm your camera guy.",aff:18,say:"CAMERA GUY. Promoted already. Okay, keep up, the good line is already forming and I do not queue politely."},{label:"Judge him? Be nice.",aff:9,say:"I am ALWAYS nice. I am devastatingly nice. I am just also correct. Come ON."}]},
+    {who:"narr",text:"Later, up on the quieter mezzanine, she chews the edge of her badge lanyard and deflates about half a notch."},
+    {who:"her",text:"Real talk for one second and then we never speak of it again. Days like this are the best thing ever, and then I get home and the apartment is so quiet it actually rings. You ever get that?"},
+    {choose:[{label:"Yeah. The comedown's the worst part.",aff:18,say:"Right?? Nobody says it out loud. Everyone just posts the highlight reel. Okay. You get a bonus life. Don't waste it."},{label:"That's why you keep the camera rolling.",aff:12,say:"Ough. Okay, don't be perceptive at a convention, it is against the rules. ...Yeah. Maybe. Whatever."}]},
+    {who:"narr",text:"She reboots almost instantly, grinning, and holds up two little enamel pins."},
+    {who:"her",text:"ANYWAY. Rescue mission complete, feelings quota met for the quarter. I got you a pin. It is a tiny pixel heart. It is deeply stupid. I already put the matching one on my bag, so now we match and you are legally not allowed to take it off."},
+    {choose:[{label:"Matching pins. We're basically a raid party.",aff:15,say:"A RAID PARTY. YES. Two-player co-op, no PvP, I call healer. Deal."},{label:"I'm never taking it off.",aff:18,say:"Cool. Cool cool cool. Normal response. Totally normal. ...Okay it is a little bit a big deal to me, whatever, MOVING ON, food court, let's go."}]},
+    {who:"narr",text:"She tows you back into the crowd by the sleeve, pixel heart bouncing on her bag, narrating the whole floor like it is a boss rush."}
+   ]},
+  {id:'ari2', title:'The Photoshoot', req:{hearts:2, after:'ari1'}, soon:true},
+ ],
+ 'Chloe':[
+  {id:'chloe1', title:'After Close', loc:'Fox & Fern', req:{hearts:1},
+   memory:"Chloe locked up Fox & Fern, broke out Lumière's rationed reserve beans, and — for the first time — told you she writes songs. She wouldn't play one. But she said 'ask me again in a month.'",
+   beats:[
+    {who:"narr",text:"Fox & Fern, past close. Chairs up on the tables, one lamp still on, the espresso machine ticking as it cools. Chloe locks the door behind you and pointedly does not flip the sign."},
+    {who:"her",text:"Lumière went home, which means the good beans come out — the reserve he rations like it is enriched uranium. Sit. Don't tell him. He will know anyway. He always knows."},
+    {choose:[{label:"Contraband coffee. I'm honored.",aff:15,say:"You should be. I do not pull the reserve for just anyone. Two people, actually. You are the second."},{label:"You could just lock up and go home?",aff:9,say:"And miss the one hour this place is actually mine? No. This is the part I like. Empty room, no orders, nobody performing. Sit down."}]},
+    {who:"narr",text:"She slides a cup across the counter, wraps both hands around her own, and goes quiet for a moment."},
+    {who:"her",text:"Can I tell you something without you turning it into a whole thing. I write songs. Not for anyone. In a notebook nobody reads. It's stupid, I know it's stupid."},
+    {choose:[{label:"It's not stupid. I'd listen, if you ever wanted.",aff:18,say:"...Maybe. Not tonight. But you didn't laugh. People laugh, or they get weird and encouraging. You just offered. Noted."},{label:"Play me one.",aff:9,say:"Ha. No. Absolutely not, we are not there. ...Yet. Ask me again in a month and don't act surprised if I say maybe."}]},
+    {who:"narr",text:"She pulls the notebook half out of her bag, then thinks better of it and pushes it back, half a smile on her face."},
+    {who:"her",text:"God. Look at me. One reserve coffee and I'm handing you the diary. Lumière's beans are basically a truth serum. Do not let that get around."},
+    {choose:[{label:"Your secret's safe. All of them.",aff:18,say:"...I believe you. That is the weird part. I usually don't. To the empty room, then."},{label:"I like this version of you.",aff:12,say:"This is not a version. This is just the one nobody buys coffee from. ...But okay. I like that you like it. Don't tell anyone I said that either."}]},
+    {who:"narr",text:"You drink the contraband roast in the dark quiet while she talks, her guard down an inch, the locked door holding the rest of the world off a little longer."}
+   ]},
+  {id:'chloe2', title:'Sketching at Driftwood', req:{hearts:2, after:'chloe1'}, soon:true},
+ ],
+ 'Ha-yoon':[
+  {id:'hayoon1', title:'Study Session', loc:'Greywater University', req:{hearts:1},
+   memory:"You studied with Ha-yoon in the library's quiet corner, supervised by Basil — her potted plant. She admitted she always studies alone at home, that this was 'less lonely,' and quietly confessed she takes a Thursday tango class she has told almost no one about.",
+   beats:[
+    {who:"narr",text:"The university library, top floor, the quiet corner by the tall windows. Ha-yoon has saved you a seat — with a small potted plant sitting on the desk like a chaperone."},
+    {who:"her",text:"You came. Good. I brought Basil. The plant, not the herb — it is a long story and Maya named him. He supervises. Do not let him hear you call math boring; he takes it personally."},
+    {choose:[{label:"Hi, Basil. I'll be on my best behavior.",aff:18,say:"He approves. That is rare. He did not approve of the last person, who called him a weed. They failed their midterm. Coincidence, probably."},{label:"A supervised study date. Very official.",aff:12,say:"I am a serious person. ...Also, I did not want to sit alone today. Both things are true."}]},
+    {who:"narr",text:"She works quietly for a while, then sets her pen down and folds her hands."},
+    {who:"her",text:"Can I say something. Studying next to someone is different than studying alone. I did not expect it. At home I always study alone. Here it is quieter but somehow less lonely. That does not make sense, I think."},
+    {choose:[{label:"It makes perfect sense to me.",aff:18,say:"Then perhaps I am not so strange after all. Okay. Good. Back to work. Basil is watching you."},{label:"We can do this more often, if you like.",aff:15,say:"...I would like that. I will not say it twice, so please remember I said it once, very clearly. More often. Yes."}]},
+    {who:"narr",text:"Near the end of the hour she turns her phone toward you — a paused video of a tango step, one figure mid-turn."},
+    {who:"her",text:"I take a class. On Thursdays. I am not good yet. The footwork is like a proof — every step must follow from the last — but the body keeps forgetting the logic. I have told almost no one. I do not know why I am telling you."},
+    {choose:[{label:"I'd love to see you dance sometime.",aff:18,say:"...Maybe. When I am less clumsy. That could be a long time. But — maybe. I will think about it."},{label:"A proof you dance instead of write. I like that.",aff:12,say:"Yes. Exactly that. You understand it. Not everyone hears it that way."}]},
+    {who:"narr",text:"You study side by side until the light goes amber in the tall windows, Basil presiding, the silence between you easy now instead of shy."}
+   ]},
+  {id:'hayoon2', title:'The Botanical Garden', req:{hearts:2, after:'hayoon1'}, soon:true},
+ ],
+};
+function skillLvl(name){for(const grp of ['personal','vocational'])if(state[grp]&&state[grp][name])return state[grp][name].lvl||0;return 0;}
+function dateHearts(girl){return Math.floor((state.affection[girl]||0)/100);}
+function dateStatus(girl,d){
+  if(state.datesDone&&state.datesDone[d.id])return {s:'done'};
+  if(d.soon)return {s:'soon'};
+  const req=d.req||{};
+  if(req.after&&!(state.datesDone&&state.datesDone[req.after]))return {s:'locked',why:'Finish the previous date first'};
+  if(req.hearts&&dateHearts(girl)<req.hearts)return {s:'locked',why:`Reach ♥${req.hearts} with ${girl}`};
+  if(req.skill&&skillLvl(req.skill.name)<req.skill.lv)return {s:'locked',why:`Needs ${req.skill.name} Lv ${req.skill.lv}`};
+  return {s:'available'};
+}
+function dateReqText(girl,d){const p=[],req=d.req||{};if(req.hearts)p.push(`♥${req.hearts} with ${girl}`);if(req.skill)p.push(`${req.skill.name} Lv ${req.skill.lv}`);return p.join(' · ')||'Available now';}
+function startDate(girl,id){
+  const d=(DATES[girl]||[]).find(x=>x.id===id); if(!d||!d.beats)return;
+  const st=dateStatus(girl,d); if(st.s!=='available'){toast(st.why||'Not available yet');return;}
+  if((state.needs.Energy||0)<DATE_COST.energy){toast('💤 Too worn out for a date — rest up first.');return;}
+  if(state.timeMin>DAY_END-90){toast('🌙 Too late in the day — try a date earlier.');return;}
+  openScene(girl,d.beats.slice(),()=>{
+    if(!state.datesDone)state.datesDone={}; state.datesDone[id]=true;
+    state.needs.Energy=Math.max(0,(state.needs.Energy||0)-DATE_COST.energy);
+    state.timeMin=Math.min(DAY_END,state.timeMin+DATE_COST.mins);
+    if(!Array.isArray(state.journal))state.journal=[];
+    const stamp=`Day ${state.day} · ${WD[gameDate.getDay()]} ${MO[gameDate.getMonth()]} ${gameDate.getDate()}`;
+    state.journal.unshift({d:stamp,g:girl,t:d.title,m:d.memory,k:'date'});
+    toast('📖 New memory saved to your Journal');
+    if(mainView==='dates')renderMainView('dates');
+  });
+}
 function datesViewHTML(){
-  const dates=[
-    {t:'Con day with Ari',req:'♥1 with Ari',ok:true},
-    {t:'Workout with Alex — Tidewater Fitness',req:'♥1 with Alex',ok:true},
-    {t:'Study date — Ha-yoon',req:'♥2 with Ha-yoon · Intelligence Lv 10',ok:false},
-    {t:'Cook her dinner',req:'♥3 · Cooking Lv 40',ok:false},
-    {t:'Coffee at Fox & Fern — Chloe',req:'♥2 with Chloe',ok:false},
-  ];
-  return `<div class="mv-title">Dates</div><p class="mv-note">Unlock dates by raising hearts and skills. Scenes coming — mock-up.</p>
-  <div class="dv-list">${dates.map(d=>`<div class="dv-card ${d.ok?'ok':'locked'}"><div><div class="dv-t">${d.ok?'🌹':'🔒'} ${d.t}</div><div class="dv-req">${d.req}</div></div><span class="dv-tag">${d.ok?'Available':'Locked'}</span></div>`).join('')}</div>`;
+  const met=NPC.map(n=>n.k).filter(isMet);
+  if(!met.length)return `<div class="mv-title">Dates</div><p class="mv-note">Meet someone first — catch a girl at her usual spot, then grow closer. Dates unlock as your hearts rise.</p>`;
+  const blocks=met.map(girl=>{
+    const emj=(NPC.find(n=>n.k===girl)||{}).emj||'', hearts=dateHearts(girl);
+    const cards=(DATES[girl]||[]).map(d=>{
+      const st=dateStatus(girl,d); let cls,tag,btn='',icon;
+      if(st.s==='done'){cls='done';tag='✓ Memory';icon='🌹';}
+      else if(st.s==='available'){cls='ok';tag='Available';icon='🌹';btn=`<button class="dv-go" data-act="date" data-girl="${girl}" data-id="${d.id}">Go on date ▸</button>`;}
+      else if(st.s==='soon'){cls='locked';tag='Coming soon';icon='🔒';}
+      else{cls='locked';tag='Locked';icon='🔒';}
+      const sub=st.s==='locked'?(st.why||dateReqText(girl,d)):dateReqText(girl,d);
+      return `<div class="dv-card ${cls}"><div class="dv-main"><div class="dv-t">${icon} ${d.title}${d.loc?` <span class="dv-loc">· ${d.loc}</span>`:''}</div><div class="dv-req">${sub}</div></div><div class="dv-right">${btn}<span class="dv-tag">${tag}</span></div></div>`;
+    }).join('')||'<div class="dv-req">No dates yet.</div>';
+    return `<div class="dv-girl">${emj} ${girl} <span class="dv-h">${'♥'.repeat(hearts)}${'♡'.repeat(Math.max(0,10-hearts))} ${hearts}/10</span></div><div class="dv-list">${cards}</div>`;
+  }).join('');
+  return `<div class="mv-title">Dates</div><p class="mv-note">Scripted outings that pay off your affection — each costs a little energy and time. More unlock as your hearts grow.</p>${blocks}`;
+}
+/* ================= OBJECTIVES (V13.0) — weekly quest board, re-rolled every Monday =================
+   The player holds up to 4 active objectives, one drawn from each of five sub-pools (categories):
+     heart  — reach ♥1 with a specific girl        (eligible while she's below ♥1)
+     spark  — ignite a spark with a met girl        (give her a Rose)
+     skill  — raise any skill to the next tier of 10 (10→20→…; a tier is offered only once the previous is
+              reached and only while some skill is still below it — i.e. always your current frontier tier)
+     gift   — buy a met girl a gift                 (a Rose for now; expands with the Shop)
+     date   — go on a date with a specific girl      (enters the pool only at ♥1 with her, needs an open date)
+   Five pools into four slots → one pool is dropped each week; since only 'skill' is non-girl, a girl-related
+   objective always survives. The board reshuffles every Monday (see Compendium). Completed objectives drop
+   into Completed Objectives. Achievements (first ♥ date; whole-schedule uncover) live in Memories. */
+const SKILL_TIERS=[10,20,30,40,50,60,70,80,90,100];
+function maxSkillLv(){return ['personal','vocational'].reduce((m,g)=>{const o=state[g]||{};for(const k in o)m=Math.max(m,o[k].lvl||0);return m;},0);}
+function girlHeartsN(g){return Math.floor((state.affection[g]||0)/100);}
+function girlGifts(g){return (state.giftsGiven&&state.giftsGiven[g])||0;}
+function availableDateFor(g){return (DATES[g]||[]).find(d=>dateStatus(g,d).s==='available');}
+function poolHeart(){return NPC.map(n=>n.k).filter(g=>girlHeartsN(g)<1).map(g=>({cat:'heart',girl:g,id:'heart_'+g,label:`Reach ♥1 with ${g}`}));}
+function poolSpark(){return NPC.map(n=>n.k).filter(g=>isMet(g)&&!((state.spark[g]||0)>0)).map(g=>({cat:'spark',girl:g,id:'spark_'+g,label:`Ignite a spark with ${g}`}));}
+function poolSkill(){const mx=maxSkillLv(),X=SKILL_TIERS.find(t=>t>mx);return X?[{cat:'skill',tier:X,id:'skill_'+X,label:`Raise any skill to Level ${X}`}]:[];}
+function poolGift(){return NPC.map(n=>n.k).filter(g=>isMet(g)).map(g=>({cat:'gift',girl:g,id:'gift_'+g,label:`Give ${g} a gift`}));}
+function poolDate(){return NPC.map(n=>n.k).filter(g=>girlHeartsN(g)>=1&&availableDateFor(g)).map(g=>({cat:'date',girl:g,dateId:availableDateFor(g).id,id:'date_'+g,label:`Go on a date with ${g}`}));}
+const OBJ_POOLS=[poolHeart,poolSpark,poolSkill,poolGift,poolDate];
+function objPick(a){return a[Math.floor(Math.random()*a.length)];}
+function rollObjectives(){
+  const chosen=[];
+  for(const pool of OBJ_POOLS){const opts=pool();if(opts.length)chosen.push(objPick(opts));}
+  while(chosen.length>4)chosen.splice(Math.floor(Math.random()*chosen.length),1);   // 5 pools → 4 slots; a girl pool always survives
+  return chosen.map(o=>{if(o.cat==='gift')o.base=girlGifts(o.girl);return o;});
+}
+function objSatisfied(o){
+  switch(o.cat){
+    case 'heart': return girlHeartsN(o.girl)>=1;
+    case 'spark': return (state.spark[o.girl]||0)>0;
+    case 'skill': return maxSkillLv()>=o.tier;
+    case 'gift':  return girlGifts(o.girl)>(o.base||0);
+    case 'date':  return !!(state.datesDone&&state.datesDone[o.dateId]);
+  }
+  return false;
+}
+function mondayKey(dt){const d=new Date(dt.getFullYear(),dt.getMonth(),dt.getDate());d.setDate(d.getDate()-((d.getDay()+6)%7));return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;}
+function ensureObjectives(){
+  const wk=mondayKey(gameDate);
+  if(!Array.isArray(state.objectives)){state.objectives=[];state.objWeek=null;}
+  if(state.objWeek!==wk){state.objWeek=wk;state.objectives=rollObjectives();}
+}
+function evalObjectives(){          // returns ids of objectives completed on THIS pass
+  if(!Array.isArray(state.objectives))return [];
+  if(!Array.isArray(state.objDone))state.objDone=[];
+  const still=[], doneNow=[];
+  for(const o of state.objectives){
+    if(objSatisfied(o)){
+      state.objDone.unshift({id:o.id,label:o.label,d:objStamp()});
+      toast('✔ Objective complete — '+o.label);
+      doneNow.push(o.id);
+    } else still.push(o);
+  }
+  state.objectives=still;
+  return doneNow;
+}
+function objStamp(){return `Day ${state.day} · ${WD[gameDate.getDay()]} ${MO[gameDate.getMonth()]} ${gameDate.getDate()}`;}
+function journalTick(){ensureObjectives();return evalObjectives();}   // state-only; returns newly-completed ids
+/* When an objective completes while the Journal is on screen, check it off in place and slide it down toward
+   the Completed section, then re-render. Called from state-change paths (refresh/liveTick/gift), not from render. */
+function runJournalTick(){const done=journalTick();if(done&&done.length&&typeof mainView!=='undefined'&&mainView==='journal')animateObjComplete(done);return done;}
+function animateObjComplete(ids){
+  const root=document.getElementById('mvJournal'); if(!root){return;}
+  let found=false;
+  ids.forEach(id=>{const li=root.querySelector('li[data-obj="'+id+'"]');if(li){found=true;const box=li.querySelector('.obj-box');if(box)box.textContent='☑';li.classList.add('obj-slide');}});
+  if(found)setTimeout(()=>{if(mainView==='journal')renderMainView('journal');},760); else if(mainView==='journal')renderMainView('journal');
+}
+/* ---- achievements (Memories) ---- */
+function addMemory(girl,title,body,kind){
+  if(!Array.isArray(state.journal))state.journal=[];
+  state.journal.unshift({d:objStamp(),g:girl,t:title,m:body,k:kind||'event'});
+}
+function checkScheduleComplete(girl){
+  if(state.schedDone&&state.schedDone[girl])return;
+  const s=SCHEDULE[girl];if(!s)return;const rec=discRec(girl);
+  for(const wk of ['weekday','weekend'])for(let b=0;b<4;b++){if(s[wk][b]&&!rec[wk][b])return;}
+  (state.schedDone=state.schedDone||{})[girl]=true;
+  addMemory(girl,'Routine Uncovered',`You've mapped ${girl}'s entire weekly routine — you know where to find her, any day of the week.`,'schedule');
+  toast('🏆 Achievement — '+girl+"'s routine uncovered");
 }
 function journalViewHTML(){
-  return `<div class="mv-title">Journal</div><p class="mv-note">Your story so far & current goals — mock-up.</p>
-  <div class="mv-h">Objectives</div>
-  <ul class="jv-list"><li>◻ Reach ♥1 with any girl</li><li>◻ Earn your first $1,000</li><li>◻ Raise a skill to Level 10</li><li>◻ Give a girl a Rose</li></ul>
-  <div class="mv-h">Recent</div>
-  <ul class="jv-log"><li>Day 1 — A new life begins in the city.</li><li>Tip: visit a girl's usual spot to grow closer.</li></ul>`;
+  journalTick();
+  const catIcon={heart:'💕',spark:'✨',skill:'📈',gift:'🎁',date:'🌹'};
+  const active=Array.isArray(state.objectives)?state.objectives:[];
+  const objHTML=active.length?active.map(o=>`<li data-obj="${o.id}"><span class="obj-box">◻</span> <span class="jv-cat">${catIcon[o.cat]||'•'}</span> ${o.label}</li>`).join(''):'<li class="jv-empty">New objectives arrive Monday.</li>';
+  const done=Array.isArray(state.objDone)?state.objDone:[];
+  const doneHTML=done.length?done.slice(0,15).map(o=>`<li>☑ ${o.label} <span class="jv-when">${o.d||''}</span></li>`).join(''):'<li class="jv-empty">None yet — complete an objective above.</li>';
+  const mem=Array.isArray(state.journal)?state.journal:[];
+  const kIcon={date:'🌹',schedule:'🗺️',event:'⭐'};
+  const memHTML=mem.length?mem.map(e=>{
+    if(typeof e==='string')return `<li>${e}</li>`;
+    const emj=(NPC.find(n=>n.k===e.g)||{}).emj||kIcon[e.k]||'⭐';
+    return `<li><div class="jv-m-top"><b>${emj} ${e.t}</b><span class="jv-when">${e.d||''}</span></div><div class="jv-m-body">${e.m||''}</div></li>`;
+  }).join(''):'<li class="jv-empty">No memories yet — go on a date or fully map a girl\'s routine to earn one.</li>';
+  return `<div class="mv-title">Journal</div><p class="mv-note">Four objectives at a time — they reshuffle every Monday. Completed objectives and milestones are kept below.</p>
+  <div class="mv-h">Objectives <span class="jv-sub">· refreshes Monday</span></div>
+  <ul class="jv-list">${objHTML}</ul>
+  <details class="jv-fold"><summary class="mv-h jv-summary">Completed Objectives <span class="jv-count">${done.length}</span></summary>
+  <ul class="jv-list jv-done">${doneHTML}</ul></details>
+  <details class="jv-fold"><summary class="mv-h jv-summary">Memories <span class="jv-count">${mem.length}</span> <span class="jv-sub">· achievements</span></summary>
+  <ul class="jv-log jv-mem">${memHTML}</ul></details>`;
 }
 function shopViewHTML(){
-  const items=[{emj:'🌹',nm:'Rose',price:50,desc:"Lights a girl's spark"},{emj:'🍫',nm:'Chocolate',price:80,desc:'A sweet gift'},{emj:'💍',nm:'Ring',price:2000,desc:'A serious gesture'},{emj:'🎫',nm:'Movie Ticket',price:120,desc:'For a date'}];
-  return `<div class="mv-title">Shop</div><p class="mv-note">Spend money on gifts & items. You have <b>$${state.money.toLocaleString()}</b>. Purchasing coming — mock-up.</p>
-  <div class="sv-grid">${items.map(i=>`<div class="sv-card"><div class="sv-emj">${i.emj}</div><div class="sv-nm">${i.nm}</div><div class="sv-desc">${i.desc}</div><button class="sv-buy" data-act="buySoon">$${i.price}</button></div>`).join('')}</div>`;
+  const cards=Object.keys(GIFTS).map(nm=>{
+    const g=GIFTS[nm], owned=(state.inventory.gifts.find(x=>x.nm===nm)||{}).qty||0, can=state.money>=g.price;
+    return `<div class="sv-card"><div class="sv-emj">${g.emj}</div><div class="sv-nm">${nm}</div>
+      <div class="sv-desc">You own ×${owned}</div>
+      <button class="sv-buy${can?'':' disabled'}" data-act="buyGift" data-nm="${nm}">$${g.price}</button></div>`;
+  }).join('');
+  return `<div class="mv-title">Shop</div><p class="mv-note">Buy gifts, then give them from a girl's Greybird profile. You have <b>$${state.money.toLocaleString()}</b>. Everyone has gifts they love — and gifts that fall flat. Give one to find out what she likes.</p>
+  <div class="sv-grid">${cards}</div>`;
+}
+function buyGift(nm){
+  const g=GIFTS[nm]; if(!g)return;
+  if(state.money<g.price){toast('Not enough money for that.');return;}
+  state.money-=g.price;
+  let it=state.inventory.gifts.find(x=>x.nm===nm);
+  if(!it){it={emj:g.emj,nm:nm,qty:0};state.inventory.gifts.push(it);}
+  it.qty++;
+  toast(`Bought ${g.emj} ${nm} — $${g.price}`);
+  updateClock(); refresh(); renderMainView('shop');
 }
 function settingsViewHTML(){
   const info=CAN_SAVE?`Player: ${state.name} · manual saves only. Last saved: ${fmtAgo(lastSaved)}.`:'Local storage is blocked in this preview — saving works on your hosted page.';
@@ -1617,7 +2003,9 @@ document.querySelector('.mainzone').addEventListener('click',e=>{
   if(act==='save'){saveGame();renderMainView('settings');}
   else if(act==='load'){if(loadGame()){syncTabs();buildMap();updateClock();updateActionBar();render(activeCat);toast('Save loaded');renderMainView('settings');}}
   else if(act==='reset'){confirmReset();}
-  else if(act==='buySoon'){toast('Shop coming soon ✨');}
+  else if(act==='date'){startDate(btn.dataset.girl,btn.dataset.id);}
+  else if(act==='buyGift'){buyGift(btn.dataset.nm);}
+  else if(act==='giveGiftTo'){openGiveGift(btn.dataset.girl);}
   else if(act==='socFollow'){toast("It's a mock-up ✨");}
 });
 
