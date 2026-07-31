@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<!-- Idle Hearts — Build V10.4 -->
+<!-- Idle Hearts — Build V11.7 -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Idle Hearts — Build V10.4</title>
+<title>Idle Hearts — Build V11.7</title>
 <style>
   :root{
     --bg:#14101c; --panel:#1e1830; --panel-2:#261e3d;
@@ -34,6 +34,8 @@
   .btn{background:var(--panel-2);border:1px solid var(--edge);color:var(--text);padding:6px 10px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;transition:.15s;display:flex;align-items:center;gap:5px;white-space:nowrap;}
   .btn:hover{border-color:var(--accent);background:#2e2447;transform:translateY(-1px)}
   .btn.active{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset;color:#fff}
+  .btn .gb-logo{flex:none;display:block}
+  .gb-title{display:flex;align-items:center;gap:8px}
   .clk-money{font-size:14px;font-weight:800;color:var(--gold);font-variant-numeric:tabular-nums}
   /* Notification Area (top-right of Menu Bar) */
   .notif{display:flex;flex-direction:column;gap:4px;margin-left:auto;padding-left:14px;border-left:1px solid var(--edge);white-space:nowrap;}
@@ -186,6 +188,49 @@
   /* Compendium (🖥 monitor button) */
   .compendium{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;background:rgba(8,5,14,.75);backdrop-filter:blur(2px);}
   .compendium.show{display:flex}
+  /* VN scene overlay */
+  .vn{position:fixed;inset:0;z-index:90;display:none;background:linear-gradient(180deg,rgba(13,10,22,.93),rgba(22,15,36,.96));backdrop-filter:blur(3px)}
+  .vn.show{display:flex;align-items:flex-end;justify-content:center}
+  .vn-stage{position:relative;width:100%;height:100%;display:flex;align-items:flex-end;justify-content:center}
+  .vn-portrait{position:absolute;bottom:0;left:50%;transform:translateX(-50%);height:80%;display:flex;align-items:flex-end;pointer-events:none}
+  .vn-portrait img{height:100%;width:auto;max-width:44vw;object-fit:contain;border-radius:12px;filter:drop-shadow(0 10px 34px rgba(0,0,0,.65));transition:opacity .2s}
+  .vn-box{position:relative;z-index:2;width:min(880px,94%);margin:0 auto 4vh;background:linear-gradient(180deg,rgba(36,28,58,.95),rgba(27,21,48,.98));border:1px solid var(--accent);border-radius:16px;padding:18px 22px 14px;box-shadow:0 12px 44px rgba(0,0,0,.6)}
+  .vn-name{font-size:16px;font-weight:800;color:var(--accent);margin-bottom:6px}
+  .vn-name.you{color:var(--accent-2)}
+  .vn-name.narr{color:var(--muted);font-style:italic;font-weight:600}
+  .vn-text{font-size:15px;line-height:1.6;color:var(--text);min-height:3em}
+  .vn-choices{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+  .vn-choice{text-align:left;background:var(--panel-2);border:1px solid var(--edge);color:var(--text);padding:10px 14px;border-radius:10px;cursor:pointer;font-size:14px;font-weight:600;transition:.15s}
+  .vn-choice:hover{border-color:var(--accent);background:#2c2247;transform:translateY(-1px)}
+  .vn-next{margin-top:12px;background:linear-gradient(90deg,var(--accent),var(--accent-2));border:none;color:#fff;font-weight:700;font-size:14px;padding:9px 20px;border-radius:10px;cursor:pointer;float:right}
+  .vn-next:hover{filter:brightness(1.1)}
+  /* dialogue choice feedback — hearts pop from the cursor */
+  .dfx-layer{position:fixed;inset:0;pointer-events:none;z-index:120;overflow:hidden}
+  .dfx{position:fixed;transform:translate(-50%,-50%);will-change:transform,opacity;pointer-events:none}
+  .dfx-up{font-size:22px;color:#ff6fa5;text-shadow:0 0 10px rgba(255,111,165,.8)}
+  .dfx-up{animation:dfxUp 1.25s ease-out forwards}
+  @keyframes dfxUp{
+    0%{opacity:0;transform:translate(-50%,-50%) scale(.4)}
+    18%{opacity:1;transform:translate(-50%,-50%) scale(1.15)}
+    100%{opacity:0;transform:translate(calc(-50% + var(--dx,0px)),calc(-50% - 96px)) scale(.9)}
+  }
+  .dfx-break .hh{position:absolute;left:0;top:0;font-size:26px;color:#ff4d6d;text-shadow:0 0 10px rgba(255,77,109,.75);transform:translate(-50%,-50%)}
+  .dfx-break .hh-l{clip-path:inset(0 50% 0 0);animation:dfxBreakL 1.15s cubic-bezier(.3,.1,.3,1) forwards}
+  .dfx-break .hh-r{clip-path:inset(0 0 0 50%);animation:dfxBreakR 1.15s cubic-bezier(.3,.1,.3,1) forwards}
+  @keyframes dfxBreakL{
+    0%{opacity:0;transform:translate(-50%,-50%) scale(.5)}
+    16%{opacity:1;transform:translate(-50%,calc(-50% - 22px)) scale(1.05)}
+    38%{opacity:1;transform:translate(-50%,calc(-50% - 27px)) scale(1)}
+    100%{opacity:0;transform:translate(calc(-50% - 16px),calc(-50% + 34px)) rotate(-26deg) scale(.95)}
+  }
+  @keyframes dfxBreakR{
+    0%{opacity:0;transform:translate(-50%,-50%) scale(.5)}
+    16%{opacity:1;transform:translate(-50%,calc(-50% - 22px)) scale(1.05)}
+    38%{opacity:1;transform:translate(-50%,calc(-50% - 27px)) scale(1)}
+    100%{opacity:0;transform:translate(calc(-50% + 16px),calc(-50% + 34px)) rotate(26deg) scale(.95)}
+  }
+  .ab-talk{margin-right:8px;background:#241631;border-color:var(--accent-2)}
+  .ab-talk[hidden]{display:none}
   .comp-card{width:min(880px,94vw);height:min(80vh,620px);background:var(--panel);border:1px solid var(--gold);border-radius:14px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,.55);}
   .comp-head{display:flex;align-items:center;gap:14px;padding:12px 16px;border-bottom:1px solid var(--edge);}
   .comp-back{background:var(--panel-2);border:1px solid var(--edge);color:var(--text);font-weight:700;font-size:13px;padding:7px 14px;border-radius:8px;cursor:pointer}
@@ -287,7 +332,7 @@
     <div class="brand"><span class="heart">♥</span> Idle Hearts</div>
     <div class="navbtns">
       <button class="btn active" data-view="map">🗺️ Map</button>
-      <button class="btn" data-view="social">💬 Social</button>
+      <button class="btn" data-view="social"><svg class="gb-logo" viewBox="0 0 64 64" width="17" height="17" aria-hidden="true"><g fill="none" stroke="#b4bcc8" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 41 Q19 24 32 33 Q45 24 57 41"/></g><path fill="#b4bcc8" d="M32 30 q3 0 3.2 4 q-0.2 5 -3.2 8 q-3 -3 -3.2 -8 q0.2 -4 3.2 -4 Z"/></svg> Greybird</button>
       <button class="btn" data-view="dates">🌹 Dates</button>
       <button class="btn" data-view="journal">📖 Journal</button>
       <button class="btn" data-view="shop">🛍️ Shop</button>
@@ -326,6 +371,7 @@
     <div class="ab-fill" id="abFill"><div class="heart-layer" id="heartLayer"></div></div>
     <div class="ab-content">
       <div class="ab-loc" id="abLoc"></div>
+      <button class="ab-visit ab-talk" id="abTalk" hidden>💬 Talk</button>
       <button class="ab-visit" id="abVisit">Visit ▸</button>
     </div>
   </div>
@@ -371,6 +417,19 @@
   </div>
 </div>
 
+<!-- VN scene overlay -->
+<div class="vn" id="vn">
+  <div class="vn-stage">
+    <div class="vn-portrait"><img id="vnPortrait" alt=""></div>
+    <div class="vn-box">
+      <div class="vn-name" id="vnName"></div>
+      <div class="vn-text" id="vnText"></div>
+      <div class="vn-choices" id="vnChoices"></div>
+      <button class="vn-next" id="vnNext">Continue ▸</button>
+    </div>
+  </div>
+</div>
+
 <!-- popup / modal -->
 <div class="modal" id="modal"><div class="modal-card">
   <div class="modal-title" id="modalTitle"></div>
@@ -379,7 +438,7 @@
 </div></div>
 
 <script>
-const BUILD="V10.4";
+const BUILD="V11.7";
 document.getElementById('buildStamp').textContent="Idle Hearts Build "+BUILD;
 
 /* ================= GAME STATE ================= */
@@ -404,6 +463,10 @@ function defaultState(){return{
   perks:{},
   met:{},                 // girls the player has met (profile unlocked)
   disc:{},                // discovered schedule slots: girl → {weekday:[b0..b3], weekend:[b0..b3]}
+  talkDay:{},             // girl → day number last talked (once/day gate)
+  talkSeen:{},            // girl → count of talks (rotates dialogue)
+  datesDone:{},           // completed date ids (dates system builds on this)
+  journal:[],             // earned memories
 };}
 const DEFAULT_DATE=()=>new Date(2026,0,1); // Thursday, Jan 1, 2026 (real calendar)
 const state=defaultState();
@@ -419,7 +482,7 @@ const LOCATIONS=[
   {id:'Gym',icon:'🏋️',name:'Tidewater Fitness',x:200,y:360,r:52.5,hours:1,open:360,close:1320,cost:{energy:20,money:10},gain:{needs:{Stress:-5,Happiness:5},personal:{Fitness:8}}},
   {id:'Park',icon:'🌳',name:'Driftwood Park',x:800,y:360,r:52.5,hours:1,open:360,close:1200,cost:{energy:5},gain:{needs:{Stress:-20,Happiness:10},personal:{Charm:2}}},
   {id:'Cafe',icon:'☕',name:'Fox & Fern',x:330,y:225,r:50,hours:1,open:360,close:1200,cost:{energy:15},gain:{needs:{Stress:5},vocational:{Hospitality:6},money:70}},
-  {id:'Mall',icon:'🛍️',name:'Greywater Commons',x:670,y:225,r:50,hours:2,open:600,close:1260,cost:{energy:8,money:150},gain:{needs:{Happiness:12,Stress:-8},vocational:{Style:6},personal:{Charm:2}},unlockDay:5},
+  {id:'Mall',icon:'🛍️',name:'Greywater Commons',x:670,y:225,r:50,hours:2,open:600,close:1260,cost:{energy:8,money:150},gain:{needs:{Happiness:12,Stress:-8},vocational:{Style:6},personal:{Charm:2}}},
   {id:'Kitchen',icon:'🍳',name:'Kitchen',x:500,y:392,r:50,hours:4,open:600,close:1200,cost:{energy:18},gain:{needs:{Stress:8},vocational:{Cooking:7},money:90}},
   {id:'Convention',icon:'🎪',name:'Convention Center',x:500,y:90,r:52.5,hours:3,open:600,close:1200,cost:{energy:12,money:25},gain:{needs:{Happiness:12,Stress:-3},personal:{Charm:3}}},
   {id:'Dorms',icon:'🛏️',name:'Dorms',x:130,y:232,r:47.5,hours:1,open:480,close:1440,cost:{energy:5},gain:{needs:{Stress:-10,Happiness:5}}},
@@ -495,6 +558,7 @@ document.getElementById('mapwrap').addEventListener('click',e=>{
 const actionbar=document.getElementById('actionbar');
 const abFill=document.getElementById('abFill');
 const abVisit=document.getElementById('abVisit');
+const abTalk=document.getElementById('abTalk');
 const abLoc=document.getElementById('abLoc');
 
 // floating hearts across full width
@@ -541,10 +605,17 @@ function updateActionBar(){
   const loc=byId(selectedId);
   const prob=affordProblem(loc);
   const warn=(prob&&prob.t!=='Closed')?` <span class="warn">⚠ ${prob.t}</span>`:'';
-  const hereNow=girlsAt(loc.name).filter(g=>isMet(g)&&isDisc(g,curWk(),schedBlock(state.timeMin)));
-  const hereChip=hereNow.length?` <span class="d">· 💗 ${hereNow.map(g=>((NPC.find(z=>z.k===g)||{}).emj||'')+' '+g).join(', ')} here now</span>`:'';
+  const present=isLocked(loc) ? [] : girlsAt(loc.name).filter(g=>isMet(g)&&isDisc(g,curWk(),schedBlock(state.timeMin)));  // only discovered slots → no presence leak
+  const hereChip=present.length?` <span class="d">· 💗 ${present.map(g=>((NPC.find(z=>z.k===g)||{}).emj||'')+' '+g).join(', ')} here now</span>`:'';
   abLoc.innerHTML=`<b>${loc.icon} ${loc.name}</b> <span class="d">· ${summaryOf(loc)||'rest'}</span>${hereChip}${warn}`;
   abVisit.classList.toggle('blocked',!!prob);
+  if(present.length){
+    const canTalk=present.filter(g=>!(state.talkDay&&state.talkDay[g]===state.day));
+    abTalk.hidden=false;
+    if(canTalk.length){abTalk.disabled=false;abTalk.dataset.girls=canTalk.join('|');
+      abTalk.textContent=canTalk.length===1?`💬 Talk to ${canTalk[0]}`:'💬 Talk…';}
+    else{abTalk.disabled=true;abTalk.dataset.girls='';abTalk.textContent='💬 Talked today';}
+  }else{abTalk.hidden=true;abTalk.dataset.girls='';}
 }
 
 function onVisit(){
@@ -622,7 +693,7 @@ function applyEffects(loc){
   buildMap();updateClock();refresh();updateActionBar();
   if(_metNow.length){                                                                   // "You met NAME" popup
     const nm=_metNow.length===1?_metNow[0]:_metNow.slice(0,-1).join(', ')+' and '+_metNow.slice(-1);
-    showModal({title:'👋 You met someone',msg:`You met ${nm}! ${_metNow.length>1?'Their profiles have':'Her profile has'} been added to your Social tab — check it to see what you've learned about ${_metNow.length>1?'them':'her'} schedule.`});
+    showModal({title:'👋 You met someone',msg:`You met ${nm}! ${_metNow.length>1?'Their profiles have':'Her profile has'} been added to your Greybird feed — check it to see what you've learned about ${_metNow.length>1?'them':'her'} schedule.`});
   } else if(_slotNow.length){                                                            // learned a new schedule slot
     if(_slotNow.length===1){const s=_slotNow[0];toast(`📍 Learned ${s.k}'s ${s.wk==='weekend'?'Weekend':'Weekday'} ${BLOCK_LABEL[s.b]} spot — ${s.loc}`);}
     else toast(`📍 Discovered ${_slotNow.length} new schedule spots`);
@@ -795,6 +866,10 @@ function loadGame(){
     // V10.1 discovery: load met/disc; pre-V10.1 saves treat any existing affection as "already met"
     state.met=(st.met&&typeof st.met==='object')?Object.assign({},st.met):{};
     state.disc=(st.disc&&typeof st.disc==='object')?st.disc:{};
+    state.talkDay=(st.talkDay&&typeof st.talkDay==='object')?st.talkDay:{};
+    state.talkSeen=(st.talkSeen&&typeof st.talkSeen==='object')?st.talkSeen:{};
+    state.datesDone=(st.datesDone&&typeof st.datesDone==='object')?st.datesDone:{};
+    state.journal=Array.isArray(st.journal)?st.journal:[];
     for(const n of NPC){ if((state.affection[n.k]||0)>0) state.met[n.k]=true; }
     state.lastSeen=(typeof st.lastSeen==='number')?st.lastSeen:0;
     state.inventory=Object.assign({},def.inventory,st.inventory);
@@ -870,8 +945,8 @@ function skillsCompendiumHTML(){
 function discoveryCompendiumHTML(){
   return `<h3>Meeting the Girls &amp; Their Schedules</h3>
     <p>The people of Greywater Sound aren't handed to you — you find them by exploring the map at different times of day.</p>
-    <h4>👋 Meeting someone</h4><p>Visit a location while a girl happens to be there and you'll meet her. Her profile is added to your <b>Social</b> tab — and only girls you've met show up there or in your Relationships.</p>
-    <h4>🕒 Everyone's on a schedule</h4><p>Each girl moves around the city by time of day, and her weekday routine differs from her weekend one. Catch her somewhere and that spot is revealed on her Social <b>schedule grid</b>. Every slot stays hidden (❓) until you've actually found her there at that time.</p>
+    <h4>👋 Meeting someone</h4><p>Visit a location while a girl happens to be there and you'll meet her. Her profile is added to your <b>Greybird</b> feed — and only girls you've met show up there or in your Relationships.</p>
+    <h4>🕒 Everyone's on a schedule</h4><p>Each girl moves around the city by time of day, and her weekday routine differs from her weekend one. Catch her somewhere and that spot is revealed on her Greybird <b>schedule grid</b>. Every slot stays hidden (❓) until you've actually found her there at that time.</p>
     <h4>📍 Learning her routine</h4><p>Once you've discovered where she is at a given time, her icon appears at that spot on the map — ringed when she's there right now — so the map fills in with who's where as you learn each routine.</p>
     <h4>💤 Away hours</h4><p>Some parts of the day she's home or off the grid and can't be found by exploring. Those slots stay a mystery… for now.</p>
     <h4>🔮 Other ways to learn (coming)</h4><p>Exploring won't be the only way to fill in the blanks. Later, girls will open up about their routines — and reveal more of themselves — through <b>conversations and story events</b>, not just by being spotted around town.</p>`;
@@ -893,6 +968,450 @@ document.getElementById('btnLegend').addEventListener('click',()=>{compEl.classL
 document.getElementById('compBack').addEventListener('click',()=>compEl.classList.remove('show'));
 compEl.addEventListener('click',e=>{if(e.target===compEl)compEl.classList.remove('show');});
 document.getElementById('compNav').addEventListener('click',e=>{const b=e.target.closest('.comp-entry');if(b){compActive=b.dataset.comp;renderCompendium();}});
+
+/* ================= VN SCENES — conversations now; dates reuse this engine ================= */
+const TALK={
+  'Alex':[
+    {open:"Oh, it's you. Come to watch the best — or actually keep up today?",choices:[
+      {you:"Keep up. Try not to slow me down.",say:"...Okay. I like that. Don't make me regret it.",aff:9},
+      {you:"Just here to watch, honestly.",say:"Smart. Sit where I can see you clapping.",aff:5}]},
+    {open:"People think the crown just showed up one day and landed on me. It didn't. I earned every inch.",choices:[
+      {you:"I noticed. It shows.",say:"...You noticed. Huh. Most people don't get that far.",aff:9},
+      {you:"Sounds exhausting.",say:"It is. But I'd rather be tired and winning than comfortable and forgotten.",aff:5}]},
+    {open:"Don't tell anyone I said hi first. I have a reputation to protect.",choices:[
+      {you:"Your secret's safe with me.",say:"Good. ...Thanks. That's — yeah. Thanks.",aff:8},
+      {you:"Too late. Telling everyone.",say:"Ugh, you menace. See if I say hi again.",aff:5}]}],
+  'Ari':[
+    {open:"wait wait — you're actually here. i was like 80% sure you were a bot. anyway: welcome, pull up a swivel chair.",choices:[
+      {you:"Non-swivel chairs are a war crime.",say:"SEE. someone gets it. okay we're friends now, no takebacks.",aff:9},
+      {you:"I might be a bot. Beep.",say:"a bot with taste. acceptable. approved. carry on.",aff:5}]},
+    {open:"i'm building a new costume and it's either genius or a total disaster. possibly both. that's the fun part, mostly.",choices:[
+      {you:"Show me when it's done.",say:"...you'd actually wanna see it? okay. cool. no pressure. (pressure.)",aff:9},
+      {you:"Disaster. Definitely disaster.",say:"RUDE. accurate, but RUDE.",aff:5}]},
+    {open:"long stream last night, brain's still buffering. don't mind me, i'm at like 30% battery.",choices:[
+      {you:"Want some quiet company?",say:"...yeah. that. thanks. don't make it weird though.",aff:9},
+      {you:"Buffering — very on-brand for you.",say:"0/10 emotional support. anyway. hi.",aff:5}]}],
+  'Chloe':[
+    {open:"You again. Either you like the coffee or you like the company. Both are acceptable answers.",choices:[
+      {you:"The company.",say:"...Huh. Okay. Careful — I might actually believe you.",aff:9},
+      {you:"Honestly? The French roast.",say:"Correct answer. Lumière would weep with pride.",aff:5}]},
+    {open:"You don't fill every silence with noise. I notice that. It's rarer than it should be.",choices:[
+      {you:"Silence is underrated.",say:"It is. Sit. Don't go ruining it now.",aff:8},
+      {you:"I'm just quiet around you.",say:"...Don't make that a thing. (It's a little bit a thing.)",aff:9}]},
+    {open:"*closes a notebook a little too fast* That's — nothing. Just drafts. Anyway. You were saying.",choices:[
+      {you:"I didn't see anything.",say:"...Good. Thanks. Really.",aff:9},
+      {you:"Someday you'll show me what's in there.",say:"Don't push it. ...Maybe. Not today.",aff:6}]}],
+  'Ha-yoon':[
+    {open:"Oh — hello. Sorry, I was somewhere else. A proof. It refuses to cooperate with me.",choices:[
+      {you:"Tell me about it?",say:"You... want to hear about math? Alright. Don't say I didn't warn you.",aff:9},
+      {you:"I'll leave you to it.",say:"Oh — no, stay. I mean, if you'd like. It's nicer with company, honestly.",aff:6}]},
+    {open:"My basil is currently winning a war against the mint on my balcony. I've made peace with the chaos.",choices:[
+      {you:"Team basil, all the way.",say:"A person of taste. We'll get along.",aff:8},
+      {you:"Rooting for the mint, personally.",say:"Betrayal. In my own garden. ...I'll allow it, this once.",aff:8}]},
+    {open:"I had tango again. I'm still terrible at it. I refuse to quit — that's the whole point, I think.",choices:[
+      {you:"Terrible and proud.",say:"Exactly. Some things you do badly and love anyway.",aff:8},
+      {you:"Want a practice partner?",say:"...Oh. I — maybe. I'd step on your feet. Consider yourself warned.",aff:9}]}],
+};
+/* Location-specific visit scenes. Beat: {h:"her line"} or {c:[{t:label,a:affΔ,r:reply}]}. sc.hearts gates a scene behind a heart level.
+   Alex is fully wired; girls without a SCENES entry for a location fall back to the old per-girl TALK pool. */
+const SCENES={
+ 'Alex':{
+  'Greywater University':[
+   {s:[
+    {h:"Well, look who found the quad. Careful — people will think you're somebody, standing next to me."},
+    {c:[{t:"Maybe I am somebody.",a:12,r:"Bold. I respect bold. Don't let it go to your head — that's my job."},{t:"I'll risk the reputation boost.",a:7,r:"Ha. Smart. Stick around, it's contagious."}]},
+    {h:"And that's the ninth 'hi Alex' before ten a.m. It's a talent. Exhausting, but a talent."},
+    {c:[{t:"Looks effortless from here.",a:12,r:"That's the idea. You'd be surprised how much effort 'effortless' takes. Most people never think about it. …You did, though."},{t:"You could just… not wave back.",a:7,r:"And let the whole ecosystem collapse? The people need their queen."}]},
+    {h:"God, watch — three people are about to 'casually' walk past just to be seen near me. It's like a nature documentary. I'm the watering hole."},
+    {c:[{t:"You love it, though.",a:7,r:"Obviously. I'd be insulted if they didn't. Doesn't mean it isn't funny."},{t:"It's all a bit shallow, isn't it?",a:-12,r:"…Shallow. Right. Tell that to the eleven people who needed someone to wave back this morning. Go on — go be somewhere else."}]},
+    {h:"Anyway. Go be somebody. Try to keep up — I set a fast pace."}
+   ]},
+   {s:[
+    {h:"Oh — you. Don't tell anyone you caught me studying. It ruins the mystique."},
+    {c:[{t:"Your secret's safe.",a:7,r:"Good. …Thank you. That's — yeah."},{t:"Studying? Figured you'd just charm the grade out of someone.",a:-12,r:"…I earn every grade. Don't mistake me for decoration."}]},
+    {h:"People think this all just… happens to me. Like I woke up wearing a crown. I didn't. I out-work every single person who assumes I did."},
+    {c:[{t:"I never assumed that.",a:12,r:"…No. You didn't, did you. Huh."},{t:"So the crown's union-made. Noted.",a:7,r:"Union-made and non-negotiable. Okay. That was a little funny."}]},
+    {h:"My advisor keeps telling me to 'pace myself.' Pace myself. I've never paced anything in my life — pacing is for people who plan to lose slowly."},
+    {c:[{t:"Losing slowly is still losing.",a:12,r:"…Exactly. Finally, someone with a functioning competitive instinct."},{t:"Sounds exhausting, honestly.",a:7,r:"It is. I'll rest when I'm the best — so, never, ideally."}]},
+    {h:"Go on. I've got fourteen minutes and a proof that isn't going to intimidate itself."}
+   ]}
+  ],
+  'Tidewater Fitness':[
+   {s:[
+    {h:"If you're here to watch, you missed the good part. We ran that routine 'til it was perfect. Then twice more."},
+    {c:[{t:"It's just cheerleading. How hard can it be?",a:-12,r:"…Run that routine once and say that again. Actually — don't. Just go."},{t:"Perfect once wasn't enough?",a:7,r:"Perfect once is luck. Perfect on demand is a skill. I deal in skill."}]},
+    {h:"This is the part nobody sees. They see Saturday — the lights, the crowd, everything easy. They don't see the Tuesday where I did the same eight counts forty times."},
+    {c:[{t:"I'd rather see the Tuesday.",a:12,r:"…You would. That's a weird thing to want, and I kind of love it."},{t:"So show me Saturday sometime.",a:7,r:"Oh, you'll come to a game? Wear my colors or don't come at all."}]},
+    {h:"Half the squad wanted to quit today. I talked them out of it. That's the part of captain nobody puts on the poster — you carry people who don't even know they're being carried."},
+    {c:[{t:"That's real leadership.",a:12,r:"…Yeah. It is. Don't tell them I said the soft version out loud."},{t:"Sounds like a lot to hold.",a:7,r:"It is. But I'd rather hold it than watch it drop. That's just who I am."}]},
+    {h:"Now move — I'm disgusting and I've earned a shower. Walk me out if you can keep pace."}
+   ]},
+   {s:[
+    {h:"You're loitering by my gym. That's either devotion or you're lost. Which is it?"},
+    {c:[{t:"Came to train.",a:12,r:"Then don't embarrass yourself. Or me, by association."},{t:"Isn't cheer basically just dancing?",a:-12,r:"…'Just dancing.' Run one routine and say that with a straight face. Actually — don't. I'm busy and you're not funny."}]},
+    {h:"No — stop. Your form's going to get you hurt, and then who's going to admire me? Here. Core tight. Breathe out on the push. …Better. See? I'm generous."},
+    {c:[{t:"You're a good coach.",a:12,r:"I'm a good coach because I hate watching people waste effort. It's the one thing I actually respect. Don't waste yours."},{t:"Generous. Legendary, even.",a:7,r:"Don't push it. …One more set. I'm counting."}]},
+    {h:"You've got potential, actually. Terrible form, but potential. I can work with terrible. I can't work with people who won't show up."},
+    {c:[{t:"I'll show up.",a:12,r:"Good. Prove it. I notice who keeps their word — and who doesn't."},{t:"Terrible's a strong word.",a:7,r:"Terrible's an accurate word. But I said potential, so quit while you're ahead."}]},
+    {h:"Same time tomorrow, if you survive. I'll pretend I'm not impressed."}
+   ]}
+  ],
+  'Greywater Commons':[
+   {s:[
+    {h:"Oh good, a witness. Truth: do I need this jacket, or do I deserve it? Different questions. I only care about the second one."},
+    {c:[{t:"You deserve it.",a:7,r:"Correct. Flawless answer. You may accompany me."},{t:"Need? No. Deserve? Obviously.",a:3,r:"See, you get it. Need is for people without taste."}]},
+    {h:"That one's not for me. Don't ask."},
+    {c:[{t:"I didn't say anything.",a:12,r:"…It's for someone who'd never buy it for herself. That's all you get."},{t:"Buying people's affection? On brand.",a:-12,r:"…That's not what that is. Forget I showed you."}]},
+    {h:"Okay, genuinely: this top, or this one? And before you say they're identical — they are NOT, and if you say they are I'm revoking your shopping privileges."},
+    {c:[{t:"The one in your left hand. Obviously.",a:7,r:"…Correct. See? You have an eye. I'm keeping you."},{t:"They're the same top.",a:3,r:"REVOKED. Out. …Fine, stay. But you're wrong and we both know it."}]},
+    {h:"Come on, the light in here is unforgivable and I refuse to be seen in it."}
+   ]},
+   {s:[
+    {h:"You ever just… watch people perform being people? That group's laughing too loud. That guy's pretending he's not checking his reflection."},
+    {c:[{t:"Takes one to know one.",a:12,r:"Fair. I'm the best one, obviously. But — fair."},{t:"And which one are you?",a:7,r:"The one who knows she's doing it. I pick the performance. It doesn't pick me."}]},
+    {h:"It gets… loud, sometimes. Being watched. Being on. Not that I'd trade it. I'm very good at it."},
+    {c:[{t:"It's okay to be tired of it.",a:12,r:"…Yeah. Maybe. Don't repeat that. I'll deny it under oath."},{t:"You signed up for the attention, though.",a:-12,r:"…Wow. Right. Forget I said anything — this is exactly why I don't."}]},
+    {h:"You know what nobody tells you about being the standard? You don't get to have a bad day in public. Ever. One slip and it's a whole story by lunch."},
+    {c:[{t:"So have your bad day here. I won't file a report.",a:12,r:"…Ha. Deal. You're weirdly easy to be off-duty around."},{t:"Sounds like a prison with good lighting.",a:7,r:"God, yes. A prison with excellent lighting and a great skincare routine."}]},
+    {h:"Okay, enough being human in a food court. It's bad for my brand. Walk with me."}
+   ]}
+  ],
+  'Fox & Fern':[
+   {s:[
+    {h:"Oh — hey. Didn't take you for a Fox & Fern person. It's Chloe's spot. I just… tag along. For the coffee."},
+    {c:[{t:"The coffee's worth tagging along for.",a:7,r:"Right? Don't tell the campus crowd I drink somewhere with four tables. I have an image."},{t:"Sure — 'for the coffee.'",a:3,r:"…Okay, and the company. Happy? Don't get smug about it."}]},
+    {h:"Ignore her — that's Chloe. She's been insulting me since before I was worth insulting. It's basically affection."},
+    {c:[{t:"You two are good together.",a:12,r:"…We are. Everybody should have one person who isn't impressed."},{t:"Bit of a dump, though, isn't it? Surprised you slum it.",a:-12,r:"It's not a dump. It's the one place I actually like. Maybe don't insult it. Or her."}]},
+    {h:"It's weird, right — you'd think I'd want somewhere with better everything. Better light, better coffee, more people to see me. But here nobody's keeping score. That's the whole point."},
+    {c:[{t:"Everybody needs a place where nobody's keeping score.",a:12,r:"…Yeah. This is mine. Was mine. Might be becoming ours, if you don't ruin it."},{t:"The coffee IS better here, to be fair.",a:7,r:"Right?? Don't tell the campus crowd — they'll come wreck the whole vibe."}]},
+    {h:"Anyway. Sit if you're sitting. But the wifi's terrible and I'm not sharing my scone."}
+   ]},
+   {s:[
+    {h:"Ugh, it's pouring. Trapped in a café with bad lighting and worse signal. …Could be worse company, I guess."},
+    {c:[{t:"High praise, coming from you.",a:7,r:"It is, actually. Savor it — I don't hand those out."},{t:"You're too pretty to look this annoyed.",a:-6,r:"…Wow. Is that the best you've got? Try noticing literally anything else about me."}]},
+    {h:"Nobody expects you to be anywhere in the rain. No squad, no crowd, no being on. Just stuck. Kind of a gift."},
+    {c:[{t:"Then I'm glad you're stuck here.",a:12,r:"…Yeah. Me too. Don't make it a whole thing."},{t:"So the ice queen melts in the rain. Cute.",a:-12,r:"Don't call me that. I get enough of it from people who mean it. …I thought you were different."}]},
+    {h:"I texted Chloe I was stuck here and she just sent back a single thumbs up. Twelve years of friendship, distilled. She gets it — some days you just need to sit somewhere and not perform being fine."},
+    {c:[{t:"You don't have to perform 'fine' with me either.",a:12,r:"…That's a dangerous thing to offer me. I might take you up on it."},{t:"Twelve years? That's basically a marriage.",a:7,r:"Ha — a marriage where she insults my outfits for free. …I wouldn't trade it."}]},
+    {h:"There — reprieve over. Back to being spectacular. Walk me to the door, at least."}
+   ]},
+   {hearts:1,s:[
+    {h:"…Huh. Didn't expect you here. This place isn't exactly the main stage."},
+    {c:[{t:"That's kind of why I like it.",a:7,r:"…Yeah. Me too. Don't tell anyone the queen has an off switch."},{t:"Following the queen to her secret lair.",a:3,r:"Secret lair. It's a four-table café run by a man who only speaks French. Very regal."}]},
+    {h:"Chloe works the counter. We go back — before any of this. She's the one person who's never once been impressed by me, and it's the most relaxing thing in the world."},
+    {c:[{t:"Everyone needs one of those.",a:12,r:"One person the performance doesn't work on. She's mine. Maybe you're… a candidate."},{t:"So this is where you go to be nobody.",a:7,r:"To be a person. Not nobody — a person. There's a difference, and I only figured it out recently."}]},
+    {h:"It took me a long time to figure out I'm allowed to have a version of me that isn't for anyone. Sounds obvious. It wasn't. Not for years."},
+    {c:[{t:"I'm glad you found it.",a:12,r:"…Me too. And — this'll sound strange — I don't mind you seeing it. That's new."},{t:"So who's this version for?",a:12,r:"Nobody. That's the point. …Okay. Maybe me. Maybe, lately, a little bit you."}]},
+    {h:"Sit. Order the French roast — it's the only thing he makes and it's perfect. And… thanks. For not making it weird that I'm like this here."}
+   ]},
+   {hearts:1,s:[
+    {h:"Twice in one week. People are going to think you have a type, and it's 'exhausted cheer captain in a hoodie.'"},
+    {c:[{t:"Maybe I do.",a:7,r:"…Careful. I might believe you."},{t:"I have a type. It's 'off-duty.'",a:3,r:"Off-duty. You know that's the version almost nobody gets, right."}]},
+    {h:"Real talk, because Lumière doesn't understand a word and Chloe's pretending not to listen: it's a lot. Being the thing everyone expects, every day. You don't get an off day when you're the standard."},
+    {h:"So I come here. Bad lighting, worse wifi, one grumpy Frenchman. And I get to just… be tired. Best part of my week, least glamorous thing I do."},
+    {c:[{t:"The tired version's my favorite, honestly.",a:12,r:"…Okay. That one landed. I don't know what to do with that, but — it landed. Thank you."},{t:"Your secret's safe. All of it.",a:7,r:"I know. That's why I let you sit down. Don't make me regret it."}]},
+    {h:"Can I tell you something stupid? Sometimes I'm scared this is the only place I know how to be real. Like the second I walk out that door the armor's back on before I've even decided to put it on."},
+    {c:[{t:"Then we'll just have to find you more places.",a:12,r:"…You'd do that? …Okay. That — yeah. Okay."},{t:"The armor's not the enemy. It got you here.",a:7,r:"…Huh. Never thought of it like that. That's almost annoyingly wise. Thank you."}]},
+    {h:"Okay. Enough. If you tell a soul I have feelings I'll ruin you — I have the social capital to do it. …Same time next week?"}
+   ]}
+  ]
+ },
+ 'Chloe':{
+  'Fox & Fern':[
+   {s:[
+    {h:"New face. Or a regular I've successfully ignored until now. Either way — it's French roast, we don't do the whipped-cream stuff, and Lumière doesn't speak English. Questions?"},
+    {c:[{t:"Just the French roast, then.",a:7,r:"A person who knows what they want. Rare. I respect it."},{t:"Surprise me.",a:3,r:"It's French roast or French roast. Your one surprise: it's good."}]},
+    {h:"That's Lumière — owns the place, hates change, has never once learned the words 'oat milk.' We communicate through vibes and mutual disappointment."},
+    {c:[{t:"Sounds like a good boss.",a:7,r:"He's a menace and I'd take a bullet for him. Same thing, around here."},{t:"How do you even work here?",a:3,r:"Patience. And a deep suspicion of anywhere with a drive-thru."}]},
+    {h:"You're still here. Most people take the coffee and go pretend to work somewhere. You're… lingering."},
+    {c:[{t:"It's a good place to just sit.",a:12,r:"…It is. Don't tell the influencers — they'll find it and ruin it."},{t:"Bit dead in here, though. You must be bored.",a:-6,r:"Dead. Right. It's quiet. There's a difference, and I happen to like the quiet."}]},
+    {h:"Refills aren't free but the sitting is. Stay if you want. Just don't narrate it."}
+   ]},
+   {s:[
+    {h:"We close in twenty. You picked the dead shift — Lumière's already gone home to yell at his television, so it's just me, the machine, and the smell of burnt French roast."},
+    {c:[{t:"Sounds perfect, honestly.",a:12,r:"…It kind of is. The best hour. Nobody comes in expecting a show."},{t:"I can go if you're closing.",a:7,r:"Sit. I said twenty minutes, not 'leave.' You're not the annoying kind of customer. Yet."}]},
+    {h:"This is when I actually like the place. Chairs up, lights half off, one bad playlist. It's like the café finally exhales."},
+    {c:[{t:"Everywhere's better without an audience.",a:12,r:"…Now you're getting it. Careful — you'll fit in."},{t:"You could just lock up and leave, you know.",a:7,r:"And miss my favorite hour? No. The tips aren't why I stay this late."}]},
+    {h:"You want the last cup before I dump the pot? It's been sitting an hour. It's terrible. It's yours if you want it."},
+    {c:[{t:"Terrible coffee's still coffee.",a:12,r:"A person of low standards and good instincts. My favorite combination."},{t:"Hard pass. That's basically sludge.",a:-6,r:"…It's day-old French roast, not a personal attack. But sure, waste it. See if I offer again."}]},
+    {h:"Alright — out you go, I've got chairs to stack. …This was a good shift, though. You made the dead hour less dead."}
+   ]}
+  ],
+  'Greywater University':[
+   {s:[
+    {h:"Oh — you. In the art building. Either you're lost or you actually came looking, and I honestly can't tell which is more surprising."},
+    {c:[{t:"Came looking.",a:7,r:"…Huh. Okay. You found me. Congratulations, I suppose."},{t:"Bit of both.",a:3,r:"Honest. I'll allow it."}]},
+    {h:"This is my fourth attempt at the same stupid corner of light. It keeps coming out like a smudge. Art's mostly failing in public, if you were curious."},
+    {c:[{t:"Failing in public takes guts.",a:12,r:"…Ha. That's a generous way to put it. I'll take it."},{t:"It does kind of look like a smudge, honestly.",a:-6,r:"…Wow. Okay. Thank you. Riveting feedback. Truly."}]},
+    {h:"And yeah — I'm still finishing the degree. Before you do the math: yes, it's taking a while. No, I'm not in a rush. Art isn't a race, whatever my father thinks."},
+    {c:[{t:"Take the time it takes.",a:12,r:"…That's exactly it. Most people never get that far."},{t:"Shouldn't you have graduated by now?",a:-12,r:"Wow. You and my dad would get along. …Was there something you actually needed?"}]},
+    {h:"I've got a canvas that's judging me, and it's winning. Go on. …It was decent talking to you, though. Don't make it weird."}
+   ]},
+   {s:[
+    {h:"Ugh — critique day. Everyone in there using the word 'liminal' like it's punctuation. I love making art. I could do without the people who love talking about making art."},
+    {c:[{t:"The talkers are never the makers.",a:12,r:"…God, thank you. Somebody said it. That's going on a plaque."},{t:"Isn't that a bit gatekeep-y?",a:-6,r:"Maybe. Or maybe I've sat through nine hundred hours of it. …Fine. Point taken. Barely."}]},
+    {h:"There's this one guy — paints a single grey square, talks for forty minutes about 'the absence of light.' It's a grey square, my man. I've seen ceilings with more to say."},
+    {c:[{t:"Sounds like you should be teaching the class.",a:7,r:"Ha — no. I'd fail everyone who used 'juxtaposition.' A massacre."},{t:"Maybe the square's a metaphor.",a:7,r:"It's a metaphor for 'I ran out of time.' Which I respect more than he'd ever admit."}]},
+    {h:"Sorry. I get prickly in here. It's the one place I actually care about, so the fakeness gets under my skin more than it should."},
+    {c:[{t:"Caring's not something to apologize for.",a:12,r:"…Yeah. Okay. That's a good way to put it. Thanks."},{t:"You do seem kind of angry about art.",a:-6,r:"I'm not angry about art. I'm angry about pretending. There's a difference, and it's the whole difference."}]},
+    {h:"Anyway — I've got a real critique to survive. …Thanks for the pre-game. Made the liminal nonsense easier to face."}
+   ]}
+  ],
+  'Driftwood Park':[
+   {s:[
+    {h:"It's raining, you know. Most people have the sense to be inside. …I'm not most people, apparently. Neither are you."},
+    {c:[{t:"The rain's kind of the point.",a:12,r:"Exactly. The park's better empty and wet. Don't quote me on that."},{t:"I could ask you the same.",a:7,r:"Fair. Touché. There's room on the bench."}]},
+    {h:"I come here most evenings. Same bench. It's the one part of the day nobody needs anything from me — and the rain keeps the crowds off, which is the whole appeal."},
+    {c:[{t:"I'll keep the crowd at one, then.",a:12,r:"…Appreciated. You're low-maintenance. Rare quality."},{t:"Everyone needs a bench like that.",a:7,r:"They do. Most people never find theirs. …I got lucky with mine."}]},
+    {h:"That's — just sketches. Nothing. Don't lean over."},
+    {c:[{t:"I didn't see anything.",a:12,r:"…Good. Thanks. Not everything's for an audience."},{t:"Come on, let me see — what's the big deal?",a:-12,r:"The big deal is I said no and you kept going. …I should head back."}]},
+    {h:"Rain's easing. That's usually my cue. …This was alright, though — the not-talking-too-much part. You're okay at that."}
+   ]},
+   {s:[
+    {h:"Fog's in off the bay tonight. Can't see the water, but you can hear it. I like it better this way, honestly — leaves more to the imagination than a postcard does."},
+    {c:[{t:"A view you have to listen for.",a:12,r:"…Yeah. Exactly that. You've got a way of putting things. Don't let it go to your head."},{t:"Kind of eerie, though.",a:7,r:"Eerie's underrated. Everyone wants pretty. Pretty gets boring by Tuesday."}]},
+    {h:"My dad thinks living here is a phase. 'A grey little town for grey little dreams,' he called it once. Meant it as an insult. I took it as a mission statement."},
+    {c:[{t:"Sounds like you built a life he didn't plan for.",a:12,r:"…I did. Took a while to be okay with that. But — yeah. This is mine."},{t:"Maybe he's got a point, though.",a:-12,r:"Wow. Straight for the throat. …No. He doesn't. And I'd think hard before agreeing with him around me."}]},
+    {h:"He's not wrong that I'm not rich. Or on schedule. I'm just… content, most days. Turns out that's the part nobody warns you is actually enough."},
+    {c:[{t:"Content's harder to reach than rich.",a:12,r:"…Isn't it. Took me years to figure that out. Some people never do."},{t:"Most days? What about the other days?",a:7,r:"The other days I come sit here and listen to a bay I can't see. …It helps. Don't overthink it."}]},
+    {h:"Fog's not lifting. That's my cue to head in before I get poetic about weather. …Glad you were here for it, though."}
+   ]}
+  ]
+ },
+ 'Ha-yoon':{
+  'Greywater University':[
+   {s:[
+    {h:"Oh — hello. You found the quiet floor. Most people give up two flights down. …I have a plant up here I'm not technically allowed to have, so if you're library security, I've never seen it before in my life."},
+    {c:[{t:"Your secret plant is safe with me.",a:12,r:"…Thank you. Her name is Pythagoras. She's judging my proof. Fairly."},{t:"I won't tell if you don't.",a:7,r:"A fair trade. You may sit. Quietly."}]},
+    {h:"I'm supposed to prove something is true for all n. It's true for the first thousand. It refuses to admit it's true for the rest. Stubborn. Like me, my roommates say."},
+    {c:[{t:"What's it like when it finally works?",a:12,r:"…Oh. You want to know? It's the best feeling there is. Cleaner than anything. …I'll stop before I embarrass myself."},{t:"Sounds like a lot of effort for something with no point.",a:-12,r:"…It has no use. That is different from no point. …I don't think I can explain the difference to someone who would ask."}]},
+    {h:"Sorry. I get — intense, about this. In Korean I'd say it better. Here it comes out either too flat or too much."},
+    {c:[{t:"It came out just right.",a:12,r:"…Did it? Okay. Thank you. That's — that's kind."},{t:"Your English is kind of hard to follow, honestly.",a:-12,r:"…Oh. I — yes. I know. I'm working on it. …I should get back to the proof."}]},
+    {h:"The proof won't solve itself, and Pythagoras is watching. …Come back? It's nicer with someone here. Quietly."}
+   ]},
+   {s:[
+    {h:"Class let out early. I have twenty minutes and no idea what to do with them. At home I'd call my mother — but it's four in the morning there, so I loiter. Productively."},
+    {c:[{t:"Loitering counts as productive.",a:7,r:"See? You understand. My advisor does not."},{t:"You could show me around.",a:12,r:"You want the tour? It's mostly 'this is where I cried about a midterm.' Riveting. …Alright."}]},
+    {h:"It's strange, being far. Everything's a little bit translated. Even the coffee tastes like a guess. I don't say that to complain. It's just true."},
+    {c:[{t:"That sounds lonely, honestly.",a:12,r:"…It is. Sometimes. You're the first person who just — said it, instead of promising it gets easier. Thank you."},{t:"You chose to come here, though.",a:-12,r:"…I did. That doesn't make missing home a complaint. …Never mind. It's fine."}]},
+    {h:"Anyway — I keep a garden on my balcony. Basil, mint, one very confused tomato. It's the one thing here that grows the way it would at home. It helps, a little."},
+    {c:[{t:"A little home you're growing yourself.",a:12,r:"…Yes. That's exactly it. I've never put it that way, but yes."},{t:"It's just some plants, though.",a:-6,r:"…Right. Just plants. …I should go. The tomato needs me."}]},
+    {h:"Twenty minutes, gone. …This was better than loitering. Thank you for the company."}
+   ]}
+  ],
+  'Dorms':[
+   {s:[
+    {h:"You caught me mid-war. Basil versus mint — the mint is winning and I refuse to accept it. Maya says I talk to them. I do not. …Often."},
+    {c:[{t:"Team basil.",a:12,r:"A person of taste. Finally, an ally against the mint menace."},{t:"Talking to plants is normal.",a:7,r:"It is. They're excellent listeners. Never interrupt. Unlike Sarah."}]},
+    {h:"This corner's Sarah's, this is Maya's, this one's mine. Small, but it's the first space that's ever been only mine. Even the mess is mine. …I like the mess."},
+    {c:[{t:"A mess you chose is different.",a:12,r:"…Yes. Exactly. You keep doing that — saying the thing I mean before I find it."},{t:"It IS kind of a mess in here, though.",a:-6,r:"…It's lived in. …You didn't have to say it. But okay."}]},
+    {h:"Do you want to see something? I — no. It's silly. It's a wall of postcards from home. I read them on hard days. That's more than I usually tell people."},
+    {c:[{t:"I'd like to see it.",a:12,r:"…Okay. Okay. Nobody's ever asked to. …This one's in my grandmother's handwriting."},{t:"Homesick, huh? You'll get over it.",a:-12,r:"…Get over it. Right. …Actually, I have studying. You should go."}]},
+    {h:"The mint is plotting while we talk. I have to defend the basil. …Come back? Maya will interrogate you, but it's worth it."}
+   ]},
+   {s:[
+    {h:"It's late. Sarah's asleep, Maya's pretending to study, and I'm on my third tea arguing with the same equation. …You're up too. Insomnia, or bad decisions?"},
+    {c:[{t:"Keeping you company.",a:12,r:"…Oh. You didn't have to. But I'm glad. It's a lonely equation."},{t:"Bad decisions, mostly.",a:7,r:"The honest answer. I respect it. Pull up a chair — misery loves a study buddy."}]},
+    {h:"I stay up until it makes sense. It always does, eventually. My mother says I'm stubborn. I say I'm thorough. It's the same word in a nicer coat."},
+    {c:[{t:"Thorough sounds right to me.",a:12,r:"…Thank you. It's nice, having someone take my side against my own mother. Even a small side."},{t:"Maybe just sleep and try tomorrow?",a:-6,r:"…You think I haven't tried tomorrow? Tomorrow is where problems go to get worse. …It's fine. I'm fine."}]},
+    {h:"Can I admit something? Some nights the math is the easy part. It's the quiet after that's loud. …That's the tea talking. Ignore me."},
+    {c:[{t:"I'm not going to ignore that.",a:12,r:"…No? …Okay. Then stay a little. Just for the loud-quiet part."},{t:"You're overthinking it. It's just a quiet room.",a:-12,r:"…Right. Just a room. …I think I'll turn in. Goodnight."}]},
+    {h:"The equation can wait until morning. …Thank you for staying up in the loud quiet with me. That helped. More than the tea."}
+   ]}
+  ],
+  'Driftwood Park':[
+   {s:[
+    {h:"The library kicked me out — my own brain did. Sarah said 'go outside, touch grass.' So. I am touching grass. Aggressively relaxing."},
+    {c:[{t:"You're doing great at relaxing.",a:7,r:"Thank you. I've scheduled it for forty-five minutes. Very relaxed. On a timetable."},{t:"Grass is underrated.",a:12,r:"It IS. Nobody expects a proof from grass. Refreshing."}]},
+    {h:"I take tango, you know. Tuesdays. I'm terrible — genuinely, I step on everyone. But I refuse to quit. Some things you do badly and love anyway. That's allowed, I've decided."},
+    {c:[{t:"Terrible and proud. That's the spirit.",a:12,r:"…Yes! Exactly. Most people ask when I'll be good. Never, hopefully. That's not the point."},{t:"Why keep doing something you're bad at?",a:-12,r:"…Because I like it. Does everything have to be a means to something? …I thought you might understand that."}]},
+    {h:"In math everything must be perfect or it's wrong. Tango, I get to be wrong and it's still nice. I think I needed one thing in my life like that."},
+    {c:[{t:"Everyone needs one thing they're allowed to be bad at.",a:12,r:"…That's the wisest thing anyone's said to me all week — and I attend a university full of geniuses."},{t:"Sounds like you're just avoiding getting good at it.",a:-6,r:"…No. That's not it at all. …I think my forty-five minutes are up."}]},
+    {h:"Time's up. Back to the proofs. …But this was nice. The grass, and the not-being-perfect part. Thank you."}
+   ]},
+   {s:[
+    {h:"I found this spot last month. There's a maple here that turns before all the others — already red while everything else is stubbornly green. I come to check on it. …That sounds strange out loud."},
+    {c:[{t:"Not strange. It's nice to have a tree.",a:12,r:"…Right? A tree that keeps its own schedule. I respect that. We understand each other."},{t:"You come to check on a tree?",a:7,r:"Every week. Someone should. …Don't look at me like that, it's very normal behavior."}]},
+    {h:"At home, autumn came all at once — the whole mountain would turn in a weekend. Here it's slow, one tree at a time. It took me a while to stop being homesick about it and start… liking it."},
+    {c:[{t:"Different isn't worse. Just new.",a:12,r:"…That's what I decided too. It only took one very sad October to get there. But — yes."},{t:"You really miss home a lot, huh.",a:-6,r:"…I — yes. Is that a problem? …Sorry. That came out sharp. It's a tender spot."}]},
+    {h:"I used to think I had to choose — be here, or miss there. But the maple doesn't apologize for turning early. Maybe I don't have to apologize for being two places at once."},
+    {c:[{t:"You can belong to both. That's allowed.",a:12,r:"…When you say it, I almost believe it. …Thank you. I'll hold onto that one."},{t:"Overthinking a tree, aren't you?",a:-12,r:"…Maybe. Or maybe the tree's the only one here not rushing me. …I think I'll sit with it a while. Alone."}]},
+    {h:"The maple and I have a standing appointment. …But you can come next week, if you like. It's a good tree. It won't rush you either."}
+   ]}
+  ]
+ },
+ 'Ari':{
+  'Greywater Commons':[
+   {s:[
+    {h:"wait — okay, hi, don't judge me, I have seven yards of the wrong-color satin and a deadline that's actively laughing at me. this is a crisis. a glamorous crisis. welcome."},
+    {c:[{t:"What's the costume?",a:12,r:"OH you asked. okay so — no, I'll spare you, it's a whole lore thing. but the fact that you asked? noted. filed. appreciated."},{t:"Seven yards of chaos, love it.",a:7,r:"RIGHT. chaos is the medium. glue gun is the brush. this is fine art, actually."}]},
+    {h:"people think this is just buying clothes? it's engineering. I did more geometry for one bodice than in all of high school. don't tell my geometry teacher — she was right and I refuse to give her that."},
+    {c:[{t:"That's genuinely impressive craft.",a:12,r:"…okay you can't just SAY things like that, I don't have a bit ready for sincerity, give me a second. …thank you. that's — yeah."},{t:"It's just dress-up, though, right?",a:-12,r:"…just dress-up. cool. cool cool cool. sure. …I gotta find the right satin."}]},
+    {h:"okay real talk for one second then never again: the stream's slow lately and I'm doing this con on basically vibes and savings. it's fine! it's fine. …why did I tell you that."},
+    {c:[{t:"Because I asked, and you trust me a little.",a:12,r:"…ugh. don't be PERCEPTIVE, that's my thing. …okay. maybe. a little. shut up."},{t:"Maybe get a real job, then?",a:-12,r:"wow. a REAL job. hadn't considered the concept of employment, thanks. …I have shopping to do."}]},
+    {h:"okay I need four more colors and a miracle. …you're weirdly good to shop-panic next to, though. don't let it go to your head — it's already gone to mine."}
+   ]},
+   {s:[
+    {h:"I'm NOT buying anything, I'm just looking, this is a look-only trip — oh my god they have the cat backpack. the one with the little window. okay ONE thing. one."},
+    {c:[{t:"You need the cat backpack. Non-negotiable.",a:12,r:"THANK you. see, you're an enabler, but the responsible kind. the best kind."},{t:"So much for look-only.",a:7,r:"look-only is a myth I tell myself. we both knew. don't gloat."}]},
+    {h:"confession: I do this when a stream goes bad. I don't spiral, I just come look at soft dumb things I don't need. it resets me. it's very healthy. probably."},
+    {c:[{t:"Whatever works. That's not nothing.",a:12,r:"…yeah. everyone assumes I'm always on, but the off switch is, apparently, a store full of cat merch. we contain multitudes."},{t:"That sounds like avoiding your problems.",a:-6,r:"…okay, dr. freud, it's a BACKPACK, not a coping crisis. …forget I said the honest thing."}]},
+    {h:"you're easy to be around, is the thing. most people I have to be Ari-dot-exe for. you get, like, the beta build. buggier. more me. …anyway. weird. moving on."},
+    {c:[{t:"I like the beta build.",a:12,r:"…do NOT. do not say nice things in a mall, I will cry by the pretzel stand and I have a reputation. …okay. me too. shut up."},{t:"You're kind of a mess, though, honestly.",a:-6,r:"…yeah. I know. you didn't have to — yeah. cool. anyway."}]},
+    {h:"okay, the cat backpack and I are leaving before I adopt the whole store. …come menace a mall with me again sometime? you're good at it."}
+   ]}
+  ],
+  'Fox & Fern':[
+   {s:[
+    {h:"oh — hi! didn't expect a face I know somewhere this quiet. I'm hiding, honestly. the internet is loud today and this place doesn't have wifi, which is basically a spa."},
+    {c:[{t:"A spa with no wifi. Genius.",a:12,r:"RIGHT? nobody can @ me in here. Lumière doesn't even know what an @ is. king behavior."},{t:"Hiding from the internet, respectable.",a:7,r:"it's self-care. or cowardice. the line's blurry and I've made peace with it."}]},
+    {h:"it's weird being quiet. online I'm at 110% volume and here I'm just a person drinking coffee badly. I spilled twice. no chat to perform for. it's kind of nice? kind of terrifying."},
+    {c:[{t:"The quiet-person version's good too.",a:12,r:"…you think so? nobody sees that one. it doesn't get views. …thanks. that landed weird and good."},{t:"You're kind of boring off-camera, huh?",a:-12,r:"…oh. ha. yeah. the real me, ten out of ten, would not stream. …cool. good to know."}]},
+    {h:"okay actual real thing, blame the caffeine: sometimes I worry the loud version is the only one anyone actually likes. the beta build doesn't have a follower count. …wow, café-me is a MESS. ignore that."},
+    {c:[{t:"I'm here for the version with no follower count.",a:12,r:"…okay that's — you can't just — …thank you. genuinely. I'll deny this outside."},{t:"I mean, the loud version IS more fun.",a:-12,r:"…right. yeah. of course. …I should get back. streams don't run themselves."}]},
+    {h:"okay, caffeine's wearing off and so's my emotional availability. …this was good though. quiet-you and quiet-me. we should do more nothing sometime."}
+   ]},
+   {s:[
+    {h:"you got fries. you got fries and didn't— okay. new rule: if you get fries in front of me, socially, a percentage is mine. it's the law. I don't make the law. …okay I make the law."},
+    {c:[{t:"Take the fries. It's fine.",a:12,r:"see, THIS is why we're friends. you understand the fry tax. …I'm not even hungry. I just needed them to be partly mine."},{t:"You could've just asked.",a:7,r:"asking is for people without the confidence to simply TAKE. …fine. may I. (already taking one.)"}]},
+    {h:"I text like this too, by the way. you'll get a meme at 3am and no context. that IS the context. it means 'thinking of you' with plausible deniability."},
+    {c:[{t:"So the memes are secret miss-yous.",a:12,r:"…WOW. okay. you decoded it. rude, actually, that you saw through that so fast. …yes. don't tell anyone."},{t:"That's kind of an annoying way to communicate.",a:-12,r:"…oh. it's — yeah, I guess it's a lot. sorry. I'll text like a normal person. never mind."}]},
+    {h:"here's a thing I don't say out loud: I'm better at the joke than the actual — feeling. the joke's safer. if I make you laugh first, I get to decide how you see me. …that got real. quick, insult me so I recover."},
+    {c:[{t:"I see you fine. Joke or not.",a:12,r:"…that's the OPPOSITE of an insult, you had ONE job. …okay. yeah. …thank you. really."},{t:"So you're kind of fake, then?",a:-12,r:"…no— that's not— …you know what, forget it. I gave you the real thing and you called it fake. cool."}]},
+    {h:"the fries are gone, my dignity's gone, this was a whole THING. …but a good thing. steal fries with me again. bring more fries."}
+   ]}
+  ],
+  'Convention Center':[
+   {s:[
+    {h:"OKAY you found me on the con floor — this is my Rome, my natural habitat. I've been recognized four times and cried once and it's not even noon. best day. you smell that? hot glue and dreams."},
+    {c:[{t:"You look incredible — the costume.",a:12,r:"the COSTUME, thank you, specificity, I RESPECT it. thirty hours in this bodice and someone noticed. I could kiss you. platonically. probably."},{t:"This is chaos and I love it for you.",a:7,r:"chaos is my LOVE LANGUAGE. you're keeping up admirably. gold star. drink water, it's a marathon."}]},
+    {h:"someone asked to photograph the costume earlier and my brain went 'they see the WORK' and immediately 'they're gonna find every flaw.' both, at once. that's cosplay, baby. joy and dread, same outfit."},
+    {c:[{t:"The work shows. Genuinely.",a:12,r:"…okay you keep DOING that, the sincerity-ambush thing. I'm defenseless. …thank you. I see the flaws, but — thank you."},{t:"Bet nobody can even tell the difference anyway.",a:-12,r:"…they can. I can. the difference is the whole thing. …never mind, there's a panel I should—"}]},
+    {h:"real quick then back to being on: cons are the one place the loud me and the actual me are the same person. out there I perform. in here I just exist, at maximum volume, and it's ALLOWED. does that make sense?"},
+    {c:[{t:"Total sense. This is you at home.",a:12,r:"…yeah. YEAH. home with a badge and terrible carpet. you get it. …okay I'm gonna cry again, look away."},{t:"Seems exhausting, honestly.",a:-6,r:"…it's not exhausting, it's the one place I'm NOT— …you know what, go enjoy the panels. I've gotta be on."}]},
+    {h:"okay, duty calls, the people demand selfies and I am but a humble icon. …find me later? I'm better company when the adrenaline's worn off. slightly."}
+   ]},
+   {s:[
+    {h:"okay the panel's DONE and I said maybe four normal-person sentences and thirty jokes, so — success. adrenaline's crashing. I'm about to be a real person for nine minutes, catch me while supplies last."},
+    {c:[{t:"I'll take the nine minutes.",a:12,r:"aw. okay. clock's running. …it's nice, actually, sitting with someone who isn't a camera. no offense to cameras."},{t:"You crushed it up there.",a:7,r:"did I? it's a blur of me talking too fast. …but thank you. I'll believe you over my memory."}]},
+    {h:"you wanna know a secret? I get stage fright. ME. the loud one. right before I go on I'm SO sure everyone's about to realize I'm a fraud in a wig. then I go out and I'm fine. every time. and I never believe it'll happen again."},
+    {c:[{t:"You're not a fraud. You're just brave in a wig.",a:12,r:"…brave in a wig. I'm putting that on my business cards. …okay that helped more than it should've. thank you."},{t:"Maybe you're not cut out for the spotlight.",a:-12,r:"…wow. okay. no — I do this every weekend, I think I'm cut out for it. …I need water."}]},
+    {h:"here's the thing nobody at these gets to see: after every con I go home and it's SO quiet, and I just kind of deflate. the high's amazing but the after is lonely. …why do I only say true things when I'm tired."},
+    {c:[{t:"Text me after the next one. Break the quiet.",a:12,r:"…you'd — okay. yeah. a meme at 3am incoming, you've been warned. …thank you. that's a real one."},{t:"That's just post-event blues, everyone gets it.",a:-6,r:"…yeah. everyone gets it. sure. …I'm gonna go find my group. thanks though."}]},
+    {h:"okay, nine minutes are up, I've gotta go be a phenomenon again. …but this was the good part. the real-person part. save me a seat in the quiet later?"}
+   ]}
+  ]
+ }
+};
+function sceneToBeats(s){return s.map(b=>b.c?{choose:b.c.map(o=>({label:o.t,aff:o.a,say:o.r}))}:{who:'her',text:b.h});}
+const vnEl=document.getElementById('vn');
+let vnQ=[], vnI=0, vnGirl=null, vnOnEnd=null, vnStartAff=0;
+function vnImg(g){return (typeof PORTRAIT!=='undefined'&&PORTRAIT[g])?PORTRAIT[g]:'';}
+/* Choice-feedback FX (shared by every girl's dialogue): +3 → 1 heart, +7 → 2, +12 → 3 float up from the cursor;
+   a negative choice pops one heart that flies up and then breaks in half. */
+function dfxLayer(){let l=document.getElementById('dfxLayer');if(!l){l=document.createElement('div');l.id='dfxLayer';l.className='dfx-layer';document.body.appendChild(l);}return l;}
+function heartFX(x,y,aff){
+  if(typeof aff!=='number'||aff===0)return;
+  const layer=dfxLayer();
+  if(aff>0){
+    const n=aff>=12?3:aff>=7?2:1;
+    for(let i=0;i<n;i++){
+      const s=document.createElement('span');s.className='dfx dfx-up';s.textContent='♥';
+      const dx=(i-(n-1)/2)*18+(Math.random()*10-5);
+      s.style.left=x+'px';s.style.top=y+'px';s.style.setProperty('--dx',dx.toFixed(1)+'px');
+      s.style.animationDelay=(i*80)+'ms';
+      layer.appendChild(s); setTimeout(()=>s.remove(),1350+i*80);
+    }
+  }else{
+    const w=document.createElement('span');w.className='dfx dfx-break';w.style.left=x+'px';w.style.top=y+'px';
+    const l=document.createElement('span');l.className='hh hh-l';l.textContent='♥';
+    const r=document.createElement('span');r.className='hh hh-r';r.textContent='♥';
+    w.appendChild(l);w.appendChild(r);layer.appendChild(w); setTimeout(()=>w.remove(),1250);
+  }
+}
+function openScene(girl,beats,onEnd){
+  vnGirl=girl; vnQ=beats.slice(); vnI=0; vnOnEnd=onEnd||null; vnStartAff=state.affection[girl]||0;
+  document.getElementById('vnPortrait').src=vnImg(girl);
+  vnEl.classList.add('show'); vnRender();
+}
+function vnRender(){
+  const nameEl=document.getElementById('vnName'),textEl=document.getElementById('vnText'),
+        chEl=document.getElementById('vnChoices'),nextEl=document.getElementById('vnNext'),
+        img=document.getElementById('vnPortrait');
+  chEl.innerHTML='';
+  if(vnI>=vnQ.length){vnClose();return;}
+  const b=vnQ[vnI];
+  if(b.choose){
+    nextEl.style.display='none';
+    b.choose.forEach(c=>{const btn=document.createElement('button');btn.className='vn-choice';btn.textContent=c.label;
+      btn.addEventListener('click',(e)=>{const r=btn.getBoundingClientRect();heartFX(e.clientX||r.left+r.width/2,e.clientY||r.top+r.height/2,c.aff);vnChoose(c);});chEl.appendChild(btn);});
+    return;
+  }
+  const label=b.who==='you'?'You':b.who==='narr'?'':vnGirl;
+  nameEl.textContent=label; nameEl.className='vn-name'+(b.who==='you'?' you':b.who==='narr'?' narr':'');
+  if(img)img.style.opacity=b.who==='narr'?'0.55':'1';
+  textEl.textContent=b.text||'';
+  nextEl.style.display='inline-block';
+  nextEl.textContent=(vnI>=vnQ.length-1)?'Done ✓':'Continue ▸';
+}
+function vnNext(){vnI++;vnRender();}
+function vnChoose(c){
+  if(typeof c.aff==='number'&&vnGirl)state.affection[vnGirl]=clampAff((state.affection[vnGirl]||0)+c.aff);
+  const rest=vnQ.slice(vnI+1), add=[{who:'you',text:c.label}];
+  if(c.say)add.push({who:'her',text:c.say});
+  vnQ=add.concat(rest); vnI=0; vnRender();
+}
+function vnClose(){
+  vnEl.classList.remove('show');
+  const g=vnGirl, delta=g?Math.round((state.affection[g]||0)-vnStartAff):0;
+  const cb=vnOnEnd; vnOnEnd=null; vnGirl=null;
+  if(cb)cb();
+  refresh(); buildMap(); updateClock(); updateActionBar();
+  if(g&&delta!==0){const e=(NPC.find(n=>n.k===g)||{}).emj||'';toast(`${e} ${g} ♥ ${delta>0?'+':''}${delta}`);}
+}
+document.getElementById('vnNext').addEventListener('click',vnNext);
+
+function revealableSlot(girl){
+  const s=SCHEDULE[girl]; if(!s)return null;
+  for(const wk of ['weekday','weekend'])for(let b=0;b<4;b++){ if(s[wk][b] && !isDisc(girl,wk,b)) return {wk,b,loc:s[wk][b]}; }
+  return null;
+}
+function startTalk(girl){
+  if(!isMet(girl))return;
+  const _loc=byId(selectedId);                                                          // must actually be at her discovered spot now
+  if(isLocked(_loc)||girlLocNow(girl)!==_loc.name||!isDisc(girl,curWk(),schedBlock(state.timeMin)))return;
+  if(state.talkDay&&state.talkDay[girl]===state.day){toast(`You already caught up with ${girl} today.`);return;}
+  if(!state.talkSeen)state.talkSeen={}; if(!state.talkDay)state.talkDay={};
+  const locName=_loc.name, hearts=Math.floor((state.affection[girl]||0)/100);
+  let beats=null;
+  if(SCENES[girl]&&SCENES[girl][locName]){                                                // location-specific scenes (heart-gated, per-spot rotation)
+    const eligible=SCENES[girl][locName].filter(sc=>(sc.hearts||0)<=hearts);
+    if(eligible.length){
+      const key=girl+'|'+locName, seen=state.talkSeen[key]||0;
+      state.talkSeen[key]=seen+1;
+      beats=sceneToBeats(eligible[seen%eligible.length].s);
+    }
+  }
+  if(!beats){                                                                             // fallback: old per-girl TALK pool
+    const pool=TALK[girl]||[]; if(!pool.length)return;
+    const seen=state.talkSeen[girl]||0; state.talkSeen[girl]=seen+1;
+    const sc=pool[seen%pool.length];
+    beats=[{who:'her',text:sc.open},{choose:sc.choices.map(c=>({label:c.you,aff:c.aff,say:c.say}))}];
+  }
+  state.talkDay[girl]=state.day;
+  const rev=revealableSlot(girl);
+  if(rev){ discRec(girl)[rev.wk][rev.b]=true;
+    beats.push({who:'narr',text:`(${girl} mentions she's usually at ${rev.loc} on ${rev.wk==='weekend'?'weekends':'weekdays'}, around ${BLOCK_LABEL[rev.b].toLowerCase()}. Her schedule filled in a little.)`}); }
+  openScene(girl,beats);
+}
+abTalk.addEventListener('click',()=>{
+  if(actionbar.classList.contains('running'))return;
+  const girls=(abTalk.dataset.girls||'').split('|').filter(Boolean);
+  if(!girls.length)return;
+  if(girls.length===1){startTalk(girls[0]);return;}
+  showModal({title:'Talk to…',msg:'Who do you want to catch up with?',buttons:
+    girls.map(g=>({label:`${(NPC.find(n=>n.k===g)||{}).emj||''} ${g}`,variant:'primary',onClick:()=>startTalk(g)})).concat([{label:'Cancel',variant:'ghost'}])});
+});
 
 /* ================= IDLE ENGINE (live + offline, timestamp deltas) ================= */
 /* Girl schedules (V10.0): where each girl is by time-of-day block, weekday vs weekend.
@@ -1013,10 +1532,11 @@ function schedGridHTML(gk){
     <p class="mv-note" style="margin:2px 0 8px">Catch her somewhere at the right time to fill this in. ❓ = still unknown.</p>
     <table style="width:100%;border-collapse:collapse">${head}${rows}</table></div>`;
 }
+const GB_LOGO='<svg class="gb-logo" viewBox="0 0 64 64" width="20" height="20" aria-hidden="true"><g fill="none" stroke="#b4bcc8" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 41 Q19 24 32 33 Q45 24 57 41"/></g><path fill="#b4bcc8" d="M32 30 q3 0 3.2 4 q-0.2 5 -3.2 8 q-3 -3 -3.2 -8 q0.2 -4 3.2 -4 Z"/></svg>';
 function socialViewHTML(){
   const metList=NPC.filter(n=>isMet(n.k));
   if(!metList.length){
-    return `<div class="mv-title">Social</div><p class="mv-note">Profiles unlock as you meet people around Greywater Sound. <b>Placeholder feed.</b></p>
+    return `<div class="mv-title gb-title">${GB_LOGO}Greybird</div><p class="mv-note">Profiles unlock as you meet people around Greywater Sound. <b>Placeholder feed.</b></p>
       <div style="text-align:center;padding:44px 22px;color:#9a9aa6">
         <div style="font-size:42px">🕵️</div>
         <p style="margin-top:12px;font-size:15px;color:#c8c8d2">You haven't met anyone yet.</p>
@@ -1044,7 +1564,7 @@ function socialViewHTML(){
     <div class="soc-bio">${paras}</div>
     ${schedGridHTML(g.k)}
   </div>`;
-  return `<div class="soc-scope"><div class="mv-title">Social</div><p class="mv-note">Profiles you've unlocked by meeting people. <b>Placeholder feed.</b></p>
+  return `<div class="soc-scope"><div class="mv-title gb-title">${GB_LOGO}Greybird</div><p class="mv-note">Profiles you've unlocked by meeting people. <b>Placeholder feed.</b></p>
     <div class="soc-wrap"><div class="soc-nav">${nav}</div><div class="soc-main">${portrait}${infoCol}</div></div></div>`;
 }
 function datesViewHTML(){
