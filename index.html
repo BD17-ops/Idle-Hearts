@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<!-- Idle Hearts — Build V13.11 -->
+<!-- Idle Hearts — Build V13.12 -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Idle Hearts — Build V13.11</title>
+<title>Idle Hearts — Build V13.12</title>
 <style>
   :root{
     --bg:#14101c; --panel:#1e1830; --panel-2:#261e3d;
@@ -28,8 +28,13 @@
 
   /* MENU BAR */
   .menubar{display:flex;align-items:center;gap:14px;padding:8px 14px;background:linear-gradient(180deg,#241c3a,#1b1530);}
-  .brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px;padding-right:12px;margin-right:4px;border-right:1px solid var(--edge);white-space:nowrap;}
+  .brand{display:flex;align-items:center;gap:8px;font-weight:700;font-size:15px;white-space:nowrap;}
   .brand .heart{color:var(--accent)}
+  /* Logo + Feedback button stacked, keeping the divider on the outer column (V13.12) */
+  .brand-col{display:flex;flex-direction:column;align-items:flex-start;gap:6px;padding-right:12px;margin-right:4px;border-right:1px solid var(--edge);}
+  /* Feedback button — same pill style as the Greybird 'Following' button */
+  .fb-btn{display:inline-block;background:var(--panel);border:1px solid var(--accent);color:var(--accent);font-weight:700;font-size:12px;line-height:1;padding:6px 15px;border-radius:20px;cursor:pointer;text-decoration:none;white-space:nowrap;}
+  .fb-btn:hover{background:#2e2447}
   .navbtns{display:grid;grid-template-columns:repeat(3,auto);grid-auto-flow:row;gap:6px;}
   .btn{background:var(--panel-2);border:1px solid var(--edge);color:var(--text);padding:6px 10px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;transition:.15s;display:flex;align-items:center;gap:5px;white-space:nowrap;}
   .btn:hover{border-color:var(--accent);background:#2e2447;transform:translateY(-1px)}
@@ -416,7 +421,10 @@
 <div class="app">
 
   <div class="section menubar">
-    <div class="brand"><span class="heart">♥</span> Idle Hearts</div>
+    <div class="brand-col">
+      <div class="brand"><span class="heart">♥</span> Idle Hearts</div>
+      <a class="fb-btn" href="https://docs.google.com/forms/d/e/1FAIpQLSd2_iAHo7JcoIGzDC5NbLIaqEk9__2twJ3IpYSbXv0aUm-JDA/viewform?usp=dialog" target="_blank" rel="noopener" title="Send feedback">Feedback</a>
+    </div>
     <div class="navbtns">
       <button class="btn active" data-view="map">🗺️ Map</button>
       <button class="btn" data-view="social"><svg class="gb-logo" viewBox="0 0 64 64" width="17" height="17" aria-hidden="true"><g fill="none" stroke="#b4bcc8" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 41 Q19 24 32 33 Q45 24 57 41"/></g><path fill="#b4bcc8" d="M32 30 q3 0 3.2 4 q-0.2 5 -3.2 8 q-3 -3 -3.2 -8 q0.2 -4 3.2 -4 Z"/></svg> Greybird</button>
@@ -531,7 +539,7 @@
 </div></div>
 
 <script>
-const BUILD="V13.11";
+const BUILD="V13.12";
 document.getElementById('buildStamp').textContent="Idle Hearts Build "+BUILD;
 
 /* ================= GAME STATE ================= */
